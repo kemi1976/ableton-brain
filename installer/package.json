@@ -1,0 +1,147 @@
+{
+  "name": "ableton-brain-installer",
+  "version": "1.0.0",
+  "description": "One-click installer for Ableton Brain - AI-powered Ableton Live automation",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "build:win": "electron-builder --win --x64",
+    "build:mac": "electron-builder --mac --x64 --arm64",
+    "build:mac:universal": "electron-builder --mac --universal",
+    "build:all": "electron-builder --win --mac --x64 --arm64",
+    "dist": "electron-builder --win --mac --x64 --arm64 --publish always",
+    "build:python": "pyinstaller --clean python_bundler.spec",
+    "lint": "eslint . --ext .js",
+    "test": "jest"
+  },
+  "build": {
+    "appId": "com.abletonbrain.installer",
+    "productName": "Ableton Brain",
+    "copyright": "Copyright © 2024 KEMERTARIAN",
+    "directories": {
+      "output": "dist",
+      "buildResources": "resources"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "renderer/**/*",
+      "resources/**/*",
+      "python/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "resources/remote_script",
+        "to": "remote_script",
+        "filter": ["**/*"]
+      },
+      {
+        "from": "resources/analyzer",
+        "to": "analyzer",
+        "filter": ["**/*"]
+      },
+      {
+        "from": "python/dist",
+        "to": "python",
+        "filter": ["**/*"]
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        },
+        {
+          "target": "portable",
+          "arch": ["x64"]
+        }
+      ],
+      "sign": false,
+      "certificateFile": "${CSC_FILE}",
+      "certificatePassword": "${CSC_KEY_PASSWORD}"
+    },
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": ["x64", "arm64"]
+        }
+      ],
+      "icon": "resources/icon.iconset",
+      "category": "public.app-category.music",
+      "minimumSystemVersion": "10.13.6",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "identity": "${CSC_NAME}",
+      "entitlements": "entitlements.mac.plist",
+      "entitlementsInherit": "entitlements.mac.plist",
+      "extendInfo": {
+        "NSHighResolutionCapable": true,
+        "LSMinimumSystemVersion": "10.13.6"
+      }
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Ableton Brain",
+      "installerIcon": "resources/icon.ico",
+      "uninstallerIcon": "resources/icon.ico",
+      "installerHeaderIcon": "resources/icon.ico",
+      "include": "installer.nsh",
+      "license": "LICENSE.txt",
+      "runAfterFinish": false
+    },
+    "dmg": {
+      "title": "Ableton Brain",
+      "icon": "resources/icon.iconset",
+      "background": "resources/dmg-background.png",
+      "window": {
+        "width": 540,
+        "height": 380
+      },
+      "contents": [
+        {
+          "x": 180,
+          "y": 170,
+          "type": "link",
+          "path": "/Applications"
+        },
+        {
+          "x": 360,
+          "y": 170,
+          "type": "file"
+        }
+      ]
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "kemi1976",
+      "repo": "ableton-brain",
+      "releaseType": "release"
+    },
+    "nodeGypRebuild": false,
+    "forceCodeSigning": false,
+    "afterSign": "sign.js"
+  },
+  "devDependencies": {
+    "electron": "^26.0.0",
+    "electron-builder": "^24.0.0",
+    "electron-updater": "^6.1.0",
+    "eslint": "^8.0.0",
+    "jest": "^29.0.0",
+    "png-to-icns": "^1.0.0",
+    "rcedit": "^4.0.0"
+  },
+  "dependencies": {
+    "electron-log": "^5.0.0",
+    "electron-store": "^8.0.0",
+    "electron-updater": "^6.1.0",
+    "ws": "^8.0.0"
+  },
+  "allowScripts": ["*"]
+}

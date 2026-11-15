@@ -1,0 +1,279 @@
+# ABLETON BRAIN - MCP Implementation Guide
+
+**Full AI-powered Ableton Live control with VST/AU plugin management, sample scanning, and automatic tune generation.**
+
+---
+
+## 🎯 What This Does
+
+| Feature | Status |
+|---------|--------|
+| **Complete Ableton Control** | ✅ Tracks, clips, devices, transport, arrangement |
+| **VST/AU Plugin Control** | ✅ Parameter enumeration, Serum deep control, automation |
+| **Sample Scanning** | ✅ Auto-detects role, BPM, key, genre from folder |
+| **Auto Tune Generation** | ✅ Builds full track from samples (drums, bass, loops, scenes) |
+| **MCP Protocol** | ✅ Works with Claude, Cursor, any MCP client |
+| **Max for Live Fallback** | ✅ For browser operations & deep VST control |
+
+---
+
+## 📁 New Files Added
+
+```
+ableton-brain/
+├── ableton_remote/
+│   └── __init__.py          # Remote Script (installs in Ableton)
+├── mcp_server.py            # MCP Server (external Python)
+├── sample_scanner.py        # Sample analysis & tune generation
+├── install.bat              # Windows installer
+├── database.json            # Artist/technique database
+├── samples/                 # Put your samples here
+├── README.md                # Original project README
+└── IMPLEMENTATION.md        # This file
+```
+
+---
+
+## 🚀 Quick Start
+
+### 1. Install Dependencies
+```bash
+pip install mcp fastapi uvicorn librosa numpy scipy
+```
+
+### 2. Install Remote Script
+```bash
+# Run as Administrator
+install.bat
+```
+
+### 3. Configure Ableton Live
+1. Open Ableton Live
+2. **Preferences → Link, Tempo & MIDI**
+3. **Control Surface**: `AbletonBrain`
+4. **Input**: `None` | **Output**: `None`
+5. **Restart Ableton**
+
+### 4. Start MCP Server
+```bash
+python mcp_server.py
+```
+
+### 5. Configure AI Client (Claude Desktop / Cursor)
+```json
+{
+  "mcpServers": {
+    "ableton-brain": {
+      "command": "python",
+      "args": ["C:/Users/pc/Documents/AI PROJECTS ANDRIOD/knowledge/ableton-brain/mcp_server.py"]
+    }
+  }
+}
+```
+
+---
+
+## 🎛️ Available Tools (40+)
+
+### Session & Transport
+- `get_session_info` - Tempo, tracks, playing state
+- `set_tempo` - Set BPM
+- `play` / `stop` / `record` - Transport control
+
+### Tracks
+- `create_midi_track` / `create_audio_track` - New tracks
+- `get_tracks` - List all tracks with devices
+- `arm_track` - Arm for recording
+- `set_track_volume` / `set_track_pan` - Mixer
+
+### Clips
+- `create_midi_clip` / `create_audio_clip` - New clips
+- `get_clip_notes` - Read MIDI notes
+- `add_notes_to_clip` - Write MIDI notes
+- `fire_clip` / `stop_clip` - Launch/stop
+
+### Devices
+- `load_instrument` / `load_audio_effect` / `load_midi_effect`
+- `get_device_parameters` - Full parameter list
+- `set_device_parameter` - Set any param (0-1 normalized)
+- `batch_set_device_parameters` - Efficient multi-param
+
+### Drum Rack
+- `create_drum_rack` - New Drum Rack
+- `replace_sample` - Load sample to pad
+- `create_drum_pattern` - Program beats
+
+### Arrangement
+- `create_scene` / `delete_clip` / `copy_clip`
+- `set_clip_envelope` - Automation
+
+### Samples
+- `list_samples` - Scan folder recursively
+- `analyze_sample` - Duration, BPM, key detection
+
+### VST/AU Control
+- `probe_plugin_parameters` - Enumerate all params
+- `expose_plugin_parameters` - Map to macros
+
+### Serum Deep Control
+- `get_serum_fx` / `set_serum_fx_param`
+- `get_serum_patch` / `create_serum_patch`
+- `set_serum_oscillator` / `filter` / `envelope` / `lfo` / `macro` / `wavetable`
+- `add_serum_mod_route` / `clear_serum_mod_route`
+
+---
+
+## 🎵 Sample Scanning & Auto Tune Generation
+
+### Scan a Folder
+```bash
+python sample_scanner.py "C:\path\to\samples" "dnb"
+```
+
+### What It Does
+1. **Scans** folder recursively for audio files
+2. **Analyzes** each sample:
+   - Duration, sample rate, channels
+   - **Role**: drum, bass, melody, pad, fx, vocal
+   - **Kind**: loop or one-shot
+   - **Genre tags**: dnb, house, techno, dubstep, trap, hiphop, ambient
+   - **BPM & Key** (via librosa AI)
+3. **Generates** complete track plan:
+   - Drum track with Drum Rack + pattern
+   - Bass track with audio clips
+   - Loop tracks for each detected loop
+   - Melody track (MIDI generation ready)
+   - Pad & FX tracks
+   - 5 Scenes: Intro, Build, Drop, Break, Outro
+
+### Example Output
+```json
+{
+  "tempo": 174,
+  "key": "F#",
+  "genre": "dnb",
+  "tracks": [
+    {"index": 0, "name": "Drums", "type": "midi", "device": "Drum Rack", "samples": ["kick.wav", "snare.wav", "hat.wav"]},
+    {"index": 1, "name": "Bass", "type": "audio", "samples": ["reese_bass.wav"]},
+    {"index": 2, "name": "Loop 1", "type": "audio", "samples": ["amen_break.wav"]},
+    {"index": 3, "name": "Melody", "type": "midi", "device": "Wavetable"},
+    {"index": 4, "name": "Pad", "type": "audio", "samples": ["atmos_pad.wav"]},
+    {"index": 5, "name": "FX", "type": "audio", "samples": ["riser.wav", "impact.wav"]}
+  ],
+  "scenes": ["Intro", "Build", "Drop", "Break", "Outro"]
+}
+```
+
+---
+
+## 🔌 VST/AU Plugin Control Details
+
+### How It Works
+1. Load VST/AU on track via `load_instrument`
+2. `probe_plugin_parameters` → returns all params with names, ranges
+3. `expose_plugin_parameters` → maps selected params to Instrument Rack macros
+4. Control via `set_device_parameter` (0-1 normalized)
+
+### Serum-Specific (Plugin State Blob)
+```python
+# Create full patch programmatically
+create_serum_patch({
+  "oscillators": [{"index": 0, "wavetable": "Basic Shapes", "unison": 3}],
+  "filters": [{"index": 0, "type": "lowpass", "cutoff": 0.3, "resonance": 0.5}],
+  "envelopes": [{"attack": 0.01, "decay": 0.3, "sustain": 0.4, "release": 0.2}],
+  "lfos": [{"rate": 0.25, "shape": "sine"}],
+  "macros": [{"target": "filter_cutoff", "amount": 0.5}],
+  "mod_matrix": [{"source": "lfo1", "target": "osc1_wt_pos", "amount": 0.3}]
+})
+```
+
+---
+
+## 🎼 Magenta Studio Integration
+
+Ableton Brain works with **Magenta Studio** (built-in Ableton AI):
+
+| Magenta Tool | What It Does |
+|--------------|--------------|
+| **Generate** | Create melody/rhythm from scratch |
+| **Continue** | Extend existing MIDI clip |
+| **Groove** | Humanize timing/velocity |
+| **Drumify** | Convert melody to drums |
+| **Interpolate** | Blend two clips |
+
+Access via Max for Live devices in Ableton's browser → Max for Live → Magenta Studio.
+
+---
+
+## 🔧 Architecture
+
+```
+┌─────────────────┐     TCP:9877     ┌──────────────────────┐
+│  MCP Client     │ ◄──────────────► │  Ableton Remote      │
+│  (Claude/Cursor)│   JSON Commands  │  Script (Python)     │
+└─────────────────┘                  └──────────┬───────────┘
+                                                │ Live Object Model
+                                                ▼
+                                        ┌──────────────────────┐
+                                        │  Ableton Live 12     │
+                                        │  Tracks, Clips,      │
+                                        │  Devices, VSTs       │
+                                        └──────────────────────┘
+```
+
+**Port 9877**: TCP JSON lines protocol  
+**Max for Live fallback**: Port 9878 for browser/drag-drop operations
+
+---
+
+## 📋 Requirements
+
+- **Ableton Live 11/12** (Standard or Suite for Max for Live)
+- **Python 3.10+**
+- **Windows 10/11** (tested) / macOS / Linux
+- **Max for Live** (for Serum deep control & browser ops)
+
+---
+
+## 🐛 Troubleshooting
+
+| Issue | Fix |
+|-------|-----|
+| "Connection refused" | Remote Script not loaded. Check Preferences → Control Surface |
+| "Command timeout" | Ableton frozen. Restart Live. |
+| "Device not found" | Check track/device indices with `get_tracks` |
+| Serum params not showing | Load Serum, then `probe_plugin_parameters` |
+| Sample analysis fails | Install librosa: `pip install librosa` |
+
+---
+
+## 🔗 Related Projects (Referenced)
+
+| Project | GitHub | Purpose |
+|---------|--------|---------|
+| **ableton-mcp** | `ok2ju/ableton-mcp` | Sample scanning + track generation |
+| **ableton-mcp-pro** | `nicholasbien/ableton-mcp-pro` | Arrangement + Serum control |
+| **ableton-mcp-max** | `closestfriend/ableton-mcp` | VST/AU + Max for Live hybrid |
+| **ableton-mcp-extended** | `elleural/ableton-mcp` | 76 tools + audio-to-MIDI |
+| **ableton-ai** | `F-Fischer/ableton-copilot` | Music-theory-aware generation |
+
+---
+
+## 📝 License
+
+MIT - Free for personal and commercial use.
+
+---
+
+## 🤝 Contributing
+
+This is the **KEMERTARIAN** Ableton Brain implementation. Built for the Multi-Eliza network.
+
+**Files to modify for new features:**
+- `ableton_remote/__init__.py` - New LOM commands
+- `mcp_server.py` - New MCP tools
+- `sample_scanner.py` - New analysis/generation logic
+
+---
+
+**Happy producing!** 🎹🎧

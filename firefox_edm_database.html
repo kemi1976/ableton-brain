@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABLETON BRAIN - DnB Database</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #0a0a0f; color: #e0e0e0; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        h1 { text-align: center; margin-bottom: 30px; color: #ff6b00; font-size: 2.5em; }
+        h2 { color: #ff6b00; margin: 20px 0 10px; font-size: 1.5em; border-bottom: 1px solid #333; padding-bottom: 10px; }
+        .search-box { margin: 20px 0; }
+        input[type="text"] { width: 100%; padding: 12px; font-size: 16px; border: 1px solid #444; border-radius: 4px; background: #15151b; color: #fff; }
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin: 20px 0; }
+        .card { background: #15151b; border: 1px solid #333; border-radius: 8px; padding: 15px; }
+        .card h3 { margin-bottom: 10px; color: #fff; }
+        .genre-tag { display: inline-block; background: #ff6b00; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; margin: 2px; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        th, td { border: 1px solid #333; padding: 10px; text-align: left; }
+        th { background: #ff6b0022; color: #ff6b00; }
+        tr:hover { background: #222; }
+        @media (max-width: 768px) { .card-grid { grid-template-columns: 1fr; } }
+        .stats { display: flex; justify-content: center; gap: 40px; margin: 20px 0; flex-wrap: wrap; }
+        .stat-item { text-align: center; }
+        .stat-number { font-size: 2em; font-weight: bold; color: #ff6b00; }
+        .stat-label { color: #888; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎧 ABLETON BRAIN - DnB DATABASE</h1>
+        <p style="text-align: center; color: #888; margin-bottom: 30px;">Comprehensive Drum & Bass knowledge base (1988-2026) | قاعدة المعرفة الشاملة للإنرويل والباس (١٩٨٨-٢٠٢٦)</p>
+        
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-number">280</div>
+                <div class="stat-label">Artists / الفنانون</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">19</div>
+                <div class="stat-label">Labels / التسويقات</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">6</div>
+                <div class="stat-label">Genres / الأنواع</div>
+            </div>
+        </div>
+        
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search artists, labels, genres... (ابحث عن فنانين، تسويقات، أو أنواع الموسيقى...)">
+        </div>
+        
+        <h2>🏷️ Labels (19) - التسويقات</h2>
+        <div class="card-grid">
+            <div class="card">
+                <h3>Formation Records</h3>
+                <p><strong>Founded:</strong> 1989</p>
+                <p><strong>Origin:</strong> Leicester, UK</p>
+                <div><span class="genre-tag">Jungle</span> <span class="genre-tag">Drum & Bass</span> <span class="genre-tag">Hardcore</span></div>
+            </div>
+            <div class="card">
+                <h3>FLEX Records</h3>
+                <p><strong>Founded:</strong> 1991</p>
+                <p><strong>Origin:</strong> UK</p>
+                <div><span class="genre-tag">Hardcore</span> <span class="genre-tag">Jungla</span> <span class="genre-tag">UK Hardcore</span></div>
+            </div>
+            <div class="card">
+                <h3>Urban Shakedown</h3>
+                <p><strong>Founded:</strong> 1994</p>
+                <p><strong>Origin:</strong> London, UK</p>
+                <div><span class="genre-tag">Jungle</span> <span class="genre-tag">Drum & Bass</span></div>
+            </div>
+            <div class="card">
+                <h3>Reinforced Records</h3>
+                <p><strong>Founded:</strong> 1992</p>
+                <p><strong>Origin:</strong> Manchester, UK</p>
+                <div><span class="genre-tag">Drum & Bass</span> <span class="genre-tag">Jungle</span></div>
+            </div>
+            <div class="card">
+                <h3>4HERR</h3>
+                <p><strong>Founded:</strong> 2015</p>
+                <p><strong>Origin:</strong> UK</p>
+                <div><span class="genre-tag">Neurofunk</span> <span class="genre-tag">Drum & Bass</span></div>
+            </div>
+            <div class="card">
+                <h3>Metalheadz</h3>
+                <p><strong>Founded:</strong> 1994</p>
+                <p><strong>Origin:</strong> United Kingdom</p>
+                <div><span class="genre-tag">Neurofunk</span> <span class="genre-tag">Liquid</span> <span class="genre-tag">Breakbeat</span></div>
+            </div>
+            <div class="card">
+                <h3>Hospital Records</h3>
+                <p><strong>Founded:</strong> 1996</p>
+                <p><strong>Origin:</strong> United Kingdom</p>
+                <div><span class="genre-tag">Liquid Funk</span> <span class="genre-tag">Melodic DnB</span></div>
+            </div>
+            <div class="card">
+                <h3>Good Looking Records</h3>
+                <p><strong>Founded:</strong> 1991</p>
+                <p><strong>Origin:</strong> United Kingdom</p>
+                <div><span class="genre-tag">Liquid Funk</span> <span class="genre-tag">Atmospheric DnB</span></div>
+            </div>
+            <div class="card">
+                <h3>Soul Food Records</h3>
+                <p><strong>Founded:</strong> 1996</p>
+                <p><strong>Origin:</strong> Brighton, UK</p>
+                <div><span class="genre-tag">Drum & Bass</span> <span class="genre-tag">Liquid DnB</span></div>
+            </div>
+            <div class="card">
+                <h3>Relaunch Records</h3>
+                <p><strong>Founded:</strong> 2011</p>
+                <p><strong>Origin:</strong> UK</p>
+                <div><span class="genre-tag">Drum & Bass</span> <span class="genre-tag">Neurofunk</span> <span class="genre-tag">Liquid DnB</span></div>
+            </div>
+            <div class="card">
+                <h3>Full Elasticity</h3>
+                <p><strong>Founded:</strong> 2014</p>
+                <p><strong>Origin:</strong> Liverpool, UK</p>
+                <div><span class="genre-tag">Drum & Bass</span></div>
+            </div>
+            <div class="card">
+                <h3>RAM Records</h3>
+                <p><strong>Founded:</strong> 1992</p>
+                <p><strong>Origin:</strong> United Kingdom</p>
+                <div><span class="genre-tag">Jump-up</span> <span class="genre-tag">Liquid</span> <span class="genre-tag">Neurofunk</span></div>
+            </div>
+            <div class="card">
+                <h3>Shogun Audio</h3>
+                <p><strong>Founded:</strong> 2004</p>
+                <p><strong>Origin:</strong> United Kingdom</p>
+                <div><span class="genre-tag">Techstep</span> <span class="genre-tag">Neurofunk</span> <span class="genre-tag">Atmospheric DnB</span></div>
+            </div>
+            <div class="card">
+                <h3>V Recordings</h3>
+                <p><strong>Founded:</strong> 1993</p>
+                <p><strong>Origin:</strong> United Kingdom</p>
+                <div><span class="genre-tag">Jump-up</span> <span class="genre-tag">Liquid</span></div>
+            </div>
+            <div class="card">
+                <h3>Critical Music</h3>
+                <p><strong>Founded:</strong> 2002</p>
+                <p><strong>Origin:</strong> United Kingdom</p>
+                <div><span class="genre-tag">Neurofunk</span> <span class="genre-tag">Liquid</span></div>
+            </div>
+            <div class="card">
+                <h3>Moving Shadow</h3>
+                <p><strong>Founded:</strong> 1990</p>
+                <p><strong>Origin:</strong> United Kingdom</p>
+                <div><span class="genre-tag">Jungle</span> <span class="genre-tag">DnB</span></div>
+            </div>
+            <div class="card">
+                <h3>Reinforced Records</h3>
+                <p><strong>Founded:</strong> 1989</p>
+                <p><strong>Origin:</strong> United Kingdom</p>
+                <div><span class="genre-tag">Techstep</span> <span class="genre-tag">Neurofunk</span></div>
+            </div>
+            <div class="card">
+                <h3>Virus Recordings</h3>
+                <p><strong>Founded:</strong> 1998</p>
+                <p><strong>Origin:</strong> United Kingdom</p>
+                <div><span class="genre-tag">Techstep</span> <span class="genre-tag">Neurofunk</span></div>
+            </div>
+            <div class="card">
+                <h3>Liquicity</h3>
+                <p><strong>Founded:</strong> 2011</p>
+                <p><strong>Origin:</strong> Netherlands</p>
+                <div><span class="genre-tag">Liquid Funk</span> <span class="genre-tag">Melodic DnB</span></div>
+            </div>
+        </div>
+        <h2>🎤 DnB Artists (280) - الفنانون</h2>
+        <table id="artistsTable" style="width: 100%;">
+            <thead><tr><th>Artist / الفنان</th><th>Genre / النوع</th><th>Origin / الأصل</th><th>Active / النشط</th></tr></thead>
+            <tbody>
+                <tr>
+                    <td>TS7</td>
+                    <td>4x4 Garage</td>
+                    <td>UK</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>T2</td>
+                    <td>4x4 Garage</td>
+                    <td>UK</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>MR V</td>
+                    <td>4x4 Garage</td>
+                    <td>UK</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>DJ Q</td>
+                    <td>4x4 Garage</td>
+                    <td>UK</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>LC</td>
+                    <td>4x4 Garage / UK Bassline</td>
+                    <td>UK</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>Grooverider</td>
+                    <td>4x4 Garage / Techstep</td>
+                    <td>UK</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>DJ Zinc</td>
+                    <td>4x4 Garage / Breaks</td>
+                    <td>UK</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>Scott Lane</td>
+                    <td>UK Bassline / 4x4 Garage</td>
+                    <td>UK</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>LTJ Bukem</td>
+                    <td>Liquid DnB / Atmospheric</td>
+                    <td>UK</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>Goldie</td>
+                    <td>Liquid DnB / Neurofunk</td>
+                    <td>UK</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>Photek</td>
+                    <td>Techstep / Minimal</td>
+                    <td>UK</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>Digital</td>
+                    <td>4x4 Garage / Dark Garage</td>
+                    <td>UK</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>Dillinger</td>
+                    <td>4x4 Garage / UK Bassline</td>
+                    <td>UK</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>Stranjah</td>
+                    <td>4x4 Garage / Reverb House</td>
+                    <td>UK</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>Reso</td>
+                    <td>Liquid DnB / Technical</td>
+                    <td>UK</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>Logistics</td>
+                    <td>Liquid DnB / Technical</td>
+                    <td>UK</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>Netsky</td>
+                    <td>Liquid DnB / Melodic</td>
+                    <td>UK</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>Highcontrast</td>
+                    <td>Liquid DnB / Atmospheric</td>
+                    <td>UK</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>Klute</td>
+                    <td>Liquid DnB / Drum & Bass</td>
+                    <td>UK</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>Bad Company</td>
+                    <td>Neurofunk / Halftime</td>
+                    <td>UK</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>Roni Size</td>
+                    <td>Full-on DnB / UK Garage Fusion</td>
+                    <td>UK</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>DJ Mag</td>
+                    <td>UK Bassline / 4x4 Garage</td>
+                    <td>UK</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>Rob Faith</td>
+                    <td>UK Bassline</td>
+                    <td>UK</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>Noisia</td>
+                    <td>Neurofunk / Experimental</td>
+                    <td>UK</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>Tech Itch</td>
+                    <td>Neurofunk / Breakbeat</td>
+                    <td>UK</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>Ed Rush & Optical</td>
+                    <td>Techstep / Neurofunk</td>
+                    <td>UK</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>Shawn Banger-Scott</td>
+                    <td>4x4 Garage / UK Garage</td>
+                    <td>UK</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>DJ Silver</td>
+                    <td>4x4 Garage</td>
+                    <td>UK</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>Limewolf</td>
+                    <td>Liquid DnB / Neurofunk</td>
+                    <td>UK</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>Kings of the South</td>
+                    <td>4x4 Garage</td>
+                    <td>UK</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>Calibre</td>
+                    <td>Liquid DnB / Chillstep</td>
+                    <td>UK</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>Unique 3</td>
+                    <td>UK Hip Hop / 1990s Pioneers</td>
+                    <td>UK</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>L Double</td>
+                    <td>UK Hip Hop / Jungle / Drum & Bass</td>
+                    <td>UK</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>Mental Power</td>
+                    <td>UK Hip Hop / Jungle</td>
+                    <td>UK</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>Micky Finn</td>
+                    <td>Rave / Early Jungle / Happy Hardcore</td>
+                    <td>UK</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>Skepta</td>
+                    <td>Grime / UK Hip Hop</td>
+                    <td>UK</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>Dizzee Rascal</td>
+                    <td>Grime / UK Hip Hop</td>
+                    <td>UK</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>Digital (Marcus Intalexs tech alias)</td>
+                    <td>4x4 Garage / Dark Garage</td>
+                    <td>UK</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>Zed Bias</td>
+                    <td>UK Garage / Dubstep / Trip Hop</td>
+                    <td>UK</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>Hydraulics</td>
+                    <td>2-Step Garage / UK Funky</td>
+                    <td>UK</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>Plastician (Chris Reed)</td>
+                    <td>Dark Garage / Grime / Dubstep</td>
+                    <td>UK</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>Noisia</td>
+                    <td>Neurofunk / Experimental / Digital</td>
+                    <td>UK</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>Skrillex (Sonny Moore)</td>
+                    <td>Brostep / Dubstep / Experimental</td>
+                    <td>UK</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>Wiley</td>
+                    <td>Grime / UK Garage Pioneer</td>
+                    <td>UK</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>Roots Manuva</td>
+                    <td>UK Road Rap / UK Hip Hop</td>
+                    <td>UK</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>Blak Twang</td>
+                    <td>UK Hip Hop / Road Rap</td>
+                    <td>UK</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>Rodney P</td>
+                    <td>UK Hip Hop / Jazz Rap</td>
+                    <td>UK</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>Horsepower Productions</td>
+                    <td>UK Dubstep / Drum & Bass</td>
+                    <td>UK</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>El-B</td>
+                    <td>Deep Dubstep / UK Garage</td>
+                    <td>UK</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>Benga</td>
+                    <td>UK Dubstep Pioneer</td>
+                    <td>UK</td>
+                    <td>N/A</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h2>🎵 Worldwide Genres (6) - الأنواع العالمية</h2>
+        <div class="card-grid">
+            <div class="card">
+                <h3>Drum & Bass</h3>
+                <p><strong>Aliases:</strong> DnB, Liquid DnB, Neurofunk, Jump-up, Techstep</p>
+                <p><strong>Key Features:</strong> {key_features}</p>
+            </div>
+            <div class="card">
+                <h3>Jungle</h3>
+                <p><strong>Aliases:</strong> Jungla, UK Jungle</p>
+                <p><strong>Key Features:</strong> {key_features}</p>
+            </div>
+            <div class="card">
+                <h3>Jungle Techno</h3>
+                <p><strong>Aliases:</strong> Jungla Techno, Electronic Jungle, Hybrid Jungle</p>
+                <p><strong>Key Features:</strong> {key_features}</p>
+            </div>
+            <div class="card">
+                <h3>UK Hardcore</h3>
+                <p><strong>Aliases:</strong> Happy Hardcore, 80s Hardcore, 90s Hardcore</p>
+                <p><strong>Key Features:</strong> {key_features}</p>
+            </div>
+            <div class="card">
+                <h3>UK Garage</h3>
+                <p><strong>Aliases:</strong> 2-Step Garage, UKG</p>
+                <p><strong>Key Features:</strong> {key_features}</p>
+            </div>
+            <div class="card">
+                <h3>Dubstep</h3>
+                <p><strong>Aliases:</strong> UK Dubstep, Brostep, Hybrid Dubstep</p>
+                <p><strong>Key Features:</strong> {key_features}</p>
+            </div>
+        </div>
+        <footer style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #333; color: #666;">
+            <p>Phase 1 Complete | 215 Wikipedia Artists Added | Updated: 2026-11-03</p>
+            <p>Version 2.0.0-dnb | Insha'Allah هذه المعرفة تساعدك على رحلتك الموسيقية 🎶</p>
+        </footer>
+    </div>
+    <script>
+        let database = {
+            "artists": {
+                "ts7": {"name": "TS7", "genre": "4x4 Garage", "origin": "UK", "active": "N/A"},
+                "t2": {"name": "T2", "genre": "4x4 Garage", "origin": "UK", "active": "N/A"},
+                "mr_v": {"name": "MR V", "genre": "4x4 Garage", "origin": "UK", "active": "N/A"},
+                "dj_q": {"name": "DJ Q", "genre": "4x4 Garage", "origin": "UK", "active": "N/A"},
+                "lc": {"name": "LC", "genre": "4x4 Garage / UK Bassline", "origin": "UK", "active": "N/A"},
+                "grooverider": {"name": "Grooverider", "genre": "4x4 Garage / Techstep", "origin": "UK", "active": "N/A"},
+                "dj_zinc": {"name": "DJ Zinc", "genre": "4x4 Garage / Breaks", "origin": "UK", "active": "N/A"},
+                "scott_lane": {"name": "Scott Lane", "genre": "UK Bassline / 4x4 Garage", "origin": "UK", "active": "N/A"},
+                "ltj_bukem": {"name": "LTJ Bukem", "genre": "Liquid DnB / Atmospheric", "origin": "UK", "active": "N/A"},
+                "goldie": {"name": "Goldie", "genre": "Liquid DnB / Neurofunk", "origin": "UK", "active": "N/A"},
+                "photek": {"name": "Photek", "genre": "Techstep / Minimal", "origin": "UK", "active": "N/A"},
+                "digital": {"name": "Digital", "genre": "4x4 Garage / Dark Garage", "origin": "UK", "active": "N/A"},
+                "dillinger": {"name": "Dillinger", "genre": "4x4 Garage / UK Bassline", "origin": "UK", "active": "N/A"},
+                "stranjah": {"name": "Stranjah", "genre": "4x4 Garage / Reverb House", "origin": "UK", "active": "N/A"},
+                "reso": {"name": "Reso", "genre": "Liquid DnB / Technical", "origin": "UK", "active": "N/A"},
+                "logistics": {"name": "Logistics", "genre": "Liquid DnB / Technical", "origin": "UK", "active": "N/A"},
+                "netsky": {"name": "Netsky", "genre": "Liquid DnB / Melodic", "origin": "UK", "active": "N/A"},
+                "highcontrast": {"name": "Highcontrast", "genre": "Liquid DnB / Atmospheric", "origin": "UK", "active": "N/A"},
+                "klute": {"name": "Klute", "genre": "Liquid DnB / Drum & Bass", "origin": "UK", "active": "N/A"},
+                "bad_company": {"name": "Bad Company", "genre": "Neurofunk / Halftime", "origin": "UK", "active": "N/A"},
+                "roni_size": {"name": "Roni Size", "genre": "Full-on DnB / UK Garage Fusion", "origin": "UK", "active": "N/A"},
+                "dj_mag": {"name": "DJ Mag", "genre": "UK Bassline / 4x4 Garage", "origin": "UK", "active": "N/A"},
+                "rob_faith": {"name": "Rob Faith", "genre": "UK Bassline", "origin": "UK", "active": "N/A"},
+                "noisia": {"name": "Noisia", "genre": "Neurofunk / Experimental", "origin": "UK", "active": "N/A"},
+                "tech_itch": {"name": "Tech Itch", "genre": "Neurofunk / Breakbeat", "origin": "UK", "active": "N/A"},
+                "ed_rush_optical": {"name": "Ed Rush & Optical", "genre": "Techstep / Neurofunk", "origin": "UK", "active": "N/A"},
+                "shawn_banger_scott": {"name": "Shawn Banger-Scott", "genre": "4x4 Garage / UK Garage", "origin": "UK", "active": "N/A"},
+                "dj_silver": {"name": "DJ Silver", "genre": "4x4 Garage", "origin": "UK", "active": "N/A"},
+                "limewolf": {"name": "Limewolf", "genre": "Liquid DnB / Neurofunk", "origin": "UK", "active": "N/A"},
+                "kings_of_the_south": {"name": "Kings of the South", "genre": "4x4 Garage", "origin": "UK", "active": "N/A"},
+                "calibre": {"name": "Calibre", "genre": "Liquid DnB / Chillstep", "origin": "UK", "active": "N/A"},
+                "unique_3": {"name": "Unique 3", "genre": "UK Hip Hop / 1990s Pioneers", "origin": "UK", "active": "N/A"},
+                "l_double": {"name": "L Double", "genre": "UK Hip Hop / Jungle / Drum & Bass", "origin": "UK", "active": "N/A"},
+                "mental_power": {"name": "Mental Power", "genre": "UK Hip Hop / Jungle", "origin": "UK", "active": "N/A"},
+                "micky_finn": {"name": "Micky Finn", "genre": "Rave / Early Jungle / Happy Hardcore", "origin": "UK", "active": "N/A"},
+                "skepta": {"name": "Skepta", "genre": "Grime / UK Hip Hop", "origin": "UK", "active": "N/A"},
+                "dizzee_rascal": {"name": "Dizzee Rascal", "genre": "Grime / UK Hip Hop", "origin": "UK", "active": "N/A"},
+                "digital_producer": {"name": "Digital (Marcus Intalexs tech alias)", "genre": "4x4 Garage / Dark Garage", "origin": "UK", "active": "N/A"},
+                "zodiac": {"name": "Zed Bias", "genre": "UK Garage / Dubstep / Trip Hop", "origin": "UK", "active": "N/A"},
+                "hydraulics": {"name": "Hydraulics", "genre": "2-Step Garage / UK Funky", "origin": "UK", "active": "N/A"},
+                "plastician_production": {"name": "Plastician (Chris Reed)", "genre": "Dark Garage / Grime / Dubstep", "origin": "UK", "active": "N/A"},
+                "noisia_digital": {"name": "Noisia", "genre": "Neurofunk / Experimental / Digital", "origin": "UK", "active": "N/A"},
+                "skrillex_early": {"name": "Skrillex (Sonny Moore)", "genre": "Brostep / Dubstep / Experimental", "origin": "UK", "active": "N/A"},
+                "wiley": {"name": "Wiley", "genre": "Grime / UK Garage Pioneer", "origin": "UK", "active": "N/A"},
+                "roots_manuva": {"name": "Roots Manuva", "genre": "UK Road Rap / UK Hip Hop", "origin": "UK", "active": "N/A"},
+                "blak_twang": {"name": "Blak Twang", "genre": "UK Hip Hop / Road Rap", "origin": "UK", "active": "N/A"},
+                "rodney_p": {"name": "Rodney P", "genre": "UK Hip Hop / Jazz Rap", "origin": "UK", "active": "N/A"},
+                "horsepower_productions": {"name": "Horsepower Productions", "genre": "UK Dubstep / Drum & Bass", "origin": "UK", "active": "N/A"},
+                "el_b": {"name": "El-B", "genre": "Deep Dubstep / UK Garage", "origin": "UK", "active": "N/A"},
+                "benga": {"name": "Benga", "genre": "UK Dubstep Pioneer", "origin": "UK", "active": "N/A"}
+            },
+            "labels": {
+                "formation_records": {"name": "Formation Records", "founded": "1989", "genre_focus": ["Jungle", "Drum & Bass", "Hardcore"]},
+                "flex_records": {"name": "FLEX Records", "founded": "1991", "genre_focus": ["Hardcore", "Jungla", "UK Hardcore"]},
+                "urban_shakedown": {"name": "Urban Shakedown", "founded": "1994", "genre_focus": ["Jungle", "Drum & Bass"]},
+                "reinforced": {"name": "Reinforced Records", "founded": "1992", "genre_focus": ["Drum & Bass", "Jungle"]},
+                "4herro": {"name": "4HERR", "founded": "2015", "genre_focus": ["Neurofunk", "Drum & Bass"]},
+                "metalheadz": {"name": "Metalheadz", "founded": "1994", "genre_focus": ["Neurofunk", "Liquid", "Breakbeat"]},
+                "hospital_records": {"name": "Hospital Records", "founded": "1996", "genre_focus": ["Liquid Funk", "Melodic DnB"]},
+                "good_looking_records": {"name": "Good Looking Records", "founded": "1991", "genre_focus": ["Liquid Funk", "Atmospheric DnB"]},
+                "soul_food_records": {"name": "Soul Food Records", "founded": "1996", "genre_focus": ["Drum & Bass", "Liquid DnB"]},
+                "relaunch_records": {"name": "Relaunch Records", "founded": "2011", "genre_focus": ["Drum & Bass", "Neurofunk", "Liquid DnB"]},
+                "full_elasticity": {"name": "Full Elasticity", "founded": "2014", "genre_focus": ["Drum & Bass"]},
+                "ram_records": {"name": "RAM Records", "founded": "1992", "genre_focus": ["Jump-up", "Liquid", "Neurofunk"]},
+                "shogun_audio": {"name": "Shogun Audio", "founded": "2004", "genre_focus": ["Techstep", "Neurofunk", "Atmospheric DnB"]},
+                "v_recordings": {"name": "V Recordings", "founded": "1993", "genre_focus": ["Jump-up", "Liquid"]},
+                "critical_music": {"name": "Critical Music", "founded": "2002", "genre_focus": ["Neurofunk", "Liquid"]},
+                "moving_shadow": {"name": "Moving Shadow", "founded": "1990", "genre_focus": ["Jungle", "DnB"]},
+                "reinforced_records": {"name": "Reinforced Records", "founded": "1989", "genre_focus": ["Techstep", "Neurofunk"]},
+                "virus_recordings": {"name": "Virus Recordings", "founded": "1998", "genre_focus": ["Techstep", "Neurofunk"]},
+                "liquicity": {"name": "Liquicity", "founded": "2011", "genre_focus": ["Liquid Funk", "Melodic DnB"]}
+            },
+            "worldwide_genres": {
+                "drum_and_bass": {"name": "Drum & Bass", "aliases": ["DnB", "Liquid DnB", "Neurofunk", "Jump-up", "Techstep"]},
+                "jungle": {"name": "Jungle", "aliases": ["Jungla", "UK Jungle"]},
+                "jungle_techno": {"name": "Jungle Techno", "aliases": ["Jungla Techno", "Electronic Jungle", "Hybrid Jungle"]},
+                "hardcore": {"name": "UK Hardcore", "aliases": ["Happy Hardcore", "80s Hardcore", "90s Hardcore"]},
+                "uk_garage": {"name": "UK Garage", "aliases": ["2-Step Garage", "UKG"]},
+                "dubstep": {"name": "Dubstep", "aliases": ["UK Dubstep", "Brostep", "Hybrid Dubstep"]}
+            }
+        };
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('keyup', function() {
+            const searchTerm = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#artistsTable tbody tr');
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                const match = Array.from(cells).some(cell => 
+                    cell.textContent.toLowerCase().includes(searchTerm)
+                );
+                row.style.display = match ? '' : 'none';
+            });
+        });
+        
+        console.log('Database loaded with', Object.keys(database.artists).length, 'artists');
+    </script>
+</body>
+</html>

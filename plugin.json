@@ -1,0 +1,19 @@
+{
+  "name": "ableton-brain-dashboard",
+  "version": "1.0.0",
+  "description": "Ableton Brain Control Dashboard - Real-time audio intelligence, AI generation, fleet control",
+  "author": "KEMERTARIAN",
+  "type": "widget",
+  "entry": "ableton-brain-dashboard.html",
+  "permissions": ["network", "filesystem"],
+  "config": {
+    "mcp_host": "localhost",
+    "mcp_port": 8050,
+    "auto_connect": true
+  },
+  "ui": {
+    "width": "100%",
+    "height": "800px",
+    "resizable": true
+  }
+}

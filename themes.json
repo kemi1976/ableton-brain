@@ -1,0 +1,159 @@
+{
+  "themes": {
+    "dark": {
+      "name": "Dark Mode",
+      "description": "Classic dark terminal theme",
+      "colors": {
+        "background": "#1a1a2e",
+        "text": "#eaeaea",
+        "accent": "#4ecca3",
+        "warning": "#ff6b6b",
+        "success": "#51cf66",
+        "info": "#339af0",
+        "header": "#845ef7",
+        "border": "#475367",
+        "event_stream": "#2d3748",
+        "event_text": "#ffffff"
+      }
+    },
+    "light": {
+      "name": "Light Mode",
+      "description": "Clean light terminal theme",
+      "colors": {
+        "background": "#ffffff",
+        "text": "#000000",
+        "accent": "#339af0",
+        "warning": "#fa5252",
+        "success": "#40c057",
+        "info": "#0d6efd",
+        "header": "#6f42c1",
+        "border": "#dee2e6",
+        "event_stream": "#f8f9fa",
+        "event_text": "#212529"
+      }
+    },
+    "github": {
+      "name": "GitHub Dark",
+      "description": "GitHub's dark theme",
+      "colors": {
+        "background": "#0d1117",
+        "text": "#c9d1d9",
+        "accent": "#58a6ff",
+        "warning": "#f85149",
+        "success": "#3fb950",
+        "info": "#6e7681",
+        "header": "#ff73b2",
+        "border": "#30363d",
+        "event_stream": "#1f2937",
+        "event_text": "#e6edf3"
+      }
+    },
+    "dracula": {
+      "name": "Dracula",
+      "description": "Popular dark theme for developers",
+      "colors": {
+        "background": "#282a36",
+        "text": "#f8f8f2",
+        "accent": "#50fa7b",
+        "warning": "#ff5555",
+        "success": "#50fa7b",
+        "info": "#79d5a3",
+        "header": "#6272a4",
+        "border": "#44475a",
+        "event_stream": "#191d29",
+        "event_text": "#f8f8f2"
+      }
+    },
+    "nord": {
+      "name": "Nord",
+      "description": "Arctic, icy calm palette",
+      "colors": {
+        "background": "#2e3440",
+        "text": "#d8dee9",
+        "accent": "#81a1c1",
+        "warning": "#bf616a",
+        "success": "#a3be8c",
+        "info": "#88c0d0",
+        "header": "#5e81ac",
+        "border": "#3b4252",
+        "event_stream": "#373e4e",
+        "event_text": "#eceff4"
+      }
+    }
+  },
+  "presets": {
+    "default": {
+      "name": "Default Mapping",
+      "description": "Basic MIDI controller setup",
+      "mappings": [
+        {
+          "physical_control": "knob_1",
+          "daw_parameter": "filter_cutoff",
+          "curve_profile": "linear",
+          "range_min": 0,
+          "range_max": 127
+        },
+        {
+          "physical_control": "knob_2",
+          "daw_parameter": "resonance",
+          "curve_profile": "log",
+          "range_min": 0,
+          "range_max": 127
+        },
+        {
+          "physical_control": "pad_1",
+          "daw_parameter": "note_c4",
+          "range_min": 0,
+          "range_max": 127
+        }
+      ]
+    },
+    "dj_mode": {
+      "name": "DJ Mode",
+      "description": "DJ-style mixer controls",
+      "mappings": [
+        {
+          "physical_control": "knob_1",
+          "daw_parameter": "channel_volume_1",
+          "curve_profile": "linear",
+          "range_min": 0,
+          "range_max": 127
+        },
+        {
+          "physical_control": "knob_2",
+          "daw_parameter": "channel_volume_2",
+          "curve_profile": "linear",
+          "range_min": 0,
+          "range_max": 127
+        },
+        {
+          "physical_control": "knob_3",
+          "daw_parameter": "crossfader",
+          "curve_profile": "exp",
+          "range_min": 0,
+          "range_max": 127
+        }
+      ]
+    },
+    "bass_producer": {
+      "name": "Bass Producer",
+      "description": "Optimized for bass music production",
+      "mappings": [
+        {
+          "physical_control": "knob_1",
+          "daw_parameter": "sub_bass_level",
+          "curve_profile": "log",
+          "range_min": -12,
+          "range_max": 12
+        },
+        {
+          "physical_control": "knob_2",
+          "daw_parameter": "distortion_drive",
+          "curve_profile": "exp",
+          "range_min": 0,
+          "range_max": 100
+        }
+      ]
+    }
+  }
+}

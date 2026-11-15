@@ -1,0 +1,69 @@
+{
+  "name": "Default DJ Setup",
+  "description": "Basic DJ controller mapping for 2-channel mixing",
+  "mappings": [
+    {
+      "physical_control": "encoder_1",
+      "daw_parameter": "channel_volume_1",
+      "curve_profile": "linear",
+      "range_min": 0,
+      "range_max": 127
+    },
+    {
+      "physical_control": "encoder_2",
+      "daw_parameter": "channel_volume_2",
+      "curve_profile": "linear",
+      "range_min": 0,
+      "range_max": 127
+    },
+    {
+      "physical_control": "knob_1",
+      "daw_parameter": "crossfader",
+      "curve_profile": "exp",
+      "range_min": 0,
+      "range_max": 127
+    },
+    {
+      "physical_control": "knob_2",
+      "daw_parameter": "filter_cutoff",
+      "curve_profile": "log",
+      "range_min": 0,
+      "range_max": 127
+    },
+    {
+      "physical_control": "pad_1",
+      "daw_parameter": "hotcue_1_1",
+      "type": "toggle"
+    },
+    {
+      "physical_control": "pad_2",
+      "daw_parameter": "hotcue_2_1",
+      "type": "toggle"
+    },
+    {
+      "physical_control": "pad_3",
+      "daw_parameter": "hotcue_1_2",
+      "type": "toggle"
+    },
+    {
+      "physical_control": "pad_4",
+      "daw_parameter": "hotcue_2_2",
+      "type": "toggle"
+    },
+    {
+      "physical_control": "joystick_x",
+      "daw_parameter": "scratch_1",
+      "mode": "abs"
+    },
+    {
+      "physical_control": "joystick_y",
+      "daw_parameter": "pitch_fader",
+      "range_min": 0,
+      "range_max": 127
+    }
+  ],
+  "created_at": "2026-11-04",
+  "version": "1.0",
+  "controller_type": "gamepad",
+  "daw": "ableton"
+}

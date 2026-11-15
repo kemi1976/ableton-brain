@@ -1,0 +1,28 @@
+{
+  "app.name": "Ableton Brain",
+  "app.tagline": "Cross-DAW Musikproduktions-Automatisierung",
+  "nav.dashboard": "Dashboard",
+  "nav.tracks": "Spuren",
+  "nav.transport": "Transport",
+  "nav.controllers": "Controller",
+  "dashboard.title": "Dashboard",
+  "dashboard.connected": "Verbunden",
+  "tracks.title": "Spuren",
+  "tracks.create": "Spur erstellen",
+  "transport.title": "Transport",
+  "transport.play": "Wiedergabe",
+  "transport.stop": "Stopp",
+  "common.save": "Speichern",
+  "common.cancel": "Abbrechen",
+  "common.delete": "Löschen",
+  "common.loading": "Laden...",
+  "tracks.count": {
+    "key": "tracks.count",
+    "locale": "de-DE",
+    "value": "{count} Spuren",
+    "plural_forms": {
+      "one": "1 Spur",
+      "other": "{count} Spuren"
+    }
+  }
+}

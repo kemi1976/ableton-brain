@@ -1,0 +1,98 @@
+{
+  "version": "1.0",
+  "network": {
+    "primary": {
+      "name": "desktop-9v5i173",
+      "ip": "100.82.15.79",
+      "os": "Windows",
+      "role": "orchestrator",
+      "has_eliza": true,
+      "services": ["orchestrator", "music-production", "ai-brain", "coordination"],
+      "status": "online"
+    },
+    "secondary": {
+      "name": "desktop-h3gcmqr",
+      "ip": "100.90.0.100",
+      "os": "Windows",
+      "role": "assistant",
+      "has_eliza": false,
+      "services": ["ml-processing", "file-backup", "database-sync"],
+      "status": "online",
+      "notes": "Lenovo Desktop - Intel i7-9700K, 32GB RAM, RTX 2070 Super"
+    },
+    "mobile": [
+      {
+        "name": "moas-galaxy-s9",
+        "ip": "100.84.148.23",
+        "os": "Android",
+        "role": "mobile-client",
+        "has_eliza": false,
+        "status": "online",
+        "notes": "Samsung Galaxy S9 - for testing/streaming"
+      },
+      {
+        "name": "z2464n",
+        "ip": "100.99.81.13",
+        "os": "Android",
+        "role": "mobile-client",
+        "has_eliza": false,
+        "status": "online",
+        "notes": "Neo Nubia tablet - development/testing"
+      }
+    ],
+    "unknown": [
+      {
+        "name": "thinkpad",
+        "ip": null,
+        "os": "Windows",
+        "role": "portable-assistant",
+        "has_eliza": false,
+        "status": "unknown",
+        "notes": "Need to discover via Tailscale scan"
+      },
+      {
+        "name": "Macbook 2011 #1",
+        "ip": null,
+        "os": "macOS",
+        "role": "legacy-support",
+        "has_eliza": false,
+        "status": "unknown",
+        "notes": "Legacy Mac - light services only"
+      },
+      {
+        "name": "Macbook 2011 #2",
+        "ip": null,
+        "os": "macOS",
+        "role": "archive",
+        "has_eliza": false,
+        "status": "unknown",
+        "notes": "Legacy Mac - backup/archive role"
+      }
+    ]
+  },
+  "deployment_plan": {
+    "phase_1": {
+      "description": "Deploy Primary & Secondary",
+      "machines": ["desktop-9v5i173", "desktop-h3gcmqr"],
+      "status": "ready"
+    },
+    "phase_2": {
+      "description": "Discover & Setup Unknown Devices",
+      "machines": ["thinkpad", "Macbook 2011 #1", "Macbook 2011 #2"],
+      "status": "pending"
+    },
+    "phase_3": {
+      "description": "Setup Mobile Clients",
+      "machines": ["moas-galaxy-s9", "z2464n"],
+      "status": "ready"
+    }
+  },
+  "communication": {
+    "protocol": "RESTful API + WebSocket",
+    "primary_port": 5000,
+    "secondary_port": 8000,
+    "mobile_port": 3000,
+    "health_endpoint": "/health",
+    "coordination_endpoint": "/coordination"
+  }
+}

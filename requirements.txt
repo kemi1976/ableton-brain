@@ -1,0 +1,44 @@
+# ABLETON BRAIN - Python Dependencies
+# Core MCP & HTTP
+mcp>=1.0.0
+fastapi>=0.100.0
+uvicorn>=0.23.0
+pydantic>=2.0.0
+
+# Audio Analysis
+librosa>=0.10.0
+numpy>=1.24.0
+scipy>=1.10.0
+soundfile>=0.12.0
+pyloudnorm>=0.1.0
+
+# OSC / MIDI
+python-osc>=1.10.0
+python-rtmidi>=1.3
+mido>=1.3
+
+# Networking
+requests>=2.31
+websocket-client>=1.6
+anyio>=4.0
+
+# AI Generation (optional, for GPU nodes)
+# stable-audio-tools>=0.1.0
+# demucs>=4.0.0
+# audioldm2>=0.1.0
+# torch>=2.0.0 (CUDA version for GPU)
+
+# Phase 1: Audio-to-MIDI & Harmonic Analysis
+basic-pitch @ git+https://github.com/spotify/basic-pitch
+onnxruntime>=1.16.0
+music21>=9.0.0
+madmom>=0.16.0
+
+# Optional: Rich console, QR codes
+rich>=13.0.0
+qrcode>=7.4
+Pillow>=10.0
+
+# Testing
+pytest>=8.0
+pytest-asyncio>=0.23

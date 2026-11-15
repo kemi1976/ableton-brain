@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firefox HTML Test</title>
+    <style>
+        body { font-family: system-ui, sans-serif; background: #0a0a0f; color: #e0e0e0; padding: 20px; }
+        .test { background: #15151b; border: 1px solid #333; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        h1 { color: #00d4ff; }
+    </style>
+</head>
+<body>
+    <div class="test">
+        <h1>Firefox Test Page</h1>
+        <p id="status">Loading...</p>
+    </div>
+    <script>
+        let test_data = { labels: 11, artists: 23, genres: 6 };
+        document.getElementById('status').textContent = 
+            `✅ Database loaded: ${test_data.labels} labels, ${test_data.artists} artists, ${test_data.genres} genres`;
+        console.log("Database:", test_data);
+    </script>
+</body>
+</html>

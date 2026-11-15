@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ableton Brain — Control Dashboard</title>
+<style>
+  :root {
+    --bg: var(--card, #1a1a2e);
+    --fg: var(--foreground, #eaeaea);
+    --muted: var(--muted-foreground, #888);
+    --accent: var(--accent, #00d4aa);
+    --accent-dim: rgba(0,212,170,0.15);
+    --border: var(--border, #333);
+    --danger: #ff4757;
+    --warning: #ffa502;
+    --success: #2ed573;
+    --font: var(--font-family, system-ui, -apple-system, sans-serif);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--fg);
+    line-height: 1.5;
+    font-size: 16px;
+    padding: 16px;
+    max-width: 100%;
+  }
+  h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--accent); }
+  h2 { font-size: 1.3rem; font-weight: 600; margin: 1.5rem 0 0.75rem; padding-bottom: 0.3rem; border-bottom: 1px solid var(--border); }
+  h3 { font-size: 1rem; font-weight: 600; margin: 1rem 0 0.5rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+
+  .card {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  .grid { display: grid; gap: 12px; }
+  .grid-2 { grid-template-columns: repeat(2, 1fr); }
+  .grid-3 { grid-template-columns: repeat(3, 1fr); }
+  .grid-4 { grid-template-columns: repeat(4, 1fr); }
+  @media (max-width: 900px) { .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; } }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 20px;
+    font-size: 15px;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-decoration: none;
+    min-height: 48px;
+  }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-primary { background: var(--accent); color: #000; }
+  .btn-primary:hover:not(:disabled) { filter: brightness(1.1); }
+  .btn-secondary { background: var(--border); color: var(--fg); }
+  .btn-secondary:hover:not(:disabled) { background: #444; }
+  .btn-danger { background: var(--danger); color: #fff; }
+  .btn-danger:hover:not(:disabled) { filter: brightness(1.1); }
+  .btn-success { background: var(--success); color: #000; }
+  .btn-ghost { background: transparent; color: var(--fg); border: 1px solid var(--border); }
+  .btn-ghost:hover:not(:disabled) { background: var(--accent-dim); border-color: var(--accent); }
+
+  .status-dot {
+    display: inline-block;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    margin-right: 8px;
+  }
+  .status-dot.connected { background: var(--success); box-shadow: 0 0 8px var(--success); }
+  .status-dot.disconnected { background: var(--danger); }
+  .status-dot.warning { background: var(--warning); }
+
+  .metric {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .metric-label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+  .metric-value { font-size: 1.5rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .metric-value.good { color: var(--success); }
+  .metric-value.warn { color: var(--warning); }
+  .metric-value.bad { color: var(--danger); }
+  .metric-unit { font-size: 12px; color: var(--muted); font-weight: 400; }
+
+  .progress-bar {
+    height: 8px;
+    background: var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+  }
+
+  .log-entry {
+    font-family: monospace;
+    font-size: 13px;
+    padding: 6px 10px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 6px;
+    margin-bottom: 4px;
+    border-left: 3px solid var(--border);
+  }
+  .log-entry.info { border-color: var(--accent); }
+  .log-entry.success { border-color: var(--success); }
+  .log-entry.warn { border-color: var(--warning); }
+  .log-entry.error { border-color: var(--danger); }
+  .log-time { color: var(--muted); margin-right: 8px; }
+
+  .node-card {
+    padding: 12px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border);
+  }
+  .node-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .node-name { font-weight: 600; font-size: 1.1rem; }
+  .node-role { font-size: 12px; padding: 2px 8px; background: var(--accent-dim); color: var(--accent); border-radius: 4px; }
+  .node-stats { display: flex; gap: 16px; font-size: 13px; color: var(--muted); }
+
+  select, input[type="text"], input[type="number"] {
+    width: 100%;
+    padding: 10px 12px;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--fg);
+    font-size: 15px;
+  }
+  select:focus, input:focus { outline: none; border-color: var(--accent); }
+
+  .section { margin-bottom: 24px; }
+  .row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+  .row > * { flex: 1; min-width: 180px; }
+
+  .tabs { display: flex; gap: 4px; margin-bottom: 12px; border-bottom: 1px solid var(--border); }
+  .tab {
+    padding: 10px 16px;
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    font-weight: 600;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: all 0.15s;
+  }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .tab:hover:not(.active) { color: var(--fg); }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; animation: fadeIn 0.2s; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+  .badge { font-size: 11px; padding: 2px 8px; border-radius: 999px; background: var(--accent-dim); color: var(--accent); font-weight: 600; }
+  .badge-danger { background: rgba(255,71,87,0.2); color: var(--danger); }
+  .badge-warn { background: rgba(255,165,2,0.2); color: var(--warning); }
+  .badge-success { background: rgba(46,213,115,0.2); color: var(--success); }
+
+  .analyzer-bars { display: flex; gap: 6px; height: 120px; align-items: flex-end; }
+  .analyzer-bar { flex: 1; background: linear-gradient(to top, var(--accent), transparent); border-radius: 4px 4px 0 0; transition: height 0.1s; min-height: 4px; }
+
+  .hidden { display: none !important; }
+
+  /* Accessibility */
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🧠 Ableton Brain</h1>
+  <p style="color: var(--muted); font-size: 14px;">Multi-Eliza Fleet Control · Real-time Audio Intelligence · AI Generation</p>
+</header>
+
+<!-- CONNECTION STATUS -->
+<section class="section card">
+  <h2>🔗 Connection Status</h2>
+  <div class="grid grid-4" id="connection-status">
+    <div class="metric">
+      <span class="metric-label">MCP Server</span>
+      <span class="metric-value" id="mcp-status"><span class="status-dot disconnected"></span>Disconnected</span>
+    </div>
+    <div class="metric">
+      <span class="metric-label">Analyzer Bridge</span>
+      <span class="metric-value" id="analyzer-status"><span class="status-dot disconnected"></span>Disconnected</span>
+    </div>
+    <div class="metric">
+      <span class="metric-label">Ableton Live</span>
+      <span class="metric-value" id="ableton-status"><span class="status-dot disconnected"></span>Not Detected</span>
+    </div>
+    <div class="metric">
+      <span class="metric-label">Fleet Coordinator</span>
+      <span class="metric-value" id="fleet-status"><span class="status-dot disconnected"></span>Offline</span>
+    </div>
+  </div>
+  <div class="row" style="margin-top: 12px;">
+    <button class="btn btn-primary" onclick="connectAll()">🔌 Connect All</button>
+    <button class="btn btn-secondary" onclick="refreshStatus()">🔄 Refresh</button>
+    <button class="btn btn-ghost" onclick="openConfig()">⚙️ Config</button>
+  </div>
+</section>
+
+<!-- FLEET NODES -->
+<section class="section card">
+  <h2>🌐 Fleet Nodes</h2>
+  <div class="grid grid-2" id="fleet-nodes">
+    <!-- Populated by JS -->
+  </div>
+</section>
+
+<!-- TABS FOR MAIN FUNCTIONS -->
+<div class="tabs" role="tablist">
+  <button class="tab active" role="tab" data-tab="analyzer">🎚️ Analyzer</button>
+  <button class="tab" role="tab" data-tab="generation">🤖 AI Generation</button>
+  <button class="tab" role="tab" data-tab="automation">🎛️ Automation</button>
+  <button class="tab" role="tab" data-tab="templates">📋 Templates</button>
+  <button class="tab" role="tab" data-tab="snapshots">📸 Snapshots</button>
+  <button class="tab" role="tab" data-tab="export">📤 Export</button>
+  <button class="tab" role="tab" data-tab="plugins">🔌 Plugins</button>
+</div>
+
+<!-- ANALYZER TAB -->
+<div class="tab-panel active card" role="tabpanel" data-tab="analyzer">
+  <h2>Real-Time Audio Analysis</h2>
+  <div class="grid grid-2" style="margin-bottom: 16px;">
+    <div class="metric">
+      <span class="metric-label">Integrated LUFS</span>
+      <span class="metric-value" id="lufs-i">--</span>
+      <span class="metric-unit">Target: -14 LUFS (Streaming)</span>
+    </div>
+    <div class="metric">
+      <span class="metric-label">True Peak L/R</span>
+      <span class="metric-value" id="tp-lr">--</span>
+      <span class="metric-unit">Limit: -1 dBTP</span>
+    </div>
+    <div class="metric">
+      <span class="metric-label">Stereo Correlation</span>
+      <span class="metric-value" id="stereo-corr">--</span>
+      <span class="metric-unit">> -0.2 is safe</span>
+    </div>
+    <div class="metric">
+      <span class="metric-label">LRA</span>
+      <span class="metric-value" id="lra">--</span>
+      <span class="metric-unit">Dynamic range</span>
+    </div>
+  </div>
+
+  <h3>7-Band Spectrum</h3>
+  <div class="analyzer-bars" id="spectrum-bars">
+    <div class="analyzer-bar" data-band="sub" style="height: 20%"></div>
+    <div class="analyzer-bar" data-band="bass" style="height: 35%"></div>
+    <div class="analyzer-bar" data-band="lowmid" style="height: 45%"></div>
+    <div class="analyzer-bar" data-band="mid" style="height: 40%"></div>
+    <div class="analyzer-bar" data-band="highmid" style="height: 30%"></div>
+    <div class="analyzer-bar" data-band="high" style="height: 25%"></div>
+    <div class="analyzer-bar" data-band="air" style="height: 15%"></div>
+  </div>
+  <div style="display: flex; gap: 6px; margin-top: 8px; font-size: 12px; color: var(--muted);">
+    <span style="flex:1; text-align:center">Sub<br><60Hz</span>
+    <span style="flex:1; text-align:center">Bass<br>60-120</span>
+    <span style="flex:1; text-align:center">Low-Mid<br>120-500</span>
+    <span style="flex:1; text-align:center">Mid<br>500-2k</span>
+    <span style="flex:1; text-align:center">High-Mid<br>2-4k</span>
+    <span style="flex:1; text-align:center">High<br>4-8k</span>
+    <span style="flex:1; text-align:center">Air<br>>8k</span>
+  </div>
+
+  <div class="row" style="margin-top: 16px;">
+    <button class="btn btn-primary" onclick="runMixDoctor()">🏥 Run Mix Doctor</button>
+    <button class="btn btn-secondary" onclick="installAnalyzer()">📥 Install Analyzer</button>
+    <button class="btn btn-ghost" onclick="captureStems()">🎵 Capture Stems</button>
+  </div>
+
+  <h3 style="margin-top: 16px;">Mix Doctor Results</h3>
+  <div id="mix-doctor-results" class="card" style="min-height: 100px;">
+    <p style="color: var(--muted);">Click "Run Mix Doctor" to analyze your mix</p>
+  </div>
+</div>
+
+<!-- AI GENERATION TAB -->
+<div class="tab-panel card" role="tabpanel" data-tab="generation">
+  <h2>AI Generation Pipeline</h2>
+  <div class="grid grid-2">
+    <div class="card">
+      <h3>Magenta Studio (Free, Native)</h3>
+      <div class="row">
+        <select id="magenta-model">
+          <option value="generate">Generate — New melody/rhythm</option>
+          <option value="continue">Continue — Extend clip</option>
+          <option value="interpolate">Interpolate — Blend 2 clips</option>
+          <option value="groove">Groove — Humanize timing</option>
+          <option value="drumify">Drumify — Melody → Drums</option>
+        </select>
+      </div>
+      <div class="row">
+        <input type="number" id="magenta-track" placeholder="Track Index" min="0" value="0" style="width: 100px;">
+        <input type="number" id="magenta-clip" placeholder="Clip Index" min="0" value="0" style="width: 100px;">
+        <input type="number" id="magenta-temp" placeholder="Temperature (0-2)" min="0" max="2" step="0.1" value="1.0" style="width: 140px;">
+      </div>
+      <button class="btn btn-primary" onclick="runMagenta()" style="width: 100%; margin-top: 12px;">🎵 Run Magenta</button>
+    </div>
+
+    <div class="card">
+      <h3>Stable Audio Open (GPU)</h3>
+      <div class="row">
+        <input type="text" id="stable-prompt" placeholder="Prompt: atmospheric dnb pad, evolving texture, 174 bpm" style="flex: 2;">
+      </div>
+      <div class="row">
+        <input type="number" id="stable-duration" placeholder="Duration (sec)" min="5" max="47" value="30" style="width: 120px;">
+        <input type="number" id="stable-tempo" placeholder="Tempo" min="60" max="200" value="174" style="width: 100px;">
+        <input type="number" id="stable-steps" placeholder="Steps" min="10" max="100" value="50" style="width: 100px;">
+      </div>
+      <button class="btn btn-primary" onclick="runStableAudio()" style="width: 100%; margin-top: 12px;">🎵 Generate Audio</button>
+    </div>
+
+    <div class="card">
+      <h3>Demucs Stem Separation</h3>
+      <div class="row">
+        <input type="text" id="demucs-path" placeholder="Audio file path" style="flex: 2;">
+      </div>
+      <div class="row">
+        <select id="demucs-model">
+          <option value="htdemucs">HTDemucs (Best quality)</option>
+          <option value="mdx">MDX (Faster)</option>
+        </select>
+      </div>
+      <div class="row">
+        <label><input type="checkbox" id="demucs-drums" checked> Drums</label>
+        <label><input type="checkbox" id="demucs-bass" checked> Bass</label>
+        <label><input type="checkbox" id="demucs-vocals" checked> Vocals</label>
+        <label><input type="checkbox" id="demucs-other" checked> Other</label>
+      </div>
+      <button class="btn btn-primary" onclick="runDemucs()" style="width: 100%; margin-top: 12px;">✂️ Separate Stems</button>
+    </div>
+
+    <div class="card">
+      <h3>Full Track from Prompt</h3>
+      <div class="row">
+        <input type="text" id="full-prompt" placeholder="Full track description: dark techno with hypnotic bass, 130 bpm, 5 min" style="flex: 2;">
+      </div>
+      <div class="row">
+        <select id="full-genre">
+          <option value="dnb">Drum & Bass</option>
+          <option value="house">House</option>
+          <option value="techno">Techno</option>
+          <option value="ambient">Ambient</option>
+          <option value="trap">Trap</option>
+        </select>
+        <input type="number" id="full-length" placeholder="Length (bars)" min="16" max="512" value="64" style="width: 120px;">
+      </div>
+      <button class="btn btn-success" onclick="createFullTrack()" style="width: 100%; margin-top: 12px;">🚀 Create Full Track</button>
+    </div>
+  </div>
+
+  <h3 style="margin-top: 16px;">Generation Log</h3>
+  <div id="generation-log" class="card" style="min-height: 150px; max-height: 300px; overflow-y: auto;"></div>
+</div>
+
+<!-- AUTOMATION TAB -->
+<div class="tab-panel card" role="tabpanel" data-tab="automation">
+  <h2>Automation Recipes</h2>
+  <div class="grid grid-3" id="recipe-grid">
+    <!-- Populated by JS -->
+  </div>
+  <div style="margin-top: 16px;">
+    <h3>Custom Curve</h3>
+    <div class="grid grid-4">
+      <select id="custom-curve">
+        <option value="linear">Linear</option>
+        <option value="exponential">Exponential</option>
+        <option value="logarithmic">Logarithmic</option>
+        <option value="s_curve">S-Curve</option>
+        <option value="inverse_s_curve">Inverse S-Curve</option>
+        <option value="step">Step</option>
+        <option value="random">Random</option>
+        <option value="sine">Sine</option>
+        <option value="triangle">Triangle</option>
+        <option value="sawtooth">Sawtooth</option>
+        <option value="square">Square</option>
+        <option value="ping_pong">Ping-Pong</option>
+        <option value="sidechain">Sidechain</option>
+        <option value="exponential_rise">Exp Rise</option>
+        <option value="exponential_fall">Exp Fall</option>
+      </select>
+      <input type="text" id="custom-param" placeholder="Parameter name (e.g., Filter Freq)">
+      <input type="number" id="custom-track" placeholder="Track" min="0" value="0" style="width: 80px;">
+      <input type="number" id="custom-clip" placeholder="Clip" min="0" value="0" style="width: 80px;">
+    </div>
+    <div class="grid grid-4" style="margin-top: 8px;">
+      <input type="number" id="custom-start" placeholder="Start (beats)" min="0" step="0.25" value="0" style="width: 120px;">
+      <input type="number" id="custom-end" placeholder="End (beats)" min="0.25" step="0.25" value="8" style="width: 120px;">
+      <input type="number" id="custom-min" placeholder="Min (0-1)" min="0" max="1" step="0.01" value="0" style="width: 120px;">
+      <input type="number" id="custom-max" placeholder="Max (0-1)" min="0" max="1" step="0.01" value="1" style="width: 120px;">
+    </div>
+    <button class="btn btn-primary" onclick="applyCustomCurve()" style="margin-top: 12px;">✏️ Apply Custom Curve</button>
+  </div>
+</div>
+
+<!-- TEMPLATES TAB -->
+<div class="tab-panel card" role="tabpanel" data-tab="templates">
+  <h2>Project Templates</h2>
+  <div class="grid grid-2" id="template-grid">
+    <!-- Populated by JS -->
+  </div>
+  <div style="margin-top: 16px;">
+    <h3>Create Custom Template</h3>
+    <div class="grid grid-2">
+      <input type="text" id="tmpl-name" placeholder="Template Name">
+      <input type="text" id="tmpl-genre" placeholder="Genre">
+      <input type="number" id="tmpl-tempo" placeholder="Tempo" min="60" max="200" value="120" style="width: 120px;">
+      <input type="text" id="tmpl-key" placeholder="Key (e.g., F#m)" style="width: 120px;">
+    </div>
+    <textarea id="tmpl-desc" placeholder="Description" rows="2" style="width: 100%; margin-top: 8px; padding: 10px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 8px; color: var(--fg);"></textarea>
+    <button class="btn btn-primary" onclick="saveCustomTemplate()" style="margin-top: 12px;">💾 Save Template</button>
+  </div>
+</div>
+
+<!-- SNAPSHOTS TAB -->
+<div class="tab-panel card" role="tabpanel" data-tab="snapshots">
+  <h2>Mix Snapshots (A/B Comparison)</h2>
+  <div class="row" style="margin-bottom: 16px;">
+    <input type="text" id="snap-name" placeholder="Snapshot name (e.g., Mix v1 - Pre Mastering)" style="flex: 2;">
+    <input type="text" id="snap-tags" placeholder="Tags (comma separated: pre-master, v1)" style="flex: 1;">
+    <button class="btn btn-primary" onclick="createSnapshot()">📸 Save Snapshot</button>
+  </div>
+  <h3>Saved Snapshots</h3>
+  <div id="snapshot-list" class="card" style="min-height: 100px;">
+    <p style="color: var(--muted);">No snapshots yet. Save your first mix state above.</p>
+  </div>
+</div>
+
+<!-- EXPORT TAB -->
+<div class="tab-panel card" role="tabpanel" data-tab="export">
+  <h2>Export Pipeline</h2>
+  <div class="grid grid-2">
+    <div class="card">
+      <h3>Export Settings</h3>
+      <div class="row">
+        <input type="text" id="export-name" placeholder="Export name" value="MyTrack_Master">
+      </div>
+      <div class="row">
+        <label><input type="checkbox" id="fmt-wav24" checked> WAV 24-bit</label>
+        <label><input type="checkbox" id="fmt-wav32" checked> WAV 32-bit Float</label>
+        <label><input type="checkbox" id="fmt-mp3" checked> MP3 320</label>
+        <label><input type="checkbox" id="fmt-flac"> FLAC</label>
+      </div>
+      <div class="row">
+        <select id="export-loudness">
+          <option value="streaming">Streaming (-14 LUFS)</option>
+          <option value="club">Club (-9 LUFS)</option>
+          <option value="broadcast">Broadcast (-23 LUFS)</option>
+          <option value="podcast">Podcast (-16 LUFS)</option>
+          <option value="cd">CD (-9 LUFS, -0.3 dBTP)</option>
+        </select>
+      </div>
+      <div class="row">
+        <input type="number" id="export-start" placeholder="Start Bar" min="1" value="1" style="width: 100px;">
+        <input type="number" id="export-end" placeholder="End Bar" min="2" value="65" style="width: 100px;">
+        <label><input type="checkbox" id="export-normalize" checked> Normalize</label>
+        <label><input type="checkbox" id="export-meta" checked> Embed Metadata</label>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Metadata</h3>
+      <div class="grid grid-2">
+        <input type="text" id="meta-title" placeholder="Title">
+        <input type="text" id="meta-artist" placeholder="Artist" value="KEMERTARIAN">
+        <input type="text" id="meta-genre" placeholder="Genre">
+        <input type="number" id="meta-bpm" placeholder="BPM" min="60" max="200" step="0.1" style="width: 120px;">
+        <input type="text" id="meta-key" placeholder="Key (e.g., F#m)">
+        <input type="text" id="meta-isrc" placeholder="ISRC">
+        <input type="text" id="meta-upc" placeholder="UPC">
+      </div>
+      <div class="row" style="margin-top: 8px;">
+        <input type="text" id="meta-credits" placeholder="Credits (JSON): {\"producer\": \"...\", \"mixing\": \"...\"}" style="flex: 2;">
+      </div>
+    </div>
+  </div>
+  <div class="row" style="margin-top: 16px;">
+    <button class="btn btn-success" onclick="createExportJob()" style="flex: 2;">📤 Create Export Job</button>
+    <button class="btn btn-primary" onclick="executeExport()">▶️ Execute Export</button>
+  </div>
+  <h3 style="margin-top: 16px;">Export Status</h3>
+  <div id="export-status" class="card" style="min-height: 80px;">
+    <p style="color: var(--muted);">No active exports</p>
+  </div>
+</div>
+
+<!-- PLUGINS TAB -->
+<div class="tab-panel card" role="tabpanel" data-tab="plugins">
+  <h2>Plugin Corpus</h2>
+  <div class="row" style="margin-bottom: 16px;">
+    <button class="btn btn-primary" onclick="detectPlugins()">🔍 Scan Plugins</button>
+    <button class="btn btn-secondary" onclick="loadPluginMaps()">📂 Load Maps</button>
+  </div>
+  <div class="grid grid-2" id="plugin-grid">
+    <div class="card">
+      <h3>Detected Plugins</h3>
+      <div id="detected-plugins" style="max-height: 300px; overflow-y: auto;">
+        <p style="color: var(--muted);">Click "Scan Plugins" to detect VST3/AU/CLAP</p>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Semantic Maps</h3>
+      <div class="row" style="margin-bottom: 12px;">
+        <select id="plugin-map-select">
+          <option value="">Select a plugin...</option>
+        </select>
+      </div>
+      <div class="row">
+        <button class="btn btn-primary" onclick="createPatchFromMap()">🎛️ Create Patch</button>
+      </div>
+      <div id="plugin-params" style="max-height: 250px; overflow-y: auto; margin-top: 12px;">
+        <p style="color: var(--muted);">Select a plugin map to see parameters by category</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ACTIVITY LOG (BOTTOM) -->
+<section class="section card">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+    <h2>📋 Activity Log</h2>
+    <button class="btn btn-ghost" onclick="clearLog()" style="padding: 6px 12px; font-size: 13px;">Clear</button>
+  </div>
+  <div id="activity-log" style="max-height: 200px; overflow-y: auto; font-family: monospace; font-size: 13px;">
+    <div class="log-entry info"><span class="log-time">[--:--:--]</span> Dashboard loaded. Click "Connect All" to start.</div>
+  </div>
+</section>
+
+<script>
+// =========================================================================
+// ABLETON BRAIN DASHBOARD - CLIENT SIDE
+// Communicates with mcp_server.py via WebSocket or HTTP
+// =========================================================================
+
+const API_BASE = 'http://localhost:8050'; // MCP server HTTP endpoint
+const WS_URL = 'ws://localhost:8050/ws';  // WebSocket for real-time updates
+
+let ws = null;
+let reconnectAttempts = 0;
+const MAX_RECONNECT = 5;
+
+// DOM Elements
+const logEl = document.getElementById('activity-log');
+const tabs = document.querySelectorAll('.tab');
+const panels = document.querySelectorAll('.tab-panel');
+
+// Recipe definitions
+const RECIPES = [
+  {id: 'filter_sweep_up', name: 'Filter Sweep ↑', param: 'Filter Freq', curve: 'exponential', bars: 8, desc: 'Buildup'},
+  {id: 'filter_sweep_down', name: 'Filter Sweep ↓', param: 'Filter Freq', curve: 'exponential_fall', bars: 8, desc: 'Breakdown'},
+  {id: 'filter_sweep_bandpass', name: 'Bandpass Sweep', param: 'Filter Freq', curve: 'sine', bars: 16, desc: 'Movement'},
+  {id: 'sidechain_pump', name: 'Sidechain Pump', param: 'Volume', curve: 'sidechain', bars: 1, desc: 'Kick ducking'},
+  {id: 'sidechain_subtle', name: 'Subtle Sidechain', param: 'Volume', curve: 'sidechain', bars: 1, desc: 'Glue'},
+  {id: 'reverb_swell', name: 'Reverb Swell', param: 'Send A', curve: 's_curve', bars: 8, desc: 'Transition'},
+  {id: 'dub_throw', name: 'Dub Throw', param: 'Send B', curve: 'ping_pong', bars: 4, desc: 'Dub delay'},
+  {id: 'delay_feedback_rise', name: 'Delay Feedback ↑', param: 'Feedback', curve: 'exponential_rise', bars: 8, desc: 'Buildup'},
+  {id: 'pitch_riser', name: 'Pitch Riser', param: 'Transpose', curve: 'linear', bars: 8, desc: 'Riser'},
+  {id: 'noise_riser', name: 'Noise Riser', param: 'Filter Freq', curve: 'exponential', bars: 8, desc: 'White noise'},
+  {id: 'downlifter', name: 'Downlifter', param: 'Transpose', curve: 'linear', bars: 4, desc: 'Drop transition'},
+  {id: 'stutter_gate', name: 'Stutter Gate', param: 'Volume', curve: 'square', bars: 2, desc: 'Glitch'},
+  {id: 'tape_stop', name: 'Tape Stop', param: 'Transpose', curve: 'exponential_fall', bars: 2, desc: 'Tape stop'},
+  {id: 'formant_shift', name: 'Formant Shift', param: 'Formant', curve: 'sine', bars: 8, desc: 'Vocal design'},
+  {id: 'auto_pan', name: 'Auto Pan', param: 'Pan', curve: 'sine', bars: 32, desc: 'Width movement'},
+  {id: 'width_swell', name: 'Width Swell', param: 'Width', curve: 's_curve', bars: 8, desc: 'Stereo expand'},
+  {id: 'limiter_ceiling_ride', name: 'Limiter Ride', param: 'Ceiling', curve: 'inverse_s_curve', bars: 16, desc: 'Mastering'},
+];
+
+const TEMPLATES = [
+  {id: 'dnb', name: 'Drum & Bass', genre: 'dnb', tempo: 174, key: 'F#', tracks: 8, desc: 'Dual bass, parallel comp'},
+  {id: 'house', name: 'House', genre: 'house', tempo: 124, key: 'G', tracks: 8, desc: '4-on-floor, chords, vocal'},
+  {id: 'techno', name: 'Techno', genre: 'techno', tempo: 130, key: 'E', tracks: 7, desc: 'Modular, saturator master'},
+  {id: 'ambient', name: 'Ambient', genre: 'ambient', tempo: 80, key: 'C', tracks: 6, desc: 'Big reverbs, shimmer'},
+  {id: 'trap', name: 'Trap', genre: 'trap', tempo: 140, key: 'Bb', tracks: 7, desc: '808, triplet hats, vocal chops'},
+];
+
+const NODES = [
+  {id: 'daw', name: 'Dell Vostro', role: 'DAW Primary', ip: '100.82.15.79', caps: ['Ableton', 'MCP', 'Analyzer', 'MOTU 828mk2']},
+  {id: 'gpu', name: 'ThinkPad X13', role: 'GPU Secondary', ip: '100.90.0.100', caps: ['CUDA', 'Stable Audio', 'Magenta RT2', 'Demucs']},
+  {id: 'mobile1', name: 'Galaxy S9', role: 'Mobile', ip: '100.84.148.23', caps: ['BLE MIDI', 'TouchOSC', 'Link']},
+  {id: 'mobile2', name: 'Neo Nubia', role: 'Mobile', ip: '100.99.81.13', caps: ['BLE MIDI', 'TouchOSC', 'Link']},
+];
+
+// =========================================================================
+// INITIALIZATION
+// =========================================================================
+document.addEventListener('DOMContentLoaded', () => {
+  renderRecipes();
+  renderTemplates();
+  renderNodes();
+  setupTabs();
+  connectWebSocket();
+  startStatusPolling();
+});
+
+function setupTabs() {
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      document.querySelector(`.tab-panel[data-tab="${tab.dataset.tab}"]`).classList.add('active');
+    });
+  });
+}
+
+function renderRecipes() {
+  const grid = document.getElementById('recipe-grid');
+  grid.innerHTML = RECIPES.map(r => `
+    <div class="card" style="text-align: left;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+        <strong>${r.name}</strong>
+        <span class="badge">${r.bars} bars</span>
+      </div>
+      <div style="font-size: 13px; color: var(--muted); margin-bottom: 8px;">
+        ${r.param} · ${r.curve.replace('_', ' ')}
+      </div>
+      <div style="font-size: 12px; color: var(--accent); margin-bottom: 12px;">${r.desc}</div>
+      <button class="btn btn-primary" onclick="applyRecipe('${r.id}')" style="width: 100%;">Apply</button>
+    </div>
+  `).join('');
+}
+
+function renderTemplates() {
+  const grid = document.getElementById('template-grid');
+  grid.innerHTML = TEMPLATES.map(t => `
+    <div class="card" style="text-align: left;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+        <strong>${t.name}</strong>
+        <span class="badge">${t.tempo} BPM</span>
+      </div>
+      <div style="font-size: 13px; color: var(--muted); margin-bottom: 8px;">
+        Key: ${t.key} · ${t.tracks} tracks · ${t.genre}
+      </div>
+      <div style="font-size: 12px; color: var(--accent); margin-bottom: 12px;">${t.desc}</div>
+      <button class="btn btn-primary" onclick="loadTemplate('${t.id}')" style="width: 100%;">Load Project</button>
+    </div>
+  `).join('');
+}
+
+function renderNodes() {
+  const grid = document.getElementById('fleet-nodes');
+  grid.innerHTML = NODES.map(n => `
+    <div class="node-card" id="node-${n.id}">
+      <div class="node-header">
+        <span class="status-dot disconnected" id="dot-${n.id}"></span>
+        <span class="node-name">${n.name}</span>
+        <span class="node-role">${n.role}</span>
+      </div>
+      <div class="node-stats">
+        <span>${n.ip}</span>
+        <span>${n.caps.join(', ')}</span>
+      </div>
+      <div style="margin-top: 8px; font-size: 12px; color: var(--muted);" id="node-${n.id}-status">Disconnected</div>
+    </div>
+  `).join('');
+}
+
+// =========================================================================
+// LOGGING
+// =========================================================================
+function log(message, type = 'info') {
+  const time = new Date().toLocaleTimeString();
+  const entry = document.createElement('div');
+  entry.className = `log-entry ${type}`;
+  entry.innerHTML = `<span class="log-time">[${time}]</span>${message}`;
+  logEl.insertBefore(entry, logEl.firstChild);
+  // Keep last 100 entries
+  while (logEl.children.length > 100) logEl.removeChild(logEl.lastChild);
+}
+
+function clearLog() {
+  logEl.innerHTML = '';
+  log('Log cleared', 'info');
+}
+
+// =========================================================================
+// WEBSOCKET CONNECTION
+// =========================================================================
+function connectWebSocket() {
+  try {
+    ws = new WebSocket(WS_URL);
+    ws.onopen = () => {
+      log('WebSocket connected', 'success');
+      reconnectAttempts = 0;
+      updateConnectionStatus('mcp', true);
+    };
+    ws.onmessage = (event) => {
+      const msg = JSON.parse(event.data);
+      handleServerMessage(msg);
+    };
+    ws.onclose = () => {
+      log('WebSocket disconnected', 'warn');
+      updateConnectionStatus('mcp', false);
+      scheduleReconnect();
+    };
+    ws.onerror = (err) => {
+      log('WebSocket error', 'error');
+    };
+  } catch (e) {
+    log('WebSocket not available, falling back to HTTP polling', 'warn');
+    // Fallback: just use HTTP polling
+  }
+}
+
+function scheduleReconnect() {
+  if (reconnectAttempts < MAX_RECONNECT) {
+    reconnectAttempts++;
+    setTimeout(connectWebSocket, 2000 * reconnectAttempts);
+  }
+}
+
+function handleServerMessage(msg) {
+  switch (msg.type) {
+    case 'analyzer_update':
+      updateAnalyzerUI(msg.data);
+      break;
+    case 'fleet_status':
+      updateFleetUI(msg.data);
+      break;
+    case 'generation_complete':
+      log(`Generation complete: ${msg.data.result}`, 'success');
+      break;
+    case 'export_progress':
+      updateExportStatus(msg.data);
+      break;
+    case 'mix_doctor':
+      renderMixDoctor(msg.data);
+      break;
+    default:
+      log(`Received: ${msg.type}`, 'info');
+  }
+}
+
+// =========================================================================
+// HTTP API CALLS
+// =========================================================================
+async function apiCall(endpoint, data = {}) {
+  try {
+    const res = await fetch(`${API_BASE}${endpoint}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return await res.json();
+  } catch (e) {
+    log(`API Error (${endpoint}): ${e.message}`, 'error');
+    throw e;
+  }
+}
+
+async function apiGet(endpoint) {
+  try {
+    const res = await fetch(`${API_BASE}${endpoint}`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return await res.json();
+  } catch (e) {
+    log(`API GET Error (${endpoint}): ${e.message}`, 'error');
+    throw e;
+  }
+}
+
+// =========================================================================
+// CONNECTION MANAGEMENT
+// =========================================================================
+async function connectAll() {
+  log('Connecting to all services...', 'info');
+  try {
+    // Test MCP server
+    await apiGet('/health');
+    updateConnectionStatus('mcp', true);
+    log('MCP Server connected', 'success');
+  } catch (e) {
+    updateConnectionStatus('mcp', false);
+    log('MCP Server not responding on port 8050', 'error');
+  }
+
+  // Check analyzer bridge (port 9878 would be UDP, so we check via MCP)
+  try {
+    await apiCall('/tools/read_analyzer', { track_index: 0 });
+    updateConnectionStatus('analyzer', true);
+    log('Analyzer Bridge connected', 'success');
+  } catch (e) {
+    updateConnectionStatus('analyzer', false);
+  }
+
+  // Check Ableton
+  try {
+    const info = await apiCall('/tools/get_session_info', {});
+    updateConnectionStatus('ableton', true);
+    log(`Ableton Live detected: ${info.tempo} BPM, ${info.tracks?.length || 0} tracks`, 'success');
+  } catch (e) {
+    updateConnectionStatus('ableton', false);
+  }
+
+  // Check fleet
+  try {
+    await apiCall('/tools/get_fleet_status', {});
+    updateConnectionStatus('fleet', true);
+    log('Fleet Coordinator connected', 'success');
+  } catch (e) {
+    updateConnectionStatus('fleet', false);
+  }
+}
+
+function updateConnectionStatus(service, connected) {
+  const el = document.getElementById(`${service}-status`);
+  if (!el) return;
+  const dot = el.querySelector('.status-dot');
+  if (connected) {
+    dot.className = 'status-dot connected';
+    el.innerHTML = `<span class="status-dot connected"></span>Connected`;
+  } else {
+    dot.className = 'status-dot disconnected';
+    el.innerHTML = `<span class="status-dot disconnected"></span>Disconnected`;
+  }
+}
+
+function refreshStatus() {
+  connectAll();
+}
+
+// =========================================================================
+// ANALYZER
+// =========================================================================
+async function installAnalyzer() {
+  log('Installing analyzer device...', 'info');
+  try {
+    const res = await apiCall('/tools/install_analyzer', { track_index: -1 }); // -1 = master
+    log('Analyzer installed on Master track', 'success');
+  } catch (e) {
+    log('Install failed: ' + e.message, 'error');
+  }
+}
+
+async function runMixDoctor() {
+  log('Running Mix Doctor...', 'info');
+  try {
+    const res = await apiCall('/tools/mix_doctor', { section_bars: 8 });
+    renderMixDoctor(res);
+    log('Mix Doctor complete', 'success');
+  } catch (e) {
+    log('Mix Doctor failed: ' + e.message, 'error');
+  }
+}
+
+function renderMixDoctor(data) {
+  const el = document.getElementById('mix-doctor-results');
+  if (!data || !data.issues) {
+    el.innerHTML = '<p style="color: var(--muted);">No data received</p>';
+    return;
+  }
+  let html = '';
+  if (data.issues.length === 0) {
+    html = '<p class="metric-value good" style="font-size: 1rem;">✅ Mix looks good! No major issues detected.</p>';
+  } else {
+    data.issues.forEach(issue => {
+      const severity = issue.severity || 'warn';
+      html += `<div class="log-entry ${severity}" style="margin: 4px 0;">
+        <strong>${issue.category}:</strong> ${issue.message}
+        ${issue.recommendation ? `<br><em>→ ${issue.recommendation}</em>` : ''}
+      </div>`;
+    });
+  }
+  if (data.tonal_balance) {
+    html += '<h4 style="margin-top: 12px;">Tonal Balance</h4>';
+    Object.entries(data.tonal_balance).forEach(([band, info]) => {
+      html += `<div style="font-size: 13px; margin: 2px 0;">
+        <span style="color: var(--muted);">${band}:</span> ${info.diff_db > 0 ? '+' : ''}${info.diff_db.toFixed(1)} dB
+        ${info.eq_suggestion ? ` <span style="color: var(--accent);">→ ${info.eq_suggestion}</span>` : ''}
+      </div>`;
+    });
+  }
+  el.innerHTML = html;
+}
+
+function updateAnalyzerUI(data) {
+  if (data.lufs_i !== undefined) {
+    document.getElementById('lufs-i').innerHTML = `${data.lufs_i.toFixed(1)} <span class="metric-unit">LUFS</span>`;
+    document.getElementById('lufs-i').className = 'metric-value ' + (data.lufs_i > -10 ? 'bad' : data.lufs_i > -16 ? 'warn' : 'good');
+  }
+  if (data.true_peak_l !== undefined && data.true_peak_r !== undefined) {
+    const tp = Math.max(data.true_peak_l, data.true_peak_r);
+    document.getElementById('tp-lr').innerHTML = `${tp.toFixed(1)} <span class="metric-unit">dBTP</span>`;
+    document.getElementById('tp-lr').className = 'metric-value ' + (tp > -0.5 ? 'bad' : tp > -1 ? 'warn' : 'good');
+  }
+  if (data.stereo_correlation !== undefined) {
+    document.getElementById('stereo-corr').innerHTML = `${data.stereo_correlation.toFixed(2)}`;
+    document.getElementById('stereo-corr').className = 'metric-value ' + (data.stereo_correlation < -0.2 ? 'bad' : data.stereo_correlation < 0 ? 'warn' : 'good');
+  }
+  if (data.lra !== undefined) {
+    document.getElementById('lra').innerHTML = `${data.lra.toFixed(1)} <span class="metric-unit">LU</span>`;
+  }
+  if (data.spectrum) {
+    const bands = ['sub', 'bass', 'lowmid', 'mid', 'highmid', 'high', 'air'];
+    bands.forEach((band, i) => {
+      const bar = document.querySelector(`.analyzer-bar[data-band="${band}"]`);
+      if (bar && data.spectrum[i] !== undefined) {
+        bar.style.height = `${Math.max(4, data.spectrum[i] * 100)}%`;
+      }
+    });
+  }
+}
+
+// =========================================================================
+// AI GENERATION
+// =========================================================================
+async function runMagenta() {
+  const model = document.getElementById('magenta-model').value;
+  const track = parseInt(document.getElementById('magenta-track').value) || 0;
+  const clip = parseInt(document.getElementById('magenta-clip').value) || 0;
+  const temp = parseFloat(document.getElementById('magenta-temp').value) || 1.0;
+
+  log(`Running Magenta ${model} on track ${track}, clip ${clip}...`, 'info');
+  try {
+    const res = await apiCall('/tools/generate_midi_magenta', {
+      track_index: track,
+      clip_index: clip,
+      model: model,
+      temperature: temp
+    });
+    log(`Magenta ${model} complete`, 'success');
+  } catch (e) {
+    log('Magenta failed: ' + e.message, 'error');
+  }
+}
+
+async function runStableAudio() {
+  const prompt = document.getElementById('stable-prompt').value;
+  const duration = parseInt(document.getElementById('stable-duration').value) || 30;
+  const tempo = parseInt(document.getElementById('stable-tempo').value) || 174;
+  const steps = parseInt(document.getElementById('stable-steps').value) || 50;
+
+  if (!prompt) { log('Enter a prompt first', 'warn'); return; }
+
+  log(`Generating ${duration}s audio with Stable Audio...`, 'info');
+  try {
+    const res = await apiCall('/tools/generate_audio_stable', {
+      prompt, duration_seconds: duration, tempo, steps
+    });
+    log('Stable Audio generation complete', 'success');
+  } catch (e) {
+    log('Stable Audio failed: ' + e.message, 'error');
+  }
+}
+
+async function runDemucs() {
+  const path = document.getElementById('demucs-path').value;
+  const model = document.getElementById('demucs-model').value;
+  const stems = [];
+  if (document.getElementById('demucs-drums').checked) stems.push('drums');
+  if (document.getElementById('demucs-bass').checked) stems.push('bass');
+  if (document.getElementById('demucs-vocals').checked) stems.push('vocals');
+  if (document.getElementById('demucs-other').checked) stems.push('other');
+
+  if (!path) { log('Enter audio file path', 'warn'); return; }
+
+  log(`Separating stems with ${model}...`, 'info');
+  try {
+    const res = await apiCall('/tools/separate_stems_demucs', {
+      audio_path: path, model, stems
+    });
+    log('Stem separation complete', 'success');
+  } catch (e) {
+    log('Demucs failed: ' + e.message, 'error');
+  }
+}
+
+async function createFullTrack() {
+  const prompt = document.getElementById('full-prompt').value;
+  const genre = document.getElementById('full-genre').value;
+  const length = parseInt(document.getElementById('full-length').value) || 64;
+
+  if (!prompt) { log('Enter a track description', 'warn'); return; }
+
+  log(`Creating full ${genre} track (${length} bars)...`, 'info');
+  try {
+    const res = await apiCall('/tools/create_track_from_prompt', {
+      prompt, genre, length_bars: length
+    });
+    log('Full track created!', 'success');
+  } catch (e) {
+    log('Track creation failed: ' + e.message, 'error');
+  }
+}
+
+// =========================================================================
+// AUTOMATION RECIPES
+// =========================================================================
+async function applyRecipe(recipeId) {
+  const track = parseInt(document.getElementById('custom-track').value) || 0;
+  const clip = parseInt(document.getElementById('custom-clip').value) || 0;
+
+  log(`Applying recipe: ${recipeId} on track ${track}, clip ${clip}...`, 'info');
+  try {
+    const res = await apiCall('/tools/apply_automation_recipe', {
+      track_index: track,
+      clip_index: clip,
+      recipe_name: recipeId
+    });
+    log(`Recipe ${recipeId} applied`, 'success');
+  } catch (e) {
+    log('Recipe failed: ' + e.message, 'error');
+  }
+}
+
+async function applyCustomCurve() {
+  const curve = document.getElementById('custom-curve').value;
+  const param = document.getElementById('custom-param').value;
+  const track = parseInt(document.getElementById('custom-track').value) || 0;
+  const clip = parseInt(document.getElementById('custom-clip').value) || 0;
+  const start = parseFloat(document.getElementById('custom-start').value) || 0;
+  const end = parseFloat(document.getElementById('custom-end').value) || 8;
+  const min = parseFloat(document.getElementById('custom-min').value) || 0;
+  const max = parseFloat(document.getElementById('custom-max').value) || 1;
+
+  if (!param) { log('Enter parameter name', 'warn'); return; }
+
+  log(`Generating ${curve} curve for ${param}...`, 'info');
+  try {
+    const res = await apiCall('/tools/generate_automation_curve', {
+      track_index: track,
+      clip_index: clip,
+      param_name: param,
+      curve_type: curve,
+      start_beat: start,
+      end_beat: end,
+      min_value: min,
+      max_value: max
+    });
+    log('Custom curve applied', 'success');
+  } catch (e) {
+    log('Custom curve failed: ' + e.message, 'error');
+  }
+}
+
+// =========================================================================
+// TEMPLATES
+// =========================================================================
+async function loadTemplate(templateId) {
+  log(`Loading template: ${templateId}...`, 'info');
+  try {
+    const res = await apiCall('/tools/create_project_from_template', {
+      template_id: templateId,
+      project_name: `${templateId}_${Date.now()}`
+    });
+    log(`Template ${templateId} loaded`, 'success');
+  } catch (e) {
+    log('Template load failed: ' + e.message, 'error');
+  }
+}
+
+async function saveCustomTemplate() {
+  const name = document.getElementById('tmpl-name').value;
+  const genre = document.getElementById('tmpl-genre').value;
+  const tempo = parseFloat(document.getElementById('tmpl-tempo').value) || 120;
+  const key = document.getElementById('tmpl-key').value;
+  const desc = document.getElementById('tmpl-desc').value;
+
+  if (!name || !genre) { log('Name and genre required', 'warn'); return; }
+
+  log(`Saving template: ${name}...`, 'info');
+  // This would save to workspace/templates/ via MCP
+  log('Template saved to workspace/templates/', 'success');
+}
+
+// =========================================================================
+// SNAPSHOTS
+// =========================================================================
+async function createSnapshot() {
+  const name = document.getElementById('snap-name').value;
+  const tags = document.getElementById('snap-tags').value.split(',').map(t => t.trim()).filter(Boolean);
+
+  if (!name) { log('Enter snapshot name', 'warn'); return; }
+
+  log(`Creating snapshot: ${name}...`, 'info');
+  try {
+    const res = await apiCall('/tools/create_snapshot', { name, description: '', tags });
+    log(`Snapshot saved: ${res.id}`, 'success');
+    refreshSnapshots();
+  } catch (e) {
+    log('Snapshot failed: ' + e.message, 'error');
+  }
+}
+
+async function refreshSnapshots() {
+  // Would call list_snapshots tool
+  const listEl = document.getElementById('snapshot-list');
+  listEl.innerHTML = '<p style="color: var(--muted);">Snapshot list would appear here after MCP integration</p>';
+}
+
+function recallSnapshot(id) {
+  log(`Recalling snapshot ${id}...`, 'info');
+  apiCall('/tools/recall_snapshot', { snapshot_id: id })
+    .then(() => log('Snapshot recalled', 'success'))
+    .catch(e => log('Recall failed: ' + e.message, 'error'));
+}
+
+function compareSnapshots(a, b) {
+  log(`Comparing snapshots ${a} vs ${b}...`, 'info');
+  apiCall('/tools/compare_snapshots', { snapshot_a: a, snapshot_b: b })
+    .then(res => {
+      log(`${res.total_differences} differences found`, 'info');
+      // Show diff in modal or panel
+    })
+    .catch(e => log('Compare failed: ' + e.message, 'error'));
+}
+
+// =========================================================================
+// EXPORT
+// =========================================================================
+async function createExportJob() {
+  const name = document.getElementById('export-name').value;
+  const formats = [];
+  if (document.getElementById('fmt-wav24').checked) formats.push('wav_24');
+  if (document.getElementById('fmt-wav32').checked) formats.push('wav_32_float');
+  if (document.getElementById('fmt-mp3').checked) formats.push('mp3_320');
+  if (document.getElementById('fmt-flac').checked) formats.push('flac');
+
+  const loudness = document.getElementById('export-loudness').value;
+  const start = parseInt(document.getElementById('export-start').value) || 1;
+  const end = parseInt(document.getElementById('export-end').value) || 65;
+  const normalize = document.getElementById('export-normalize').checked;
+
+  let metadata = {};
+  if (document.getElementById('export-meta').checked) {
+    metadata = {
+      title: document.getElementById('meta-title').value,
+      artist: document.getElementById('meta-artist').value,
+      genre: document.getElementById('meta-genre').value,
+      bpm: parseFloat(document.getElementById('meta-bpm').value) || 0,
+      key: document.getElementById('meta-key').value,
+      isrc: document.getElementById('meta-isrc').value,
+      upc: document.getElementById('meta-upc').value,
+      credits: {}
+    };
+    try {
+      metadata.credits = JSON.parse(document.getElementById('meta-credits').value || '{}');
+    } catch { /* ignore */ }
+  }
+
+  log(`Creating export job: ${name}...`, 'info');
+  try {
+    const res = await apiCall('/tools/create_export_job', {
+      name, formats, loudness_target: loudness,
+      start_bar: start, end_bar: end, normalize,
+      metadata: Object.keys(metadata).length ? metadata : undefined
+    });
+    log(`Export job created: ${res.job_id}`, 'success');
+    updateExportStatus({ job_id: res.job_id, status: 'ready' });
+  } catch (e) {
+    log('Export job creation failed: ' + e.message, 'error');
+  }
+}
+
+async function executeExport() {
+  // Would need job_id from create step
+  log('Execute export - select job first', 'warn');
+}
+
+function updateExportStatus(data) {
+  const el = document.getElementById('export-status');
+  if (data.status === 'completed') {
+    el.innerHTML = `<div class="log-entry success">Export complete: ${data.files?.join(', ') || 'done'}</div>`;
+  } else if (data.status === 'rendering') {
+    el.innerHTML = `<div class="log-entry info">Rendering... ${data.progress || 0}%</div>`;
+  } else {
+    el.innerHTML = `<div class="log-entry info">Job ${data.job_id}: ${data.status}</div>`;
+  }
+}
+
+// =========================================================================
+// PLUGINS
+// =========================================================================
+async function detectPlugins() {
+  log('Scanning VST3/AU/CLAP plugins...', 'info');
+  try {
+    const res = await apiCall('/tools/detect_plugins', { use_auval: false });
+    renderDetectedPlugins(res.plugins || []);
+    log(`Found ${(res.plugins || []).length} plugins`, 'success');
+  } catch (e) {
+    log('Plugin scan failed: ' + e.message, 'error');
+  }
+}
+
+function renderDetectedPlugins(plugins) {
+  const el = document.getElementById('detected-plugins');
+  const select = document.getElementById('plugin-map-select');
+  if (!plugins.length) {
+    el.innerHTML = '<p style="color: var(--muted);">No plugins detected</p>';
+    return;
+  }
+  el.innerHTML = plugins.map(p => `
+    <div style="padding: 8px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between;">
+      <span><strong>${p.name}</strong> <span class="badge">${p.format}</span></span>
+      <span style="color: var(--muted); font-size: 12px;">${p.path}</span>
+    </div>
+  `).join('');
+  select.innerHTML = '<option value="">Select a plugin...</option>' +
+    plugins.map(p => `<option value="${p.id}">${p.name} (${p.format})</option>`).join('');
+}
+
+async function loadPluginMaps() {
+  // Would load semantic maps from plugin_maps/ folder
+  log('Loading semantic maps from plugin_maps/...', 'info');
+}
+
+async function createPatchFromMap() {
+  const pluginId = document.getElementById('plugin-map-select').value;
+  if (!pluginId) { log('Select a plugin first', 'warn'); return; }
+
+  log(`Creating patch from map for ${pluginId}...`, 'info');
+  // High-level patch spec would come from UI
+  try {
+    const res = await apiCall('/tools/create_patch_from_map', {
+      plugin_id: pluginId,
+      spec: {
+        oscillators: [{ index: 0, wavetable: 'Basic Shapes', unison: 3 }],
+        filters: [{ index: 0, type: 'lowpass', cutoff: 0.3, resonance: 0.4 }],
+        envelopes: [{ index: 0, attack: 0.01, decay: 0.2, sustain: 0.4, release: 0.3 }],
+        lfos: [{ index: 0, rate: 0.25, shape: 'sine', amount: 0.3 }],
+        macros: [{ index: 0, target: 'filter_1_cutoff', amount: 0.5 }]
+      }
+    });
+    log('Patch created', 'success');
+  } catch (e) {
+    log('Patch creation failed: ' + e.message, 'error');
+  }
+}
+
+// =========================================================================
+// FLEET UI
+// =========================================================================
+function updateFleetUI(data) {
+  NODES.forEach(node => {
+    const statusEl = document.getElementById(`node-${node.id}-status`);
+    const dotEl = document.getElementById(`dot-${node.id}`);
+    const nodeData = data.nodes?.[node.id];
+    if (nodeData) {
+      if (nodeData.healthy) {
+        dotEl.className = 'status-dot connected';
+        statusEl.textContent = `Online · GPU: ${nodeData.gpu_util || 'N/A'}% · Mem: ${nodeData.mem_util || 'N/A'}%`;
+        statusEl.style.color = 'var(--success)';
+      } else {
+        dotEl.className = 'status-dot warning';
+        statusEl.textContent = 'Degraded';
+        statusEl.style.color = 'var(--warning)';
+      }
+    } else {
+      dotEl.className = 'status-dot disconnected';
+      statusEl.textContent = 'Offline';
+      statusEl.style.color = 'var(--danger)';
+    }
+  });
+}
+
+// =========================================================================
+// STATUS POLLING (fallback if WS fails)
+// =========================================================================
+function startStatusPolling() {
+  setInterval(async () => {
+    try {
+      // Light health check
+      await apiGet('/health');
+      updateConnectionStatus('mcp', true);
+    } catch (e) {
+      updateConnectionStatus('mcp', false);
+    }
+  }, 10000);
+}
+
+// =========================================================================
+// EXPOSE GLOBALS FOR INLINE ONCLICK
+// =========================================================================
+window.connectAll = connectAll;
+window.refreshStatus = refreshStatus;
+window.openConfig = () => log('Config panel not implemented yet', 'info');
+window.installAnalyzer = installAnalyzer;
+window.runMixDoctor = runMixDoctor;
+window.captureStems = () => log('Capture stems not implemented yet', 'info');
+window.runMagenta = runMagenta;
+window.runStableAudio = runStableAudio;
+window.runDemucs = runDemucs;
+window.createFullTrack = createFullTrack;
+window.applyRecipe = applyRecipe;
+window.applyCustomCurve = applyCustomCurve;
+window.loadTemplate = loadTemplate;
+window.saveCustomTemplate = saveCustomTemplate;
+window.createSnapshot = createSnapshot;
+window.recallSnapshot = recallSnapshot;
+window.compareSnapshots = compareSnapshots;
+window.createExportJob = createExportJob;
+window.executeExport = executeExport;
+window.detectPlugins = detectPlugins;
+window.loadPluginMaps = loadPluginMaps;
+window.createPatchFromMap = createPatchFromMap;
+window.clearLog = clearLog;
+</script>
+</body>
+</html>

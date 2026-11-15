@@ -1,0 +1,27 @@
+{
+  "app.name": "Ableton Brain",
+  "app.tagline": "クロスDAW音楽制作自動化",
+  "nav.dashboard": "ダッシュボード",
+  "nav.tracks": "トラック",
+  "nav.transport": "トランスポート",
+  "nav.controllers": "コントローラー",
+  "dashboard.title": "ダッシュボード",
+  "dashboard.connected": "接続済み",
+  "tracks.title": "トラック",
+  "tracks.create": "トラック作成",
+  "transport.title": "トランスポート",
+  "transport.play": "再生",
+  "transport.stop": "停止",
+  "common.save": "保存",
+  "common.cancel": "キャンセル",
+  "common.delete": "削除",
+  "common.loading": "読み込み中...",
+  "tracks.count": {
+    "key": "tracks.count",
+    "locale": "ja-JP",
+    "value": "{count}トラック",
+    "plural_forms": {
+      "other": "{count}トラック"
+    }
+  }
+}

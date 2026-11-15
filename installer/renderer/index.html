@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ableton Brain Installer</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    :root {
+      --bg: #0d0d0d;
+      --bg-elevated: #161616;
+      --fg: #e8e8e8;
+      --muted: #888;
+      --accent: #00d4aa;
+      --accent-dim: #00d4aa33;
+      --border: #2a2a2a;
+      --card: #1a1a1a;
+      --error: #ff4444;
+      --success: #00d4aa;
+      --warning: #ffaa00;
+      --radius: 12px;
+      --radius-sm: 8px;
+      --transition: 0.2s ease;
+      --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #f5f5f5;
+        --bg-elevated: #ffffff;
+        --fg: #1a1a1a;
+        --muted: #666;
+        --accent: #00aa88;
+        --accent-dim: #00aa8833;
+        --border: #e0e0e0;
+        --card: #ffffff;
+      }
+    }
+    
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--fg);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+    
+    /* Title bar */
+    .title-bar {
+      height: 40px;
+      background: var(--bg-elevated);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      -webkit-app-region: drag;
+      user-select: none;
+    }
+    
+    .title-bar-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      -webkit-app-region: no-drag;
+    }
+    
+    .app-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, var(--accent), #0099cc);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 14px;
+      color: #000;
+    }
+    
+    .app-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--fg);
+    }
+    
+    .window-controls {
+      display: flex;
+      gap: 8px;
+      -webkit-app-region: no-drag;
+    }
+    
+    .window-btn {
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: transparent;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--muted);
+      transition: all var(--transition);
+    }
+    
+    .window-btn:hover {
+      background: var(--accent-dim);
+      color: var(--accent);
+    }
+    
+    .window-btn.close:hover {
+      background: #ff444433;
+      color: #ff4444;
+    }
+    
+    /* Main content */
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 32px;
+      max-width: 800px;
+      width: 100%;
+      margin: 0 auto;
+    }
+    
+    /* Progress steps */
+    .progress-steps {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 40px;
+      position: relative;
+    }
+    
+    .progress-steps::before {
+      content: '';
+      position: absolute;
+      top: 20px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--border);
+      z-index: 0;
+    }
+    
+    .progress-steps .step {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+    }
+    
+    .step-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--bg-elevated);
+      border: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--muted);
+      transition: all var(--transition);
+    }
+    
+    .step.active .step-circle {
+      border-color: var(--accent);
+      background: var(--accent-dim);
+      color: var(--accent);
+    }
+    
+    .step.completed .step-circle {
+      border-color: var(--success);
+      background: var(--success);
+      color: #000;
+    }
+    
+    .step.error .step-circle {
+      border-color: var(--error);
+      background: #ff444433;
+      color: var(--error);
+    }
+    
+    .step-label {
+      font-size: 12px;
+      color: var(--muted);
+      text-align: center;
+      max-width: 100px;
+    }
+    
+    .step.active .step-label,
+    .step.completed .step-label {
+      color: var(--fg);
+      font-weight: 500;
+    }
+    
+    /* Card */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      margin-bottom: 24px;
+    }
+    
+    .card h2 {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    
+    .card p {
+      color: var(--muted);
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+    
+    /* Form elements */
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 8px;
+      color: var(--fg);
+    }
+    
+    .form-input {
+      width: 100%;
+      padding: 12px 16px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--fg);
+      font-size: 14px;
+      font-family: inherit;
+      transition: all var(--transition);
+    }
+    
+    .form-input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-dim);
+    }
+    
+    .form-input:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    .input-row {
+      display: flex;
+      gap: 12px;
+    }
+    
+    .input-row .form-group {
+      flex: 1;
+    }
+    
+    .browse-btn {
+      padding: 12px 20px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--fg);
+      font-size: 14px;
+      cursor: pointer;
+      transition: all var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .browse-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    
+    /* Buttons */
+    .btn {
+      padding: 14px 28px;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-size: 15px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all var(--transition);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    
+    .btn-primary {
+      background: var(--accent);
+      color: #000;
+    }
+    
+    .btn-primary:hover:not(:disabled) {
+      background: #00e8bb;
+      transform: translateY(-1px);
+    }
+    
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+    
+    .btn-secondary {
+      background: var(--bg-elevated);
+      color: var(--fg);
+      border: 1px solid var(--border);
+    }
+    
+    .btn-secondary:hover:not(:disabled) {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    
+    .btn-group {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+    
+    /* Progress bar */
+    .progress-container {
+      margin: 20px 0;
+    }
+    
+    .progress-bar {
+      height: 6px;
+      background: var(--bg);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), #0099cc);
+      border-radius: 3px;
+      transition: width 0.3s ease;
+      width: 0%;
+    }
+    
+    .progress-text {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+    
+    /* Status */
+    .status-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      background: var(--bg);
+      border-radius: var(--radius-sm);
+      margin-bottom: 12px;
+    }
+    
+    .status-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    
+    .status-icon.success {
+      background: #00d4aa33;
+      color: var(--success);
+    }
+    
+    .status-icon.pending {
+      background: var(--accent-dim);
+      color: var(--accent);
+      animation: pulse 1.5s infinite;
+    }
+    
+    .status-icon.error {
+      background: #ff444433;
+      color: var(--error);
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    
+    .status-info {
+      flex: 1;
+    }
+    
+    .status-title {
+      font-weight: 500;
+      color: var(--fg);
+    }
+    
+    .status-desc {
+      font-size: 13px;
+      color: var(--muted);
+    }
+    
+    /* Log output */
+    .log-container {
+      background: #000;
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      font-family: 'Monaco', 'Consolas', monospace;
+      font-size: 12px;
+      line-height: 1.5;
+      max-height: 200px;
+      overflow-y: auto;
+      margin-top: 16px;
+    }
+    
+    .log-line {
+      color: #aaa;
+    }
+    
+    .log-line.success { color: var(--success); }
+    .log-line.error { color: var(--error); }
+    .log-line.warning { color: var(--warning); }
+    .log-line.info { color: var(--accent); }
+    
+    /* Hero section */
+    .hero {
+      text-align: center;
+      padding: 40px 0;
+    }
+    
+    .hero-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--accent), #0099cc);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      font-size: 32px;
+      font-weight: bold;
+      color: #000;
+    }
+    
+    .hero h1 {
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, var(--fg), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .hero p {
+      font-size: 18px;
+      color: var(--muted);
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    
+    /* Features grid */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 32px;
+    }
+    
+    .feature {
+      padding: 20px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      text-align: center;
+      transition: all var(--transition);
+    }
+    
+    .feature:hover {
+      border-color: var(--accent);
+    }
+    
+    .feature-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      background: var(--accent-dim);
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 12px;
+      font-size: 20px;
+    }
+    
+    .feature h3 {
+      font-size: 15px;
+      margin-bottom: 8px;
+    }
+    
+    .feature p {
+      font-size: 13px;
+      color: var(--muted);
+      margin: 0;
+    }
+    
+    /* Hidden */
+    .hidden {
+      display: none !important;
+    }
+    
+    /* Responsive */
+    @media (max-width: 600px) {
+      .main-content {
+        padding: 20px;
+      }
+      
+      .progress-steps {
+        margin-bottom: 24px;
+      }
+      
+      .step-label {
+        font-size: 10px;
+        max-width: 80px;
+      }
+      
+      .hero h1 {
+        font-size: 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Title Bar -->
+  <div class="title-bar">
+    <div class="title-bar-left">
+      <div class="app-icon">🧠</div>
+      <span class="app-title">Ableton Brain Installer</span>
+    </div>
+    <div class="window-controls">
+      <button class="window-btn" id="btn-minimize" title="Minimize">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+      </button>
+      <button class="window-btn" id="btn-maximize" title="Maximize">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+        </svg>
+      </button>
+      <button class="window-btn close" id="btn-close" title="Close">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="main-content" id="main-content">
+    <!-- Welcome Screen -->
+    <section id="screen-welcome" class="screen">
+      <div class="hero">
+        <div class="hero-icon">🧠</div>
+        <h1>Ableton Brain</h1>
+        <p>AI-powered Ableton Live automation, mixing, mastering, and composition</p>
+      </div>
+      
+      <div class="features">
+        <div class="feature">
+          <div class="feature-icon">🎛️</div>
+          <h3>Full DAW Control</h3>
+          <p>47 MCP tools for tracks, clips, devices, automation</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">🎵</div>
+          <h3>AI Generation</h3>
+          <p>Magenta, Stable Audio, ACE-Step, YuE vocals</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">📊</div>
+          <h3>Real-time Analysis</h3>
+          <p>LUFS, True Peak, Stereo, Spectrum via Max for Live</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">🎚️</div>
+          <h3>AI Mastering</h3>
+          <p>Ozone-style EQ, multiband comp, limiter chain</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">🔍</div>
+          <h3>Sample Search</h3>
+          <p>AI fingerprinting finds similar sounds instantly</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">🌐</div>
+          <h3>Distributed Compute</h3>
+          <p>Offload GPU inference to ThinkPad, mobile sync</p>
+        </div>
+      </div>
+      
+      <div class="btn-group">
+        <button class="btn btn-primary" id="btn-start">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"></path>
+          </svg>
+          Get Started
+        </button>
+      </div>
+    </section>
+
+    <!-- Step 1: Ableton Detection -->
+    <section id="screen-ableton" class="screen hidden">
+      <div class="progress-steps">
+        <div class="step active" data-step="1">
+          <div class="step-circle">1</div>
+          <span class="step-label">Ableton</span>
+        </div>
+        <div class="step" data-step="2">
+          <div class="step-circle">2</div>
+          <span class="step-label">Python</span>
+        </div>
+        <div class="step" data-step="3">
+          <div class="step-circle">3</div>
+          <span class="step-label">Install</span>
+        </div>
+        <div class="step" data-step="4">
+          <div class="step-circle">4</div>
+          <span class="step-label">Configure</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Ableton Live Detection</h2>
+        <p>We'll locate your Ableton Live installation and User Library folder.</p>
+        
+        <div class="form-group">
+          <label class="form-label">Ableton Live Application</label>
+          <div class="input-row">
+            <div class="form-group" style="flex: 1;">
+              <input type="text" class="form-input" id="ableton-path" placeholder="Auto-detecting..." readonly>
+            </div>
+            <button class="browse-btn" id="btn-browse-ableton">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+              Browse
+            </button>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Ableton User Library</label>
+          <div class="input-row">
+            <div class="form-group" style="flex: 1;">
+              <input type="text" class="form-input" id="user-library-path" placeholder="Auto-detecting..." readonly>
+            </div>
+            <button class="browse-btn" id="btn-browse-library">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+              </svg>
+              Browse
+            </button>
+          </div>
+        </div>
+        
+        <div id="ableton-status" class="status-item hidden">
+          <div class="status-icon success">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </div>
+          <div class="status-info">
+            <div class="status-title" id="ableton-status-title">Ableton detected</div>
+            <div class="status-desc" id="ableton-status-desc">Ready to continue</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="btn-group">
+        <button class="btn btn-secondary" id="btn-back-welcome">Back</button>
+        <button class="btn btn-primary" id="btn-next-python" disabled>Next: Python Setup</button>
+      </div>
+    </section>
+
+    <!-- Step 2: Python Detection -->
+    <section id="screen-python" class="screen hidden">
+      <div class="progress-steps">
+        <div class="step completed" data-step="1">
+          <div class="step-circle">✓</div>
+          <span class="step-label">Ableton</span>
+        </div>
+        <div class="step active" data-step="2">
+          <div class="step-circle">2</div>
+          <span class="step-label">Python</span>
+        </div>
+        <div class="step" data-step="3">
+          <div class="step-circle">3</div>
+          <span class="step-label">Install</span>
+        </div>
+        <div class="step" data-step="4">
+          <div class="step-circle">4</div>
+          <span class="step-label">Configure</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Python Environment</h2>
+        <p>Ableton Brain requires Python 3.10+. We'll create a virtual environment and install all dependencies.</p>
+        
+        <div class="form-group">
+          <label class="form-label">Python Executable</label>
+          <div class="input-row">
+            <div class="form-group" style="flex: 1;">
+              <input type="text" class="form-input" id="python-path" placeholder="Detecting Python..." readonly>
+            </div>
+            <button class="browse-btn" id="btn-browse-python">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+              Browse
+            </button>
+          </div>
+        </div>
+        
+        <div id="python-status" class="status-item hidden">
+          <div class="status-icon success">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </div>
+          <div class="status-info">
+            <div class="status-title" id="python-status-title">Python detected</div>
+            <div class="status-desc" id="python-status-desc">Version 3.x.x - compatible</div>
+          </div>
+        </div>
+        
+        <div style="margin-top: 20px; padding: 16px; background: var(--bg); border-radius: var(--radius-sm); font-size: 13px; color: var(--muted);">
+          <strong>Dependencies to be installed:</strong>
+          <ul style="margin: 8px 0 0 20px; line-height: 1.8;">
+            <li>MCP, FastAPI, Uvicorn (server)</li>
+            <li>Librosa, NumPy, SciPy (audio analysis)</li>
+            <li>Python-OSC, Pyloudnorm, SoundFile (metering)</li>
+            <li>FAISS (similarity search)</li>
+            <li>PyTorch (GPU inference - optional)</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="btn-group">
+        <button class="btn btn-secondary" id="btn-back-ableton">Back</button>
+        <button class="btn btn-primary" id="btn-next-install" disabled>Next: Install Components</button>
+      </div>
+    </section>
+
+    <!-- Step 3: Installation -->
+    <section id="screen-install" class="screen hidden">
+      <div class="progress-steps">
+        <div class="step completed" data-step="1">
+          <div class="step-circle">✓</div>
+          <span class="step-label">Ableton</span>
+        </div>
+        <div class="step completed" data-step="2">
+          <div class="step-circle">✓</div>
+          <span class="step-label">Python</span>
+        </div>
+        <div class="step active" data-step="3">
+          <div class="step-circle">3</div>
+          <span class="step-label">Install</span>
+        </div>
+        <div class="step" data-step="4">
+          <div class="step-circle">4</div>
+          <span class="step-label">Configure</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Installing Components</h2>
+        <p>This will set up the Remote Script, Analyzer device, Python environment, and MCP config.</p>
+        
+        <div id="install-steps">
+          <div class="status-item" data-step="remoteScript">
+            <div class="status-icon pending">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+              </svg>
+            </div>
+            <div class="status-info">
+              <div class="status-title">Remote Script</div>
+              <div class="status-desc">Installing AbletonBrain control surface</div>
+            </div>
+          </div>
+          
+          <div class="status-item" data-step="analyzerDevice">
+            <div class="status-icon pending">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+              </svg>
+            </div>
+            <div class="status-info">
+              <div class="status-title">Analyzer Device</div>
+              <div class="status-desc">Installing Max for Live audio analyzer</div>
+            </div>
+          </div>
+          
+          <div class="status-item" data-step="pythonEnvironment">
+            <div class="status-icon pending">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+              </svg>
+            </div>
+            <div class="status-info">
+              <div class="status-title">Python Environment</div>
+              <div class="status-desc">Creating venv and installing dependencies</div>
+            </div>
+          </div>
+          
+          <div class="status-item" data-step="mcpConfig">
+            <div class="status-icon pending">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+              </svg>
+            </div>
+            <div class="status-info">
+              <div class="status-title">MCP Configuration</div>
+              <div class="status-desc">Configuring Claude/Cursor integration</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="progress-container" id="overall-progress">
+          <div class="progress-text">
+            <span>Overall Progress</span>
+            <span id="progress-percent">0%</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+          </div>
+        </div>
+        
+        <div class="log-container" id="install-log"></div>
+      </div>
+      
+      <div class="btn-group">
+        <button class="btn btn-secondary" id="btn-back-python" disabled>Back</button>
+        <button class="btn btn-primary" id="btn-start-install">Start Installation</button>
+      </div>
+    </section>
+
+    <!-- Step 4: Complete -->
+    <section id="screen-complete" class="screen hidden">
+      <div class="progress-steps">
+        <div class="step completed" data-step="1">
+          <div class="step-circle">✓</div>
+          <span class="step-label">Ableton</span>
+        </div>
+        <div class="step completed" data-step="2">
+          <div class="step-circle">✓</div>
+          <span class="step-label">Python</span>
+        </div>
+        <div class="step completed" data-step="3">
+          <div class="step-circle">✓</div>
+          <span class="step-label">Install</span>
+        </div>
+        <div class="step completed" data-step="4">
+          <div class="step-circle">✓</div>
+          <span class="step-label">Configure</span>
+        </div>
+      </div>
+
+      <div class="card" style="text-align: center;">
+        <div style="width: 80px; height: 80px; border-radius: 50%; background: #00d4aa33; color: var(--success); display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; font-size: 36px;">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </div>
+        <h2>Installation Complete!</h2>
+        <p style="color: var(--muted); margin-bottom: 32px;">Ableton Brain is ready to use. Here's what happens next:</p>
+        
+        <div style="text-align: left; max-width: 500px; margin: 0 auto;">
+          <div class="status-item">
+            <div class="status-icon success">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </div>
+            <div class="status-info">
+              <div class="status-title">Remote Script installed</div>
+              <div class="status-desc">Enable "AbletonBrain" in Ableton Preferences → Link, Tempo & MIDI</div>
+            </div>
+          </div>
+          
+          <div class="status-item">
+            <div class="status-icon success">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </div>
+            <div class="status-info">
+              <div class="status-title">MCP Server configured</div>
+              <div class="status-desc">Add to Claude Desktop or Cursor for AI control</div>
+            </div>
+          </div>
+          
+          <div class="status-item">
+            <div class="status-icon success">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </div>
+            <div class="status-info">
+              <div class="status-title">Dashboard available</div>
+              <div class="status-desc">Open http://localhost:8050 for visual control</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="btn-group" style="justify-content: center;">
+        <button class="btn btn-primary" id="btn-launch-services">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+          </svg>
+          Launch Services & Open Dashboard
+        </button>
+        <button class="btn btn-secondary" id="btn-check-updates">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path>
+          </svg>
+          Check for Updates
+        </button>
+        <button class="btn btn-secondary" id="btn-open-folder">Open Install Folder</button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // ========================================================================
+    // STATE MANAGEMENT
+    // ========================================================================
+    
+    const state = {
+      currentScreen: 'welcome',
+      abletonPath: '',
+      userLibraryPath: '',
+      pythonPath: '',
+      venvPython: '',
+      installStep: 0,
+      completedSteps: [],
+      isInstalling: false
+    };
+    
+    const screens = {
+      welcome: 'screen-welcome',
+      ableton: 'screen-ableton',
+      python: 'screen-python',
+      install: 'screen-install',
+      complete: 'screen-complete'
+    };
+    
+    // ========================================================================
+    // DOM ELEMENTS
+    // ========================================================================
+    
+    const elements = {};
+    function $(id) { return document.getElementById(id); }
+    
+    function initElements() {
+      // Buttons
+      elements.btnStart = $('btn-start');
+      elements.btnBackWelcome = $('btn-back-welcome');
+      elements.btnNextPython = $('btn-next-python');
+      elements.btnBackAbleton = $('btn-back-ableton');
+      elements.btnNextInstall = $('btn-next-install');
+      elements.btnBackPython = $('btn-back-python');
+      elements.btnStartInstall = $('btn-start-install');
+      elements.btnLaunchServices = $('btn-launch-services');
+      elements.btnOpenFolder = $('btn-open-folder');
+      
+      // Ableton
+      elements.abletonPath = $('ableton-path');
+      elements.userLibraryPath = $('user-library-path');
+      elements.btnBrowseAbleton = $('btn-browse-ableton');
+      elements.btnBrowseLibrary = $('btn-browse-library');
+      elements.abletonStatus = $('ableton-status');
+      elements.abletonStatusTitle = $('ableton-status-title');
+      elements.abletonStatusDesc = $('ableton-status-desc');
+      
+      // Python
+      elements.pythonPath = $('python-path');
+      elements.btnBrowsePython = $('btn-browse-python');
+      elements.pythonStatus = $('python-status');
+      elements.pythonStatusTitle = $('python-status-title');
+      elements.pythonStatusDesc = $('python-status-desc');
+      
+      // Install
+      elements.progressFill = $('progress-fill');
+      elements.progressPercent = $('progress-percent');
+      elements.installLog = $('install-log');
+      
+      // Window controls
+      elements.btnMinimize = $('btn-minimize');
+      elements.btnMaximize = $('btn-maximize');
+      elements.btnClose = $('btn-close');
+    }
+    
+    // ========================================================================
+    // SCREEN NAVIGATION
+    // ========================================================================
+    
+    function showScreen(screenName) {
+      Object.values(screens).forEach(id => {
+        const el = $(id);
+        if (el) el.classList.add('hidden');
+      });
+      const target = $(screens[screenName]);
+      if (target) target.classList.remove('hidden');
+      state.currentScreen = screenName;
+      updateProgressSteps();
+    }
+    
+    function updateProgressSteps() {
+      const stepOrder = ['welcome', 'ableton', 'python', 'install', 'complete'];
+      const currentIndex = stepOrder.indexOf(state.currentScreen);
+      
+      document.querySelectorAll('.progress-steps .step').forEach((stepEl, i) => {
+        stepEl.classList.remove('active', 'completed', 'error');
+        if (i < currentIndex) {
+          stepEl.classList.add('completed');
+          stepEl.querySelector('.step-circle').textContent = '✓';
+        } else if (i === currentIndex) {
+          stepEl.classList.add('active');
+          stepEl.querySelector('.step-circle').textContent = i + 1;
+        } else {
+          stepEl.querySelector('.step-circle').textContent = i + 1;
+        }
+      });
+    }
+    
+    // ========================================================================
+    // LOGGING
+    // ========================================================================
+    
+    function log(message, type = 'info') {
+      const line = document.createElement('div');
+      line.className = `log-line ${type}`;
+      line.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+      elements.installLog.appendChild(line);
+      elements.installLog.scrollTop = elements.installLog.scrollHeight;
+    }
+    
+    // ========================================================================
+    // API CALLS
+    // ========================================================================
+    
+    async function apiCall(method, ...args) {
+      try {
+        return await window.api[method](...args);
+      } catch (error) {
+        log(`Error: ${error.message}`, 'error');
+        throw error;
+      }
+    }
+    
+    // ========================================================================
+    // INITIALIZATION
+    // ========================================================================
+    
+    async function init() {
+      initElements();
+      bindEvents();
+      
+      // Load initial state
+      const initialState = await apiCall('getInitialState');
+      state.abletonPath = initialState.abletonPath || '';
+      state.userLibraryPath = initialState.userLibraryPath || '';
+      state.pythonPath = initialState.pythonPath || '';
+      state.installStep = initialState.installStep || 0;
+      state.completedSteps = initialState.completedSteps || [];
+      
+      // Update UI with saved state
+      if (state.abletonPath) {
+        elements.abletonPath.value = state.abletonPath;
+        showAbletonStatus(true);
+      }
+      if (state.userLibraryPath) {
+        elements.userLibraryPath.value = state.userLibraryPath;
+      }
+      if (state.pythonPath) {
+        elements.pythonPath.value = state.pythonPath;
+        showPythonStatus(true);
+      }
+      
+      // Check if we can skip to a later step
+      if (state.completedSteps.includes('remoteScript') && 
+          state.completedSteps.includes('analyzerDevice') &&
+          state.completedSteps.includes('pythonEnvironment') &&
+          state.completedSteps.includes('mcpConfig')) {
+        showScreen('complete');
+      } else if (state.completedSteps.length > 0) {
+        showScreen('install');
+      }
+    }
+    
+    function bindEvents() {
+      // Window controls
+      elements.btnMinimize.addEventListener('click', () => window.api.minimize());
+      elements.btnMaximize.addEventListener('click', () => window.api.maximize());
+      elements.btnClose.addEventListener('click', () => window.api.close());
+      
+      // Navigation
+      elements.btnStart.addEventListener('click', () => showScreen('ableton'));
+      elements.btnBackWelcome.addEventListener('click', () => showScreen('welcome'));
+      elements.btnNextPython.addEventListener('click', () => showScreen('python'));
+      elements.btnBackAbleton.addEventListener('click', () => showScreen('ableton'));
+      elements.btnNextInstall.addEventListener('click', () => showScreen('install'));
+      elements.btnBackPython.addEventListener('click', () => showScreen('python'));
+      
+      // Ableton detection
+      elements.btnBrowseAbleton.addEventListener('click', browseAbleton);
+      elements.btnBrowseLibrary.addEventListener('click', browseUserLibrary);
+      
+      // Python detection
+      elements.btnBrowsePython.addEventListener('click', browsePython);
+      
+      // Auto-detect on screen show
+      // We'll trigger detection when screen becomes visible
+      
+      // Install
+      elements.btnStartInstall.addEventListener('click', startInstallation);
+      elements.btnLaunchServices.addEventListener('click', launchServices);
+      elements.btnOpenFolder.addEventListener('click', () => window.api.openFolder(window.api.getInitialState().then(s => s.brainDir)));
+      elements.btnCheckUpdates.addEventListener('click', checkForUpdates);
+      
+      // Progress listener
+      window.api.onInstallProgress(handleInstallProgress);
+    }
+    
+    // ========================================================================
+    // ABLETON DETECTION
+    // ========================================================================
+    
+    async function detectAbleton() {
+      log('Detecting Ableton Live...');
+      const result = await apiCall('detectAbleton');
+      if (result.abletonPath) {
+        state.abletonPath = result.abletonPath;
+        state.userLibraryPath = result.userLibraryPath;
+        elements.abletonPath.value = result.abletonPath;
+        elements.userLibraryPath.value = result.userLibraryPath;
+        showAbletonStatus(true, result.version);
+        elements.btnNextPython.disabled = false;
+        log(`Found Ableton Live ${result.version} at ${result.abletonPath}`, 'success');
+      } else {
+        log('Ableton not found in standard locations', 'warning');
+      }
+    }
+    
+    async function browseAbleton() {
+      const result = await apiCall('browseAbleton');
+      if (result && result.abletonPath) {
+        state.abletonPath = result.abletonPath;
+        elements.abletonPath.value = result.abletonPath;
+        showAbletonStatus(true, result.version);
+        elements.btnNextPython.disabled = false;
+        log(`Selected Ableton Live ${result.version}`, 'success');
+      }
+    }
+    
+    async function browseUserLibrary() {
+      const result = await apiCall('browseUserLibrary');
+      if (result && result.userLibraryPath) {
+        state.userLibraryPath = result.userLibraryPath;
+        elements.userLibraryPath.value = result.userLibraryPath;
+        log(`User Library: ${result.userLibraryPath}`, 'success');
+      }
+    }
+    
+    function showAbletonStatus(detected, version = null) {
+      elements.abletonStatus.classList.remove('hidden');
+      if (detected) {
+        elements.abletonStatusTitle.textContent = `Ableton Live ${version || ''} detected`;
+        elements.abletonStatusDesc.textContent = state.abletonPath;
+        elements.abletonStatus.querySelector('.status-icon').className = 'status-icon success';
+      }
+    }
+    
+    // ========================================================================
+    // PYTHON DETECTION
+    // ========================================================================
+    
+    async function detectPython() {
+      log('Detecting Python...');
+      const result = await apiCall('detectPython');
+      if (result.pythonPath) {
+        state.pythonPath = result.pythonPath;
+        elements.pythonPath.value = result.pythonPath;
+        showPythonStatus(true);
+        elements.btnNextInstall.disabled = false;
+        log(`Found Python at ${result.pythonPath}`, 'success');
+      } else {
+        log('Python 3.10+ not found in standard locations', 'warning');
+      }
+    }
+    
+    async function browsePython() {
+      const result = await apiCall('browsePython');
+      if (result && result.pythonPath) {
+        state.pythonPath = result.pythonPath;
+        elements.pythonPath.value = result.pythonPath;
+        showPythonStatus(true);
+        elements.btnNextInstall.disabled = false;
+        log(`Selected Python: ${result.pythonPath}`, 'success');
+      }
+    }
+    
+    function showPythonStatus(detected) {
+      elements.pythonStatus.classList.remove('hidden');
+      if (detected) {
+        elements.pythonStatusTitle.textContent = 'Python detected';
+        elements.pythonStatusDesc.textContent = state.pythonPath;
+        elements.pythonStatus.querySelector('.status-icon').className = 'status-icon success';
+      }
+    }
+    
+    // ========================================================================
+    // INSTALLATION
+    // ========================================================================
+    
+    async function startInstallation() {
+      if (state.isInstalling) return;
+      
+      if (!state.abletonPath || !state.userLibraryPath || !state.pythonPath) {
+        log('Please complete all previous steps first', 'error');
+        return;
+      }
+      
+      state.isInstalling = true;
+      elements.btnStartInstall.disabled = true;
+      elements.btnStartInstall.textContent = 'Installing...';
+      elements.btnBackPython.disabled = true;
+      elements.installLog.innerHTML = '';
+      
+      const steps = [
+        { key: 'remoteScript', name: 'Remote Script', args: { userLibraryPath: state.userLibraryPath } },
+        { key: 'analyzerDevice', name: 'Analyzer Device', args: { userLibraryPath: state.userLibraryPath } },
+        { key: 'pythonEnvironment', name: 'Python Environment', args: { pythonPath: state.pythonPath, brainDir: (await apiCall('getInitialState')).brainDir } },
+        { key: 'mcpConfig', name: 'MCP Configuration', args: { venvPython: '', brainDir: (await apiCall('getInitialState')).brainDir } }
+      ];
+      
+      let completedCount = 0;
+      
+      for (const step of steps) {
+        if (!state.isInstalling) break;
+        
+        updateStepStatus(step.key, 'pending');
+        log(`Starting: ${step.name}...`);
+        
+        // Special handling for mcpConfig - needs venvPython from previous step
+        if (step.key === 'mcpConfig') {
+          step.args.venvPython = state.venvPython;
+        }
+        
+        const result = await apiCall('runInstallStep', step.key, step.args);
+        
+        if (result.success) {
+          updateStepStatus(step.key, 'success');
+          log(`${step.name} completed`, 'success');
+          
+          // Save venvPython for next step
+          if (step.key === 'pythonEnvironment' && result.result.venvPython) {
+            state.venvPython = result.result.venvPython;
+          }
+          
+          completedCount++;
+          updateOverallProgress(completedCount / steps.length);
+        } else {
+          updateStepStatus(step.key, 'error');
+          log(`${step.name} failed: ${result.error}`, 'error');
+          break;
+        }
+      }
+      
+      if (completedCount === steps.length) {
+        log('All components installed successfully!', 'success');
+        showScreen('complete');
+      } else {
+        elements.btnStartInstall.disabled = false;
+        elements.btnStartInstall.textContent = 'Retry Installation';
+        elements.btnBackPython.disabled = false;
+        state.isInstalling = false;
+      }
+    }
+    
+    function updateStepStatus(stepKey, status) {
+      const stepEl = document.querySelector(`[data-step="${stepKey}"]`);
+      if (!stepEl) return;
+      
+      const icon = stepEl.querySelector('.status-icon');
+      icon.className = 'status-icon';
+      
+      if (status === 'pending') {
+        icon.classList.add('pending');
+        icon.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle></svg>';
+      } else if (status === 'success') {
+        icon.classList.add('success');
+        icon.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+      } else if (status === 'error') {
+        icon.classList.add('error');
+        icon.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>';
+      }
+    }
+    
+    function updateOverallProgress(ratio) {
+      const percent = Math.round(ratio * 100);
+      elements.progressFill.style.width = `${percent}%`;
+      elements.progressPercent.textContent = `${percent}%`;
+    }
+    
+    function handleInstallProgress(data) {
+      log(data.message, 'info');
+    }
+    
+    // ========================================================================
+    // SERVICES
+    // ========================================================================
+    
+    async function checkForUpdates() {
+      elements.btnCheckUpdates.disabled = true;
+      elements.btnCheckUpdates.textContent = 'Checking...';
+      log('Checking for updates...');
+      
+      const result = await apiCall('checkForUpdates');
+      if (result.status === 'available') {
+        log(`Update available: ${result.version}`, 'success');
+        if (confirm(`Update ${result.version} available. Download now?`)) {
+          downloadUpdate();
+        }
+      } else if (result.status === 'not-available') {
+        log(`You're on the latest version (${result.version})`, 'success');
+      } else if (result.status === 'dev-mode') {
+        log('Auto-updates disabled in development mode', 'warning');
+      } else {
+        log(`Update check failed: ${result.error || result.status}`, 'error');
+      }
+      
+      elements.btnCheckUpdates.disabled = false;
+      elements.btnCheckUpdates.textContent = 'Check for Updates';
+    }
+
+    async function downloadUpdate() {
+      const result = await apiCall('downloadUpdate');
+      if (result.status === 'downloading') {
+        log('Downloading update...', 'info');
+        // Progress is handled by onUpdateDownloadProgress
+      }
+    }
+
+    // Listen for update events
+    window.api.onUpdateStatus((data) => {
+      if (data.status === 'downloaded') {
+        log('Update downloaded, will install on next restart', 'success');
+      } else if (data.status === 'error') {
+        log(`Update error: ${data.error}`, 'error');
+      }
+    });
+
+    window.api.onUpdateDownloadProgress((data) => {
+      if (data.percent) {
+        log(`Downloading: ${Math.round(data.percent)}%`, 'info');
+      }
+    });
+
+    async function launchServices() {
+      elements.btnLaunchServices.disabled = true;
+      elements.btnLaunchServices.textContent = 'Starting...';
+      log('Launching MCP server, analyzer bridge, and fleet coordinator...');
+      
+      const result = await apiCall('launchServices');
+      
+      if (result.success) {
+        log('Services launched! Opening dashboard...', 'success');
+        setTimeout(() => {
+          window.api.openDashboard();
+        }, 2000);
+      } else {
+        log(`Failed to launch: ${result.error}`, 'error');
+        elements.btnLaunchServices.disabled = false;
+        elements.btnLaunchServices.textContent = 'Launch Services & Open Dashboard';
+      }
+    }
+    
+    // ========================================================================
+    // SCREEN-SPECIFIC INIT
+    // ========================================================================
+    
+    // Run detection when screens are shown
+    const observer = new MutationObserver(() => {
+      if (!$('screen-ableton').classList.contains('hidden') && !state.abletonPath) {
+        detectAbleton();
+      }
+      if (!$('screen-python').classList.contains('hidden') && !state.pythonPath) {
+        detectPython();
+      }
+    });
+    
+    observer.observe(document.body, { attributes: true, subtree: true, attributeFilter: ['class'] });
+    
+    // Start
+    init();
+  </script>
+</body>
+</html>

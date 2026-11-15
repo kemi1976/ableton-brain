@@ -1,0 +1,12 @@
+{
+  "timestamp": "2026-11-10T00:26:57.191245",
+  "stats": {
+    "total_events": 0,
+    "note_ons": 0,
+    "note_offs": 0,
+    "control_changes": 0,
+    "program_changes": 0,
+    "pitch_wheels": 0
+  },
+  "events": []
+}

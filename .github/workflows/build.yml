@@ -1,0 +1,164 @@
+name: Build
+on: 
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+  id-token: write
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: installer/package-lock.json
+      - run: cd installer && npm ci
+      - run: cd installer && npm run lint
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: installer/package-lock.json
+      - run: cd installer && npm ci
+      - run: cd installer && npm test -- --passWithNoTests
+
+  build-python:
+    name: Build Python Bundle (Windows)
+    runs-on: windows-latest
+    if: github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: pip install pyinstaller
+      - run: cd installer && pyinstaller --clean python_bundler.spec
+      - uses: actions/upload-artifact@v4
+        with:
+          name: python-bundle-win
+          path: installer/python/dist/
+
+  build:
+    name: Build (${{ matrix.os }})
+    strategy:
+      matrix:
+        os: [windows-latest, macos-13, macos-14]
+    runs-on: ${{ matrix.os }}
+    needs: [lint, test]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: installer/package-lock.json
+      - name: Install Python
+        if: matrix.os != 'windows-latest'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Build Python Bundle
+        if: matrix.os != 'windows-latest'
+        run: |
+          pip install pyinstaller
+          cd installer && pyinstaller --clean python_bundler.spec
+      - name: Download Windows Python Bundle
+        if: matrix.os == 'windows-latest'
+        uses: actions/download-artifact@v4
+        with:
+          name: python-bundle-win
+          path: installer/python/dist
+      - run: cd installer && npm ci
+      - name: Install NSIS
+        if: matrix.os == 'windows-latest'
+        run: choco install nsis -y
+      - name: Build NSIS installer
+        if: matrix.os == 'windows-latest'
+        run: |
+          cd installer
+          "C:\Program Files (x86)\NSIS\makensis.exe" ableton-brain-installer.nsi
+      - name: Build macOS
+        if: matrix.os != 'windows-latest'
+        run: cd installer && npm run build:mac
+      - name: Build Windows
+        if: matrix.os == 'windows-latest'
+        run: cd installer && npm run build:win
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ableton-brain-${{ matrix.os }}
+          path: installer/dist/
+      - name: Upload NSIS installer
+        if: matrix.os == 'windows-latest'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ableton-brain-windows-nsis
+          path: installer/Ableton-Brain-Installer.exe
+      - name: Sign & Notarize (macOS)
+        if: matrix.os != 'windows-latest' && env.APPLE_ID != ''
+        env:
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_ID_PASSWORD: ${{ secrets.APPLE_ID_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          cd installer
+          npx electron-builder --mac --x64 --arm64 --publish never
+          # Notarization happens via electron-builder config
+
+  sign-windows:
+    name: Sign Windows (EV Cert)
+    if: github.event_name == 'push' && env.CSC_FILE != ''
+    runs-on: windows-latest
+    needs: build
+    env:
+      CSC_FILE: ${{ secrets.CSC_FILE }}
+      CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: ableton-brain-windows-nsis
+          path: installer/
+      - name: Sign Installer
+        run: |
+          signtool sign /tr http://timestamp.digicert.com /td sha256 /fd sha256 installer/Ableton-Brain-Installer.exe
+      - name: Upload Signed Installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: ableton-brain-windows-nsis-signed
+          path: installer/Ableton-Brain-Installer.exe
+
+  release:
+    name: Create Release
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+    needs: [build, sign-windows]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: ableton-brain-*
+          path: release-assets/
+          merge-multiple: true
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: release-assets/**/*
+          generate_release_notes: true

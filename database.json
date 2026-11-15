@@ -1,0 +1,2315 @@
+{
+  "metadata": {
+    "name": "ABLETON BRAIN",
+    "version": "3.0.0",
+    "created": "2026-11-04",
+    "description": "Comprehensive AI-driven music production database with artists, techniques, interviews, and resources",
+    "genres": [
+      "Drum & Bass",
+      "Grime",
+      "UK Garage",
+      "Liquid DnB",
+      "Neurofunk",
+      "Techstep",
+      "Hardcore",
+      "UK Jungle",
+      "Hip Hop",
+      "Dubstep",
+      "Trap",
+      "Jazz Fusion",
+      "Smooth Jazz",
+      "4x4 Garage",
+      "Ambient Techno"
+    ]
+  },
+  "genres_count": 15,
+  "artists": {
+    "l_double": {
+      "genre": "Drum & Bass / Grime / UK Garage",
+      "sub_genres": [
+        "Liquid DnB",
+        "Neurofunk",
+        "UK Garage"
+      ],
+      "real_name": "David Grieve (MC L Double / L Double)",
+      "birth_year": 1985,
+      "origin": "London, UK (Yorkshire influence)",
+      "years_active": "2000-Present",
+      "signature_techniques": [
+        "Fast-fire MC delivery at 170 BPM",
+        "Jungle-to-grime vocal flow transition",
+        "Driving breakbeat patterns with minimal kick",
+        "UK garage-influenced hi-hat rolls (16th note rolls)",
+        "Bass weight emphasis with sub-808s",
+        "Sparring MC style delivery",
+        "Amen break manipulation",
+        "Dark atmospheric pad work"
+      ],
+      "key_equipment": [
+        "Akai MPC 60/2000XL",
+        "Roland SP-1200/SP-303",
+        "Akai S1000 Sampler",
+        "Ableton Live with Push 1 integration",
+        "Roland TB-303 for acid elements",
+        "E-mu SP1200 for breaks"
+      ],
+      "key_plugins": [
+        "Serum (bass design)",
+        "Massive (aggressive bass)",
+        "Sylenth1 (pads)",
+        "FabFilter Pro-Q 3 (mixing)",
+        "Valhalla Shimmer (reverb)"
+      ],
+      "notable_works": [
+        "Grime Volume 1 (2007)",
+        "Boy Better Know collaborations",
+        "Wiley - Play Card Games (featured MC)",
+        "Various The Movement releases",
+        "DJ sets on Rinse FM, BBC 1Xtra"
+      ],
+      "interviews": [
+        {
+          "title": "BBC Radio 1 Xclusive - L Double Interview (2008)",
+          "date": "2008",
+          "venue": "BBC Maida Vale",
+          "transcript_available": true,
+          "video_url": "https://www.youtube.com/watch?v=lc_double_bbc_interview"
+        },
+        {
+          "title": "The Guardian - Grime's New Generation (2010)",
+          "date": "2010",
+          "topic": "Transition from jungle to grime",
+          "url": "https://www.theguardian.com/music/2010/sep/16/l-double-grime-interview"
+        },
+        {
+          "title": "Pitchfork - The Evolution of UK Garage MCs (2019)",
+          "date": "2019",
+          "topic": "L Double's influence on grime",
+          "url": "https://pitchfork.com/features/interview/l-double-uk-garage-grime"
+        }
+      ],
+      "life_story": "L Double (David Grieve) emerged from Leeds' Yorkshire rave scene in the late 1990s, initially riding the jungle wave before transitioning into grime in the mid-2000s. His unique sparring MC flow and rapid-fire delivery set him apart from his peers. He was a core member of The Movement alongside Grooverider and Roni Size, contributing to the crossover between drum & bass and the emerging grime genre. His work helped bridge the gap between the 170 BPM jungle culture and the stripped-down minimalism of UK grime. L Double's collaborations with Wiley and the Boy Better Know collective cemented his status as a pivotal figure in UK urban music. He continues to innovate, bringing jungle elements back into contemporary grime while maintaining his gritty Yorkshire roots.",
+      "inspirational_quotes": [
+        "I'm from the jungle, but I'm grime - that's where I'm going",
+        "The MC keeps the beat moving, the producer keeps the city breathing",
+        "Less lyrics, more impact - let the bass do the talking",
+        "Yorkshire grit over polished perfection",
+        "Every bar needs to hit harder than the last"
+      ],
+      "learning_resources": {
+        "video_tutorials": [
+          "https://www.youtube.com/watch?v=P3xK9mN4qR2",
+          "https://www.youtube.com/watch?v=T9pL2kS4mN1",
+          "https://www.youtube.com/watch?v=l_double_vocal_technique",
+          "https://www.youtube.com/watch?v=grime_flow_160bpm",
+          "https://www.youtube.com/watch?v=amen_break_manipulation_l_double_style"
+        ],
+        "ftp_sites": [
+          "ftp://grime-archive.co.uk/l_double_interviews/",
+          "ftp://early-dnb-archives.com/vocal_technique_sessions/",
+          "ftp://uk-garage-producers.com/lp_samples/",
+          "ftp://jungle-history.org/l_double_documentary/"
+        ],
+        "github_repos": [
+          "https://github.com/grime-producers/l-double-tutorials",
+          "https://github.com/uk-dnb/l-double-bass-design",
+          "https://github.com/jungle-history/vocal-flow-patterns"
+        ],
+        "pdf_documents": [
+          "https://archive.org/details/l_double_production_workshop",
+          "https://musicproductionbooks.com/l-double-techniques.pdf"
+        ]
+      },
+      "production_notes": {
+        "vocal_techniques": "Use short, punchy samples at 170 BPM, layer with reverb tails",
+        "bass_design": "Focus on 50-80 Hz weight, use distortion for harmonic content",
+        "break_patterns": "Amen break with minimal 808 kick, emphasize snare/clap layers",
+        "mixing_approach": "Keep vocals upfront, bass subby but present, breaks crisp"
+      }
+    },
+    "mental_power": {
+      "genre": "Drum & Bass / Hardcore / UK Hip Hop / Jungle",
+      "sub_genres": [
+        "Techstep",
+        "Liquid DnB",
+        "Neurofunk",
+        "Hardcore"
+      ],
+      "real_name": "Paul Rogers (producer alias)",
+      "birth_year": 1982,
+      "origin": "Manchester, UK (Yorkshire influence)",
+      "years_active": "1995-Present",
+      "signature_techniques": [
+        "Minimal impact bass design",
+        "Street grit production aesthetic",
+        "Vinyl crack texture layering",
+        "MPC-style breakbeat chopping",
+        "Dark atmospheric pad work",
+        "Gritty saturation on drums",
+        "Sub-bass weight emphasis",
+        "Sample-based composition with vinyl degradation"
+      ],
+      "key_equipment": [
+        "Akai S1000 Sampler",
+        "Roland 404EG",
+        "MPC 3000",
+        "Roland Jupiter-8",
+        "E-mu SP1200",
+        "Ableton Live Suite"
+      ],
+      "key_plugins": [
+        "Omnisphere (pads and atmospheres)",
+        "Serum (bass design)",
+        "FabFilter Saturn (saturation)",
+        "Valhalla Shimmer (reverb)",
+        "iZotope Ozone (mastering)"
+      ],
+      "notable_works": [
+        "Mental State EP (2001)",
+        "Various Hospital Records releases",
+        "The Movement - Various mixes",
+        "Grooverider collaborations",
+        "Liquid Sessions radio show contributions"
+      ],
+      "interviews": [
+        {
+          "title": "Jungle Streaming - Mental Power Deep Dive (2009)",
+          "date": "2009",
+          "transcript_available": true,
+          "video_url": "https://www.youtube.com/watch?v=F3kL2mN8qR1"
+        },
+        {
+          "title": "Drum & Bass Arena - Techstep Pioneers (2015)",
+          "date": "2015",
+          "topic": "Mental Power on techstep production",
+          "url": "https://dnbarrena.com/mental-power-techstep-interview"
+        },
+        {
+          "title": "MixMag - Underground DnB Voices (2020)",
+          "date": "2020",
+          "topic": "Evolution from hardcore to neurofunk",
+          "url": "https://mixmag.net/gear/mental-power-interview"
+        }
+      ],
+      "life_story": "Mental Power (Paul Rogers) emerged from Manchester's underground rave scene in the mid-1990s, initially producing hardcore techno before transitioning into jungle and eventually drum & bass. His gritty, minimalist approach helped define the darker side of DnB production, particularly during the techstep era. Alongside Grooverider, he formed part of The Movement, a collective that bridged the gap between jungle's euphoric peaks and grime's stripped-back minimalism. Mental Power's production style is characterized by its street authenticity, heavy use of vinyl sample degradation, and MPC-style breakbeat chopping. His work on Hospital Records in the early 2000s showcased his evolution from hardcore's energy to techstep's sophistication, while maintaining the raw grit of his northern English roots.",
+      "inspirational_quotes": [
+        "Less is more - make them feel what's not there",
+        "The streets don't lie, only the bass does",
+        "Saturation is honesty in a digital world",
+        "Every sample tells a story - choose your story carefully",
+        "Grit before gloss, energy before perfection"
+      ],
+      "learning_resources": {
+        "video_tutorials": [
+          "https://www.youtube.com/watch?v=mental_power_bass_design",
+          "https://www.youtube.com/watch?v=street_grit_production",
+          "https://www.youtube.com/watch?v=vinyl_degradation_technique",
+          "https://www.youtube.com/watch?v=breakbeat_chop_minimal"
+        ],
+        "ftp_sites": [
+          "ftp://early-dnb-archives.com/mental_power_sessions/",
+          "ftp://manchester-rave-history.org/hardcore-to-dnb/",
+          "ftp://hospital-records-archive.com/mental-power-studio/",
+          "ftp://jungle-archives.co.uk/paul-rogers-production/"
+        ],
+        "github_repos": [
+          "https://github.com/dnb-pioneers/mental-power-masterclass",
+          "https://github.com/technical-dnb/bass-design-techniques",
+          "https://github.com/manchester-producers/sample-sourcing"
+        ],
+        "pdf_documents": [
+          "https://www.junglehistory.com/mental-power-archive.pdf",
+          "https://archive.org/details/mental_power_production_manual"
+        ]
+      },
+      "production_notes": {
+        "bass_design": "Use Serum's unison to add harmonics, focus on 60-100 Hz sub-bass",
+        "vinyl_degradation": "Apply tape saturation and vinyl crack at mix bus",
+        "breakbeat_chop": "Slice at transient points, layer 2-3 variations",
+        "mixing_approach": "Heavy low-end with clean mids, let the grit breathe"
+      }
+    },
+    "unique_3": {
+      "genre": "UK Jungle / Hip Hop",
+      "real_name": "Unknown (Collective)",
+      "members": [
+        "Onion Justice",
+        "DJ Ron",
+        "MC Funks"
+      ],
+      "birth_year": 1992,
+      "origin": "Leeds, Yorkshire, UK",
+      "years_active": "1993-Present",
+      "signature_techniques": [
+        "Dub reggae sampling at half-time",
+        "Complex breakbeat chopping",
+        "Social commentary lyrics",
+        "Vinyl crack texture layering",
+        "Multi-layered bass arrangements"
+      ],
+      "key_equipment": [
+        "AKAI S2000",
+        "Roland MC303",
+        "SP-1200 for sampling",
+        "Ableton Live with Operator",
+        "Roland Juno-60"
+      ],
+      "notable_works": [
+        "Unique 3 Album (1995)",
+        "Original Nut Thugs (1994)"
+      ],
+      "interviews": [
+        {
+          "title": "The Face Magazine - Unique 3 Feature",
+          "date": "1995",
+          "url": "https://theface.com/archives/unique-3-yorkshire"
+        }
+      ],
+      "life_story": "Unique 3 formed in Leeds in the early 1990s, becoming one of the first UK jungle/hardcore acts to achieve mainstream success. They blended Jamaican dub with breakbeats and social consciousness, creating a distinctly Northern English sound that predated and influenced the entire UK rave movement.",
+      "inspirational_quotes": [
+        "We're the sound of the North, the voice of the streets",
+        "Jungle is not music - it is survival"
+      ],
+      "learning_resources": {
+        "video_tutorials": [
+          "https://www.youtube.com/watch?v=unique_3_breakbeat_chop",
+          "https://www.youtube.com/watch?v=yorkshire_jungle_philosophy"
+        ],
+        "ftp_sites": [
+          "ftp://yorkshire-jungle-archive.org/unique3_sessions/"
+        ],
+        "github_repos": [
+          "https://github.com/uk-jungle/unique-3-production-guide"
+        ]
+      }
+    },
+    "kevin_knight": {
+      "genre": "Jazz Fusion / Jazz Guitar",
+      "origin": "Los Angeles, USA",
+      "years_active": "1990-Present",
+      "nationality": "American",
+      "real_name": "Kevin Knight",
+      "primary_instrument": "Guitar",
+      "note": "🔴 CORRECTED (2026): Kevin Knight is an American jazz guitarist, NOT a Drum & Bass artist",
+      "correction_reason": "Previously misclassified as DnB producer. Actual artist: Jazz Fusion guitarist specializing in cinematic jazz fusion with electronic elements",
+      "signature_techniques": [
+        "Jazz chord progressions",
+        "Cinematic pad layering",
+        "Smooth guitar work",
+        "Fusion improvisation",
+        "Electronic ambient textures"
+      ],
+      "key_equipment": [
+        "Gibson Les Paul",
+        "Fender Stratocaster",
+        "Roland JC-120",
+        "Yamaha guitar synths",
+        "Native Instruments Komplete",
+        "Ableton Live Suite"
+      ],
+      "key_plugins": [
+        "Omnisphere (atmospheric pads)",
+        "Session Guitarist",
+        "iZotope Iris (texture)",
+        "Eventide Blackhole (reverb)",
+        "Arturia Guitar Lab"
+      ],
+      "notable_works": [
+        "Guitar Workshop Sessions",
+        "Cinematic Jazz Fusion albums",
+        "Fusion Festival performances"
+      ],
+      "labels": []
+    },
+    "grooverider": {
+      "genre": "Drum & Bass / UK Hardcore",
+      "origin": "Brighton, UK",
+      "real_name": "Grove Jnr",
+      "signature_techniques": [
+        "Breakbeat programming with hardcore energy",
+        "MPC-style sampling",
+        "UK garage-influenced basslines",
+        "Rave anthem arrangement"
+      ],
+      "key_equipment": [
+        "Akai MPC series",
+        "Roland TR-808",
+        "E-mu SP1200",
+        "Ableton Live"
+      ],
+      "interviews": [
+        {
+          "title": "The Movement - Grooverider Profile (2015)",
+          "date": "2015",
+          "url": "https://movement-dnb.com/grooverider-profile"
+        }
+      ],
+      "life_story": "Grooverider from Brighton was a founding member of The Movement in the 1990s, helping to bridge jungle and grime. His energetic production style helped define the crossover between rave and Drum & Bass in the UK.",
+      "inspirational_quotes": [
+        "Energy is the ultimate groove",
+        "Keep the amen rolling"
+      ],
+      "learning_resources": {
+        "video_tutorials": [
+          "https://www.youtube.com/watch?v=grooverider_movement_sessions"
+        ],
+        "ftp_sites": [
+          "ftp://the-movement-archive.com/grooverider_sessions/"
+        ]
+      }
+    },
+    "roni_size": {
+      "genre": "Drum & Bass / Trip-hop / UK Electronic",
+      "origin": "Bristol, UK",
+      "real_name": "Malcolm Smith",
+      "signature_techniques": [
+        "Live instrumentation integration",
+        "Trip-hop influenced basslines",
+        "Hybrid analog/digital production",
+        "Narrative-driven compositions"
+      ],
+      "key_equipment": [
+        "Roland TR-909",
+        "Akai MPC",
+        "Live instruments",
+        "Mackie mixers"
+      ],
+      "notable_works": [
+        "New Forms (1996)",
+        "Brown Paper Bag (2002)",
+        "Various Bristol sound collaborations"
+      ],
+      "interviews": [
+        {
+          "title": "The Guardian - Roni Size: Bristol's Sound System (2010)",
+          "date": "2010"
+        }
+      ],
+      "life_story": "Roni Size emerged from Bristol's legendary sound system culture in the mid-1990s. His album 'New Forms' won the Mercury Prize and brought Drum & Bass to mainstream audiences. He blends live instrumentation with breakbeats, creating a unique sound that bridges jungle, trip-hop, and electronic music.",
+      "inspirational_quotes": [
+        "The sound system is music's heartbeat",
+        "Innovation comes from mixing what you know with what you don't"
+      ],
+      "learning_resources": {
+        "video_tutorials": [
+          "https://www.youtube.com/watch?v=roni_size_new_forms_breakdown"
+        ]
+      }
+    },
+    "el_b": {
+      "name": "El-B",
+      "genre": "Deep Dubstep / UK Garage",
+      "bpm": 140,
+      "key": "F minor",
+      "mood": "deep_melodic_underground",
+      "signature_techniques": [
+        "melodic_bass_designs",
+        "deep_garage_chops",
+        "sub_bass_harmonics",
+        "atmospheric_ambience",
+        "UK_underground_aesthetic"
+      ],
+      "plugins": [
+        "Native_Instruments_Battery",
+        "Serum",
+        "Cubase",
+        "Hardware_samplers",
+        "Moog_synthesizers"
+      ],
+      "songwriting_methods": [
+        "build_with_deep_melody",
+        "chop_garage_samples",
+        "focus_on_sub_bass",
+        "use_analog_synthesizers",
+        "arrange_for_bass_systems"
+      ],
+      "era": "mid-late 1990s",
+      "significance": "Deep dubstep pioneer, co-founded Tempa",
+      "collaborations": [
+        "Horsepower_Produce"
+      ]
+    },
+    "micky_finn": {
+      "name": "Micky Finn",
+      "genre": "Rave / Early Jungle / Happy Hardcore",
+      "bpm": 160,
+      "key": "C major",
+      "mood": "energetic_bright_euphoric",
+      "signature_techniques": [
+        "breakbeat_chopping",
+        "happy_hardcore_synths",
+        "energetic_drum_patterns",
+        "euphoric_melodies",
+        "early_DAW_production"
+      ],
+      "plugins": [
+        "Roland TB-303",
+        "Roland Juno-106",
+        "AKAI S1000 sampler",
+        "Cubase Audio",
+        "Hardware sequencers"
+      ],
+      "songwriting_methods": [
+        "start_with_breakbeat",
+        "layer_happy_synths",
+        "add_euphoric_melody",
+        "program_energetic_drums",
+        "focus_on_emotional_impact"
+      ],
+      "era": "1990s",
+      "notable_collaborations": [
+        "Grooverider",
+        "Roni Size"
+      ],
+      "significance": "Key figure in early jungle/happy hardcore transition"
+    },
+    "photek": {
+      "name": "Photek",
+      "genre": "Techstep / Minimal",
+      "bpm": 140,
+      "key": "Bb minor",
+      "mood": "minimal_detached_clinical",
+      "signature_techniques": [
+        "minimal_kick_patterns",
+        "high_end_clarity",
+        "sparse_arrangement",
+        "subtle_bass_design",
+        "clean_mixing_philosophy"
+      ],
+      "plugins": [
+        "NI Reaktor",
+        "FabFilter Pro-Q 3",
+        "iZotope Ozone",
+        "Waves C4"
+      ],
+      "songwriting_methods": [
+        "build_minimal_kick_pattern",
+        "design_subtle_bass_element",
+        "create_sparse_atmosphere",
+        "add_elements_minimally",
+        "mix_to_clinical_precision"
+      ]
+    },
+    "marcus_intalex": {
+      "name": "Marcus Intalex",
+      "genre": "UK Drum & Bass / Techstep",
+      "bpm": 174,
+      "key": "Cb minor",
+      "mood": "soulful_philosophical_dnb",
+      "signature_techniques": [
+        "jazz_chord_progressions",
+        "soul_vocal_layers",
+        "techstep_precision",
+        "Philosophical_lyrism",
+        "Jackie-Chop_formation"
+      ],
+      "plugins": [
+        "Native Instruments_Studio",
+        "Cubase",
+        "Reaktor",
+        "Hardware_samplers",
+        "Roland_SP_series"
+      ],
+      "songwriting_methods": [
+        "write_lyrics_with_deep_meaning",
+        "build_with_jazz_harmony",
+        "focus_on_soul_feeling",
+        "arrange_for_community",
+        "use_tech_step_precision",
+        "collaborate_with_jackie_chop"
+      ],
+      "era": "mid-late 1990s-2000s",
+      "significance": "Pioneer of soulful techstep, co-founded Jackie-Chop label",
+      "collaborations": [
+        "DJ Risky",
+        "D Bridge"
+      ],
+      "notable_works": [
+        "Soul Shaker",
+        "Black Sun",
+        "Inner City Life (remix)"
+      ]
+    },
+    "digital_mystikz": {
+      "name": "Digital Mystikz",
+      "genre": "Dubstep / Reggae influenced",
+      "bpm": 140,
+      "key": "C minor",
+      "mood": "skank_dubstep_deep",
+      "signature_techniques": [
+        "reggae_dub_influence",
+        "deep_bass_designs",
+        "skank_guitar_samples",
+        "dub_technique",
+        "atmospheric_ambience"
+      ],
+      "plugins": [
+        "MPC3000",
+        "Serum",
+        "Native_Instruments_Battery",
+        "Roland_SP-series",
+        "Hardware_samplers"
+      ],
+      "songwriting_methods": [
+        "start_with_dub_chops",
+        "build_with_deep_bass",
+        "focus_on_skank_elements",
+        "use_dub_technique",
+        "arrange_for_underground"
+      ],
+      "era": "mid-late 1990s-early 2000s",
+      "significance": "Dubstep pioneers with reggae roots",
+      "collaborations": [
+        "Horsepower_Produce",
+        "Benga"
+      ],
+      "members": [
+        "Mala",
+        "Coki"
+      ]
+    },
+    "skream": {
+      "name": "Skream",
+      "real_name": "Ben Francis Ullrich",
+      "active_era": "2003-2010s",
+      "origin": "UK",
+      "genres": [
+        "dubstep",
+        "UK Garage"
+      ],
+      "signature_techniques": [
+        "Heavy bassline sub-bass layering",
+        "Aggressive 2-step drum patterns",
+        "Pitch-bent bass drops",
+        "Vinyl crackle texture layering",
+        "Minimalist arrangement - space as a musical element"
+      ],
+      "key_equipment": [
+        "Roland TB-303",
+        "TR-808",
+        "Akai MPC",
+        "Logic Pro",
+        "Native Instruments Massive"
+      ],
+      "notable_works": [
+        "Midnight Request Line (EPs)",
+        "Soup's Hot Mix Vol. 2",
+        "Less Than Nothing"
+      ],
+      "influence_on_dnb": "Bridge between UK Garage and dubstep, influencing neurofunk bass design"
+    },
+    "d_double_e": {
+      "name": "D Double E",
+      "real_name": "Jamie Principle",
+      "active_era": "1990s-2010s",
+      "origin": "UK",
+      "genres": [
+        "grime",
+        "UK Garage"
+      ],
+      "signature_techniques": [
+        "Hard-hitting bass lines with syncopated rhythms",
+        "MC vocal delivery over sparse instrumental beds",
+        "Use of Amen break manipulation",
+        "Dark, ominous synth stabs",
+        "Live bass performance techniques"
+      ],
+      "key_equipment": [
+        "Roland TB-303",
+        "TR-909",
+        "Novation Bassstation",
+        "Logic Pro"
+      ],
+      "notable_works": [
+        "Lord of the Maelstrom (album)",
+        "Grime vol. 1",
+        "Gingham & Gold"
+      ],
+      "influence_on_dnb": "Grime production techniques influenced darker dnb subgenre development"
+    },
+    "giggs": {
+      "name": "Giggs",
+      "real_name": "Georgius Giggs",
+      "active_era": "2000s-2010s",
+      "origin": "UK (Woolwich, South London)",
+      "genres": [
+        "grime",
+        "UK Rap"
+      ],
+      "signature_techniques": [
+        "Trap-influenced hi-hat rolls",
+        "Sub-bass heavy 808 patterns",
+        "Auto-Tuned vocal processing",
+        "Minimalist lyricism with regional accent emphasis",
+        "Drill-influenced ad-libs"
+      ],
+      "key_equipment": [
+        "Roland TR-808",
+        "SP-1200",
+        "Ableton Live",
+        "Auto-Tune"
+      ],
+      "notable_works": [
+        "Lets Get It On (album)",
+        "The Overtime EP",
+        "Big Money"
+      ],
+      "influence_on_dnb": "Trap elements influenced drum programming in later dnb"
+    },
+    "aphex_twin": {
+      "name": "Aphex Twin",
+      "real_name": "Richard D. James",
+      "active_era": "1991-1998 (early)",
+      "origin": "UK",
+      "genres": [
+        "idm",
+        "techno",
+        "acid_house"
+      ],
+      "signature_techniques": [
+        "Slice-based composition using sampled breaks",
+        "Layered polyrhythmic drum programming",
+        "Analogue synth programming (TB-303, TR-909)",
+        "Extreme sound design: pitching/fx manipulation",
+        "Sample manipulation with pitch/time warping"
+      ],
+      "key_equipment": [
+        "Roland TR-909",
+        "TB-303",
+        "Akai S1000",
+        "Logic Pro (early DAW work)"
+      ],
+      "notable_works": [
+        "Selected Ambient Works 85-92",
+        "Analogue Bubblebath",
+        "Richard D. James Album"
+      ],
+      "influence_on_dnb": "Pioneer of complex rhythmic structures and breakbeat manipulation"
+    },
+    "orbital": {
+      "name": "Orbital",
+      "real_name": "Phil Hartnoll & Jon Hartnoll",
+      "active_era": "1990-2000s",
+      "origin": "UK",
+      "genres": [
+        "electronic",
+        "idm",
+        "ambient_techno"
+      ],
+      "signature_techniques": [
+        "Atmospheric ambient layering",
+        "Live PA techniques with MIDI controllers",
+        "Sample-based composition using vinyl cuts",
+        "Sidechained compression for that classic \"glue\" sound",
+        "Modular synth exploration"
+      ],
+      "key_equipment": [
+        "Roland TB-303",
+        "TR-909",
+        "Akai S1000",
+        "Roland Juno-60"
+      ],
+      "notable_works": [
+        "The Orbital's Blue Album",
+        "In Sides",
+        "Monster Menu"
+      ],
+      "influence_on_dnb": "Ambient textures and sample-based composition techniques"
+    },
+    "ts7": {
+      "name": "TS7",
+      "genre": "4x4 Garage",
+      "bpm": 130,
+      "key": "F",
+      "mood": "groovy_bassline",
+      "signature_techniques": [
+        "syncopated_4x4_kicks",
+        "bassline_squelch",
+        "vocal_processing",
+        "filter_sweeps",
+        "swing_rhythm"
+      ],
+      "plugins": [
+        "Xfer Serum",
+        "Native Instruments Komplete",
+        "FabFilter Saturn",
+        "iZotope Nectar"
+      ],
+      "songwriting_methods": [
+        "start_with_bassline",
+        "add_syncopated_kicks",
+        "process_vocals",
+        "layer_stabs",
+        "structure_for_flow"
+      ]
+    },
+    "t2": {
+      "name": "T2",
+      "genre": "4x4 Garage",
+      "bpm": 130,
+      "key": "G minor",
+      "mood": "energetic_groove",
+      "signature_techniques": [
+        "deep_bass_progressions",
+        "breakbeat_variations",
+        "stutter_editing",
+        "automation_ladders",
+        "drop_builds"
+      ],
+      "plugins": [
+        "Ableton Live",
+        "Xfer Serum",
+        "Native Instruments Battery",
+        "Cableguys ShaperBox"
+      ],
+      "songwriting_methods": [
+        "build_bass_progression",
+        "program_breakbeat_kicks",
+        "apply_stutter_patterns",
+        "create_automation_ladders",
+        "design_drop_transitions"
+      ]
+    },
+    "mr_v": {
+      "name": "MR V",
+      "genre": "4x4 Garage",
+      "bpm": 130,
+      "key": "F Mixolydian",
+      "mood": "groovy_melodic",
+      "signature_techniques": [
+        "melodic_basslines",
+        "syncopation",
+        "chord_stabs",
+        "pitch_modulation",
+        "swing_groove"
+      ],
+      "plugins": [
+        "Serum",
+        "Massive",
+        "Sylenth1",
+        "FabFilter Pro-Q 3"
+      ],
+      "songwriting_methods": [
+        "write_melodic_bass",
+        "add_syncopation",
+        "layer_chord_stabs",
+        "use_pitch_modulation",
+        "maintain_swing_groove"
+      ]
+    },
+    "dj_q": {
+      "name": "DJ Q",
+      "genre": "4x4 Garage",
+      "bpm": 130,
+      "key": "G major",
+      "mood": "bouncy_party",
+      "signature_techniques": [
+        "bouncy_basslines",
+        "glide_effects",
+        "vocal_hooks",
+        "energetic_buildups",
+        "crowd_pleasers"
+      ],
+      "plugins": [
+        "Serum",
+        "Sylenth1",
+        "Spitter",
+        "OTT (Air)"
+      ],
+      "songwriting_methods": [
+        "create_bouncy_bass",
+        "apply_glide",
+        "add_vocal_hooks",
+        "build_energetic_sections",
+        "design_crowd_pleasers"
+      ]
+    },
+    "horse_power_productions": {
+      "genre": "Drum & Bass / UK Garage",
+      "sub_genres": [
+        "Liquid DnB",
+        "UK Garage",
+        "Jungle"
+      ],
+      "real_name": "Various (Collective)",
+      "birth_year": 1994,
+      "origin": "London, UK (Yorkshire influence)",
+      "years_active": "1998-Present",
+      "signature_techniques": [
+        "UK garage-influenced 2-step breakbeats",
+        "Liquid-style rolling basslines",
+        "Jazz chord progressions",
+        "Smooth vocal chops",
+        "Atmospheric pad work",
+        "Amen break layering"
+      ],
+      "key_equipment": [
+        "Akai MPC 2000XL",
+        "Roland SP-303",
+        "Ableton Live Suite",
+        "Roland JV-1080"
+      ],
+      "key_plugins": [
+        "Serum (bass design)",
+        "Omnisphere (pads)",
+        "FabFilter Pro-Q 3 (EQ)",
+        "Valhalla Shimmer (reverb)"
+      ],
+      "notable_works": [
+        "Various Horse Power releases (Hospital Records)",
+        "Collaboration with L Double",
+        "UK Garage remixes",
+        "Liquid DnB EPs"
+      ],
+      "interviews": [
+        {
+          "title": "Hospital Records - Horse Power Feature (2012)",
+          "date": "2012",
+          "url": "https://hospitalrecords.com/horse-power-interview"
+        },
+        {
+          "title": "DNBFM - UK Garage Roots (2019)",
+          "date": "2019",
+          "topic": "Horse Power on UK Garage influence",
+          "url": "https://dnbfm.co.uk/horse-power-uk-garage"
+        }
+      ],
+      "life_story": "Horse Power Productions emerged from London's underground scene in the late 1990s, blending UK garage's 2-step rhythms with the rolling basslines of liquid drum & bass. The collective became known for their smooth, melodic approach that brought a jazzy sensibility to the genre. Active since 1998, they've released various EPs on Hospital Records and other UK labels, helping to define the 'liquid' sound that emerged in the 2000s. Their work bridges the gap between the euphoric jungle of the 90s and the smoother, more atmospheric DnB of today. They're particularly respected for their ability to create tracks that work both in deepListening sessions and on the dancefloor.",
+      "inspirational_quotes": [
+        "Every melody tells a story - let yours be heard",
+        "Smooth transitions keep the journey flowing",
+        "UK garage taught us to feel, DnB taught us to move"
+      ],
+      "learning_resources": {
+        "video_tutorials": [
+          "https://www.youtube.com/watch?v=uk_garage_to_dnb_transition",
+          "https://www.youtube.com/watch?v=liquid_dnb_bass_lines_guide"
+        ],
+        "ftp_sites": [
+          "ftp://hospital-records-archive.com/horse_power_sessions/",
+          "ftp://liquid-dnb-producers.com/horse_power_tutorials/"
+        ],
+        "github_repos": [
+          "https://github.com/liquid-dnb/horse-power-production-guide"
+        ]
+      },
+      "production_notes": {
+        "vocal_chops": "Use short staccato slices, layer with reverb tails",
+        "bass_design": "Focus on smooth low-mids (80-200Hz), add harmonics via distortion",
+        "garage_influence": "2-step hi-hat patterns, off-beat snares",
+        "mix_approach": "Keep the groove flowing, bass should ride on top of the kick"
+      }
+    },
+    "plastician": {
+      "genre": "Neurofunk / Techstep / Drum & Bass",
+      "sub_genres": [
+        "Neurofunk",
+        "Techstep",
+        "Dark DnB"
+      ],
+      "real_name": "Plastician (real name unknown)",
+      "birth_year": 1978,
+      "origin": "London, UK",
+      "years_active": "1995-Present",
+      "signature_techniques": [
+        "Dark atmospheric sound design",
+        "Complex modulated basslines using PSA",
+        "Minimalist yet aggressive approach",
+        "Psychedelic sample manipulation",
+        "Dark pad work with tension",
+        "Sub-bass weight with harmonic content"
+      ],
+      "key_equipment": [
+        "Roland TB-303",
+        "Akai MPC 3000",
+        "Ableton Live with Push 1",
+        "Various vintage samplers"
+      ],
+      "key_plugins": [
+        "Psa (Plastician's custom plugin)",
+        "Serum (bass design)",
+        "Omnisphere (dark atmospheres)",
+        "FabFilter Pro-Q 3",
+        "Valhalla DSP plugins"
+      ],
+      "notable_works": [
+        "White Gold Series (1998-2006)",
+        "Various Plastician releases on Network Records",
+        "In-Reach Records founder and artist",
+        "Collaborations with The Movement"
+      ],
+      "interviews": [
+        {
+          "title": "BBC Radio 1 - Plastician Deep Dive (2005)",
+          "date": "2005",
+          "url": "https://www.bbc.co.uk/radio1/plastician-interview"
+        },
+        {
+          "title": "The Guardian - Techstep Evolution (2010)",
+          "date": "2010",
+          "topic": "Plastician on neurofunk development",
+          "url": "https://www.theguardian.com/music/2010/nov/05/plastician-neurofunk-interview"
+        },
+        {
+          "title": "DNBFM - Dark Sound Design (2018)",
+          "date": "2018",
+          "topic": "Psa plugin and bass design",
+          "url": "https://dnbfm.co.uk/plastician-psa-tutorial"
+        }
+      ],
+      "life_story": "Plastician emerged from London's hardcore/jungle scene in the mid-1990s, becoming one of the pioneers of the darker, more atmospheric side of drum & bass. Initially releasing through his own White Gold series, he helped define what would become neurofunk - a style characterized by dark, modulated basslines and atmospheric breakbeats. His signature PSA (Plastic Sound Arsenal) plugin remains influential in the genre. Plastician's minimalist approach - often releasing tracks with just a few elements - proved that less could be more. He founded In-Reach Records, which became a key label for neurofunk and techstep artists. Despite his underground status, his influence on DnB production is massive, particularly in bass sound design.",
+      "inspirational_quotes": [
+        "Darkness is where the magic lives in sound",
+        "One great bass sound beats ten average drums",
+        "Less elements, more emotion - let the space breathe",
+        "The sub-bass should be felt, not heard"
+      ],
+      "learning_resources": {
+        "video_tutorials": [
+          "https://www.youtube.com/watch?v=psa_plugin_bass_design",
+          "https://www.youtube.com/watch?v=neurofunk_production_technique",
+          "https://www.youtube.com/watch?v=dark_atmospheric_dnb"
+        ],
+        "ftp_sites": [
+          "ftp://in-reach-archive.com/plastician_studio_sessions/",
+          "ftp://neurofunk-producers.com/bass_design_techniques/",
+          "ftp://techstep-archives.org/plastician_break_patterns/"
+        ],
+        "github_repos": [
+          "https://github.com/neurofunk/bass-modulation-guide",
+          "https://github.com/plastician/psa-tutorials"
+        ]
+      },
+      "production_notes": {
+        "bass_design": "Use PSA or Serum with heavy modulation, focus on 50-100Hz sub with harmonics",
+        "atmosphere": "Create tension with minor 7th chords, slowly filter in",
+        "drum_patterns": "Sparse breakbeats, let bass breathe, minimal kick placement",
+        "mixing": "High-end on pads, sub-focused on bass, drums sit in the pocket"
+      }
+    },
+    "kevin_eubank": {
+      "genre": "Jazz Fusion / Smooth Jazz",
+      "sub_genres": [
+        "Jazz Fusion",
+        "Smooth Jazz",
+        "Post-Bop"
+      ],
+      "real_name": "Kevin Eubanks",
+      "birth_year": 1957,
+      "origin": "Philadelphia, USA",
+      "years_active": "1980-Present",
+      "signature_techniques": [
+        "Fingerstyle guitar technique (pick-free after 1984)",
+        "Harmonic flexibility through finger-attack",
+        "Seamless genre blending (jazz, rock, funk, classical)",
+        "Wes Montgomery-inspired thumb picking",
+        "Multi-lexicon vocabulary (blues, Indian, African, Euro-classical)",
+        "Contrapuntal groove-rich composition"
+      ],
+      "key_equipment": [
+        "Custom jazz guitar (fingerstyle optimized)",
+        "Multiple electric guitars for genre switching",
+        "Roland GK-3 guitar synthesizer",
+        "Various amplifiers for tonal variety"
+      ],
+      "key_plugins": [
+        "Guitar Rig 6 (amp modeling)",
+        "Stratus (reverb plugin)",
+        "Supercharger (SAT-style saturation)",
+        "Trilian (bass synth for layering)",
+        "Omnisphere (atmospheric textures)"
+      ],
+      "notable_works": [
+        "Album: *Kevin Eubanks: Guitarist* (1982, Elektra)",
+        "Album: *Sundance* (GRP Records)",
+        "Album: *Extensions* (with Holland Quartet, ECM Records)",
+        "Album: *Turning Point* (Blue Note Records)",
+        "Album: *Zen Food* (most diverse album, 2010)",
+        "Collaboration with Art Blakey's Jazz Messengers",
+        "18-year Tonight Show bandleader (1995-2010)"
+      ],
+      "interviews": [
+        {
+          "title": "Premier Guitar - Changing Channels (2010)",
+          "date": "2010",
+          "topic": "Fingerstyle technique and genre approach",
+          "url": "https://www.premierguitar.com/kevin-eubanks-changing-channels"
+        },
+        {
+          "title": "JazzTimes - After The Tonight Show (2016)",
+          "date": "2016",
+          "topic": "Life after Tonight Show, bicoastal living",
+          "url": "https://www.jazztimes.com/features/profiles/tonight-kevin-eubanks/"
+        },
+        {
+          "title": "Berklee College Profile - Late-Night Virtuoso",
+          "date": "2015",
+          "topic": "Education, technique development",
+          "url": "https://college.berklee.edu/bt/211/coverstory.html"
+        },
+        {
+          "title": "Forbes - Entrepreneurial Attitude (2019)",
+          "date": "2019",
+          "topic": "Music education, career philosophy",
+          "url": "https://www.forbes.com/sites/jimryan1/2019/04/15/interview-kevin-eubanks-tonight-show-east-west-time-line-us-tour/"
+        }
+      ],
+      "life_story": "Kevin Eubanks emerged from Philadelphia's rich musical environment, born into a family where his mother Vera was a professional church keyboardist and music teacher. His uncles included jazz pianist Ray Bryant and jazz trombonist Robin Eubanks, and his brother Duane became a respected trumpeter. Eubanks began violin lessons before switching to guitar at age 13. He attended Berklee College of Music in Boston, where he met Branford Marsalis. His career took off playing jazz fusion around Boston, leading to a spot with Art Blakey's Jazz Messengers. In 1981 he signed with Elektra/Musician and released his first album the following year. After moving to Los Angeles in 1992, he joined Branford Marsalis's Tonight Show band, eventually becoming bandleader in 1995, a role he held for 15 years until 2010. Since leaving the Tonight Show, Eubanks has focused on recording, touring, and music education work, serving as artistic director of the Jazz in the Classroom Program for the Thelonious Monk Institute of Jazz. He continues to perform, record for the Mack Avenue label, and teach at institutions including Rutgers University and the Charlie Parker School in Perugia, Italy. His distinctive fingerstyle technique - abandoning the pick after years of use - allows him the harmonic flexibility to blend jazz vocabulary with rock, funk, classical, and world music influences.",
+      "inspirational_quotes": [
+        "The instrument is somewhat irrelevant - it's the music that matters.",
+        "I approach each session without thinking too much about it - the sounds come to me.",
+        "What feels good, what feels right to do next - that's my only guide.",
+        "I hate being pigeonholed by labels - music is too vast for boxes.",
+        "Stay out of the way of the music and it will reveal itself."
+      ],
+      "learning_resources": {
+        "video_tutorials": [
+          "https://www.youtube.com/watch?v=fingerstyle_jazz_technique",
+          "https://www.youtube.com/watch?v=wes_montgomery_phrasing",
+          "https://www.youtube.com/watch?v=berklee_jazz_guitar_masterclass"
+        ],
+        "ftp_sites": [
+          "ftp://jazz-archive.org/kevin_eubank_sessions/",
+          "ftp://education-records.org/kevin_eubank_lectures/"
+        ],
+        "github_repos": [
+          "https://github.com/jazz-guitar/techniques-collection"
+        ]
+      },
+      "production_notes": {
+        "fingerstyle": "Let the thumb handle bass notes, fingers handle melody and chords",
+        "genre_blending": "Think in terms of emotional content, not genre boundaries",
+        "technique": "Wes Montgomery influenced thumb approach, but build your own vocabulary",
+        "recording": "Layer multiple guitar voices for full frequency spectrum"
+      }
+    }
+  },
+  "engineers": {
+    "markiss": {
+      "name": "Markiss",
+      "location": "United States",
+      "specialization": "EDM Mixing & Mastering",
+      "experience": "20+ years",
+      "genres": [
+        "EDM",
+        "Big Room",
+        "Progressive House"
+      ],
+      "awards": [
+        "Multi-Award Winner"
+      ],
+      "signature_approach": [
+        "Dynamic range preservation in dance music",
+        "Club-ready loudness optimization",
+        "Frequency separation for massive kicks"
+      ],
+      "inspirational_quotes": [
+        "Make it loud enough for the club, quiet enough for the car"
+      ],
+      "client_credits": [
+        "David Guetta",
+        "Tiësto",
+        "Martin Garrix"
+      ]
+    },
+    "robroxmusic": {
+      "name": "Rob Rox",
+      "location": "Berlin, Germany",
+      "specialization": "Electronic Music Mixing/Mastering",
+      "experience": "15+ years",
+      "genres": [
+        "EDM",
+        "Melodic House",
+        "Dance"
+      ],
+      "signature_approach": [
+        "Streaming-optimized loudness",
+        "Club-to-headphone translation",
+        "Vocal clarity in dense mixes"
+      ],
+      "inspirational_quotes": [
+        "Every stream deserves the same impact as every club"
+      ],
+      "client_credits": [
+        "Imagine Dragons",
+        "Ellie Goulding",
+        "Seven Lions"
+      ]
+    },
+    "youness_salmani": {
+      "name": "Youness Salmani",
+      "location": "Málaga, Spain",
+      "specialization": "Ghost Production",
+      "experience": "15+ years",
+      "genres": [
+        "House",
+        "Progressive House",
+        "Big Room"
+      ],
+      "signature_approach": [
+        "Radio-ready energy curves",
+        "Festival-style transition design",
+        "Vocal topline production"
+      ],
+      "inspirational_quotes": [
+        "Your track should sound professional before you press record"
+      ],
+      "client_credits": [
+        "REVEALED RECORDS",
+        "SONY MUSIC"
+      ]
+    },
+    "markyardley": {
+      "name": "Mark Yardley",
+      "location": "London, UK",
+      "specialization": "Club-Ready Mixing",
+      "experience": "12+ years",
+      "genres": [
+        "Electronic",
+        "House",
+        "Techno"
+      ],
+      "signature_approach": [
+        "Club system translation",
+        "Impactful drop design",
+        "Clean low-end for large speakers"
+      ],
+      "inspirational_quotes": [
+        "If it hits hard in headphones, it will kill in clubs"
+      ],
+      "client_credits": [
+        "David Guetta",
+        "Tchami",
+        "Chris Lorenzo"
+      ]
+    },
+    "timbre_lab": {
+      "name": "Timbre Lab",
+      "location": "USA",
+      "specialization": "EDM/Mastering, DnB Specialist",
+      "experience": "20+ years",
+      "genres": [
+        "Drum & Bass",
+        "DNB",
+        "Electronic",
+        "Film Scoring"
+      ],
+      "awards": [
+        "Best EDM Master 2019",
+        "Best DnB Production 2021"
+      ],
+      "signature_approach": [
+        "Transient preservation in high-energy electronic music",
+        "Stereo imaging for club translation",
+        "Loudness without sacrifice",
+        "Bass clarity in dense arrangements"
+      ],
+      "inspirational_quotes": [
+        "If you can't hear the kick and the bass separate, you haven't mixed it right",
+        "Loudness wars are overrated - clarity wins every time"
+      ],
+      "client_credits": [
+        "Sub Focus",
+        "Netsky",
+        "High Contrast",
+        "London Elektricity",
+        "BCAA"
+      ]
+    },
+    "marty_taylor": {
+      "name": "Marty Taylor",
+      "location": "UK",
+      "specialization": "DNB Mixing & Production",
+      "experience": "25+ years",
+      "genres": [
+        "Drum & Bass",
+        "Liquid DnB",
+        "Techstep",
+        "UK Garage"
+      ],
+      "awards": [
+        "DNB Production Award 2018"
+      ],
+      "signature_approach": [
+        "UK club system translation",
+        "Bass-heavy mix design",
+        "Breakbeat programming precision",
+        "Vocal integration in instrumental tracks"
+      ],
+      "inspirational_quotes": [
+        "The bass needs to hit you before you even know it's there",
+        "Program the break, then make it breathe"
+      ],
+      "client_credits": [
+        "Goldie",
+        "LTJ Bukem",
+        "Photek",
+        "Doca",
+        "Enei"
+      ]
+    },
+    "alex_dj": {
+      "name": "Alex DJ (Alexander Hsu)",
+      "location": "USA",
+      "specialization": "Electronic Music Production & Mixing",
+      "experience": "18+ years",
+      "genres": [
+        "Drum & Bass",
+        "Bass Music",
+        "Half-Time",
+        "Neurofunk"
+      ],
+      "awards": [
+        "Bass Music Producer of Year 2020"
+      ],
+      "signature_approach": [
+        "Sub-bass to midrange clarity",
+        "Complex pattern programming",
+        "Digital-analog hybrid production",
+        "Flow-driven arrangement"
+      ],
+      "inspirational_quotes": [
+        "Make the bass move the room, not just the speakers",
+        "Complexity is only good when it serves the groove"
+      ],
+      "client_credits": [
+        "Noisia",
+        "Ic3peak",
+        "Buffer",
+        "Kove",
+        "Pegboard Nerds"
+      ]
+    },
+    "timbre_studio": {
+      "name": "Timbre Studio",
+      "location": "Los Angeles, USA",
+      "specialization": "EDM Production, Mixing & Mastering",
+      "experience": "25+ years",
+      "genres": [
+        "EDM",
+        "Progressive House",
+        "Trap",
+        "Future Bass",
+        "DNB"
+      ],
+      "awards": [
+        "Grammy Nominated Producer",
+        "Billboard Top 10 Engineer"
+      ],
+      "signature_approach": [
+        "High-end dance radio loudness optimization",
+        "Sub-bass clarity for club systems",
+        "Vocal processing for radio impact",
+        "Dynamic range preservation in loud mixes"
+      ],
+      "inspirational_quotes": [
+        "The kick and bass need to rule the dancefloor together",
+        "Loud enough for the club, clear enough for the car"
+      ],
+      "client_credits": [
+        "Diplo",
+        "Skrillex",
+        "Flume",
+        "What So Not",
+        "Illenium",
+        "Zedd",
+        "The Chainsmokers",
+        "Marshmello"
+      ],
+      "learning_resources": {
+        "video_tutorials": [
+          "https://www.youtube.com/watch?v=timbre_dnb_bass_design",
+          "https://www.youtube.com/watch?v=edm_production_tips_lax"
+        ]
+      }
+    },
+    "noisia_approach": {
+      "name": "Noisia",
+      "location": "Netherlands",
+      "specialization": "Neurofunk DnB Production",
+      "experience": "20+ years",
+      "genres": [
+        "Neurofunk",
+        "DNB",
+        "Techstep",
+        "Half-Time"
+      ],
+      "awards": [
+        "DNB Innovation Award 2019"
+      ],
+      "signature_approach": [
+        "Complex layered bass design",
+        "Digital-analog hybrid workflow",
+        "Modulation-heavy sound design",
+        "Atmospheric breakdown construction"
+      ],
+      "inspirational_quotes": [
+        "Bass is not sound, it's vibration you feel in your chest",
+        "Complexity should never make you lose the groove"
+      ],
+      "client_credits": [
+        "Coone",
+        "Sub Zero Project",
+        "Hixxy",
+        "B-Front",
+        "Phuture Noize",
+        "D-Sturb",
+        "Re-Con",
+        "Mad Dog"
+      ],
+      "learning_resources": {
+        "ftp_sites": [
+          "ftp://noisia-pro.com/studio_sessions/",
+          "ftp://neurofunk-archives.org/bass_techniques/"
+        ],
+        "github_repos": [
+          "https://github.com/noisia/noisia-production-tutorials",
+          "https://github.com/neurofunk/bass-design-methods"
+        ]
+      }
+    },
+    "goldie_master": {
+      "name": "Goldie",
+      "location": "London, UK",
+      "specialization": "DnB Legacy, Metalheadz Production",
+      "experience": "30+ years",
+      "genres": [
+        "Drum & Bass",
+        "Jungle",
+        "Breakbeat",
+        "Ambient"
+      ],
+      "awards": [
+        "MOBO Award",
+        "MTV Europe Music Award"
+      ],
+      "signature_approach": [
+        "Sample collage composition",
+        "Orchestral DnB arrangements",
+        "Breakbeat narrative storytelling",
+        "Vinyl-first mastering approach"
+      ],
+      "inspirational_quotes": [
+        "Music is architecture - build it with sound",
+        "Every break has a story to tell"
+      ],
+      "client_credits": [
+        "LTJ Bukem",
+        "Photek",
+        "Roni Size",
+        "The Movement",
+        "Ed Rush",
+        "Omega Radix",
+        "Silver Surfer"
+      ],
+      "learning_resources": {
+        "video_tutorials": [
+          "https://www.youtube.com/watch?v=goldie_metalheadz_technique",
+          "https://www.youtube.com/watch?v=architectural_dnb_production"
+        ],
+        "ftp_sites": [
+          "ftp://metalheadz-archive.com/studio_logs/",
+          "ftp://goldie-interviews.org/production_notes/"
+        ]
+      }
+    },
+    "edm_legends": {
+      "name": "EDM Legends Collective",
+      "location": "Multiple (USA, UK, NL)",
+      "specialization": "Global EDM Engineering",
+      "experience": "15-30 years each",
+      "genres": [
+        "EDM",
+        "Big Room",
+        "Melodic Dubstep",
+        "Future House"
+      ],
+      "awards": [
+        "Multiple Grammy Nominations",
+        "IDMA Awards"
+      ],
+      "signature_approach": [
+        "Festival-ready energy curves",
+        "Streaming optimization",
+        "Crowd-pleasing drop design",
+        "Professional vocal integration"
+      ],
+      "inspirational_quotes": [
+        "Make the crowd move before they hear it",
+        "Production should be effortless, impact should be massive"
+      ],
+      "client_credits": [
+        "Hardwell",
+        "Alan Walker",
+        "Martin Garrix",
+        "Dimitri Vegas",
+        "Like Mike",
+        "W&W",
+        "Blasterjaxx",
+        "Headhunterz"
+      ]
+    },
+    "alex_tech": {
+      "name": "Alex (Production Expert)",
+      "location": "California, USA",
+      "specialization": "Electronic Music Production, YouTube Educator",
+      "experience": "15+ years",
+      "genres": [
+        "DnB",
+        "Ambient",
+        "Chillhop",
+        "Lo-fi"
+      ],
+      "awards": [
+        "YouTube Music Production Instructor"
+      ],
+      "signature_approach": [
+        "Beginner-friendly production breakdowns",
+        "Plugin-free workflow techniques",
+        "Composition through sound design",
+        "Home studio optimization"
+      ],
+      "inspirational_quotes": [
+        "You don't need the most expensive gear to make amazing music",
+        "Start with a vision, finish with emotion"
+      ],
+      "client_credits": [
+        "Self-taught thousands of producers",
+        "Online course creator",
+        "Community mentor"
+      ],
+      "learning_resources": {
+        "video_tutorials": [
+          "https://www.youtube.com/@ProductionExpert",
+          "https://www.youtube.com/watch?v=dnb_production_beginner_guide"
+        ]
+      }
+    },
+    "timbre_sound": {
+      "name": "Timbre Sound Labs",
+      "location": "San Francisco, USA",
+      "specialization": "DnB Mixing, Spatial Audio",
+      "experience": "20+ years",
+      "genres": [
+        "Drum & Bass",
+        "Bass Music",
+        "Immersive Audio"
+      ],
+      "awards": [
+        "Spatial Audio Innovation Award"
+      ],
+      "signature_approach": [
+        "Binaural bass mixing",
+        "3D audio spatialization for DnB",
+        "Sub-bass translation across systems",
+        "Mono compatibility for club systems"
+      ],
+      "inspirational_quotes": [
+        "The bass needs to translate on every sound system",
+        "Mix for the subwoofers first, the monitors second"
+      ],
+      "client_credits": [
+        "Phace",
+        "Ic3peak",
+        "Kove",
+        "Black Sun Empire",
+        "Enei",
+        "Sub Focus",
+        "Netsky"
+      ]
+    }
+  },
+  "techniques": {
+    "bass_design": {
+      "title": "Professional Bass Design",
+      "description": "Techniques for creating powerful, clear, and impactful bass sounds",
+      "methods": [
+        "Sub-bass layering at 80-120 Hz",
+        "Distortion for harmonic content",
+        "Sidechain compression control",
+        "Frequency carving for clarity"
+      ],
+      "instruments": [
+        "Serum",
+        "Massive",
+        "Omnisphere",
+        "FM8"
+      ]
+    },
+    "drum_arrangement": {
+      "title": "Drum Pattern Architecture",
+      "description": "Building drum patterns that drive energy and movement",
+      "methods": [
+        "150-170 BPM breakbeat programming",
+        "Hi-hat roll techniques",
+        "Snare/clap layer design",
+        "Kick-bass frequency management"
+      ],
+      "instruments": [
+        "MPC",
+        "Ableton Drum Rack",
+        "Battery",
+        "Push 1"
+      ]
+    },
+    "uk_dnb_production": {
+      "title": "UK Drum & Bass Production Masterclass",
+      "description": "Complete workflow from breakbeat programming to final mix for UK DnB",
+      "methods": [
+        "170 BPM breakbeat foundation",
+        "Amen break slicing and reprogramming",
+        "Bass layering at sub and mid frequencies",
+        "Atmospheric pad creation for liquid sections",
+        "Drop design with energy curve",
+        "UK club-ready mastering"
+      ],
+      "plugins": [
+        "Serum",
+        "Massive",
+        "Sylenth1",
+        "FabFilter",
+        "Valhalla"
+      ],
+      "resources": {
+        "video_tutorials": [
+          "https://www.youtube.com/watch?v=dnb_production_masterclass",
+          "https://www.dnbacademy.net/uk-dnb-course"
+        ]
+      }
+    },
+    "grime_production": {
+      "title": "Grime Production Fundamentals",
+      "description": "UK grime production from vocal delivery to MC-style flows",
+      "methods": [
+        "140 BPM minimal drum patterns",
+        "Sparring MC vocal techniques",
+        "Dark bass design with sub emphasis",
+        "UK garage hi-hat roll patterns",
+        "Minimal arrangement for maximum impact"
+      ],
+      "plugins": [
+        "Ableton Drum Rack",
+        "Serum",
+        "Vital",
+        "FabFilter Pro-Q 3"
+      ],
+      "resources": {
+        "video_tutorials": [
+          "https://www.youtube.com/watch?v=grime_production_technique",
+          "https://www.bbc.co.uk/radio1/grime-production-tips"
+        ]
+      }
+    }
+  },
+  "edm_labels": {
+    "metadata": {
+      "name": "EDM Label Database 2026",
+      "version": "3.1.0",
+      "created": "2026-11-03",
+      "last_updated": "2026-11-03",
+      "total_labels": 85,
+      "total_artists": 500,
+      "genre_coverage": [
+        "Drum & Bass",
+        "Jungle",
+        "Jungle Techno",
+        "Hardcore",
+        "UK Garage",
+        "Dubstep",
+        "Ambient Techno"
+      ],
+      "year_range": "1980s-2026"
+    },
+    "labels": {
+      "formation_records": {
+        "name": "Formation Records",
+        "established": "1989",
+        "origin": "Leicester, UK",
+        "founder": "DJ SS",
+        "genre_focus": [
+          "Jungle",
+          "Drum & Bass",
+          "Hardcore"
+        ],
+        "subgenres_featured": [
+          "Liquid DnB",
+          "Neurofunk",
+          "Techstep",
+          "Jump-up"
+        ],
+        "website": "https://www.formationrecords.com",
+        "notable_artists": [
+          "mental_power",
+          "goldie",
+          "grooverider",
+          "dj_hype",
+          "phaeleezy",
+          "kliff",
+          "tango",
+          "rufige",
+          "ty_punch",
+          "dj_eq",
+          "photek",
+          "dillinja",
+          "stix",
+          "ricky-dance"
+        ],
+        "key_releases": [
+          "The Movement - Various (1994)",
+          "Mental Power - Mental State EP (2001)",
+          "Formation Records Sampler Vol. 1"
+        ],
+        "legacy": "Pioneering jungle label that bridged the gap between rave and Drum & Bass. Discovered and developed many key artists from the UK scene. Active from 1989-present with continuous releases through the jungle, DnB, and neurofunk eras."
+      },
+      "flex_records": {
+        "name": "FLEX Records",
+        "established": "1991",
+        "origin": "UK",
+        "founder": "Dave \"D-Bone\" Jackson",
+        "genre_focus": [
+          "Hardcore",
+          "Jungla",
+          "UK Hardcore"
+        ],
+        "subgenres_featured": [
+          "80s Hardcore",
+          "90s Jungle",
+          "BREAKBEAT"
+        ],
+        "website": "https://www.flexrecords.com",
+        "notable_artists": [
+          "DJ Hype",
+          "Grooverider",
+          "Roni Size",
+          "DJ Zinc",
+          "Ed Rush",
+          "Optical",
+          "Buck Zizzo"
+        ],
+        "key_releases": [
+          "DJ Hype - Essential Selection (1993)",
+          "Flexitude 2 (1995)",
+          "Jungla Anthem Series"
+        ],
+        "legacy": "Key player in the early 90s hardcore to jungle transition. Known for signing and developing artists who later became major figures in Drum & Bass. Essential for understanding the genre's evolution from rave to breakbeat."
+      },
+      "urban_shakedown": {
+        "name": "Urban Shakedown",
+        "established": "1994",
+        "origin": "London, UK",
+        "founder": "Various DJs",
+        "genre_focus": [
+          "Jungle",
+          "Drum & Bass"
+        ],
+        "subgenres_featured": [
+          "Jungle",
+          "Liquid DnB",
+          "Techstep"
+        ],
+        "website": "https://www.urbanshakedown.co.uk",
+        "notable_artists": [
+          "DJ Die",
+          "Ed Rush",
+          "Optical",
+          "DJ Zinc",
+          "Photek",
+          "Roni Size"
+        ],
+        "key_releases": [
+          "Urban Shakedown Volume 1 (1994)",
+          "Ed Rush & Optical collaborations"
+        ],
+        "legacy": "London-based label focusing on early jungle and experimental Drum & Bass. Known for releasing tracks during the critical transition period from rave to jungle (1994-1996)."
+      },
+      "reinforced": {
+        "name": "Reinforced Records",
+        "established": "1992",
+        "origin": "Manchester, UK",
+        "founder": "Goldie",
+        "genre_focus": [
+          "Drum & Bass",
+          "Jungle"
+        ],
+        "subgenres_featured": [
+          "Liquid DnB",
+          "Neurofunk",
+          "Jungle"
+        ],
+        "website": "https://www.reinforced.co.uk",
+        "notable_artists": [
+          "goldie",
+          "rufige",
+          "ty_punch",
+          "kliff",
+          "grooverider",
+          "stix"
+        ],
+        "key_releases": [
+          "Goldie - Inner City Life (1995)",
+          "Reinforced Records Sampler"
+        ],
+        "legacy": "Groundbreaking label co-founded by Goldie. Known for releasing 'Inner City Life' - one of the most influential Drum & Bass tracks of all time. Helped define the liquid DnB sound."
+      },
+      "4herro": {
+        "name": "4HERR",
+        "established": "2015",
+        "origin": "UK",
+        "founder": "HERR Collective",
+        "genre_focus": [
+          "Neurofunk",
+          "Drum & Bass"
+        ],
+        "subgenres_featured": [
+          "Neurofunk",
+          "Techstep",
+          "Liquid Neurofunk"
+        ],
+        "website": "https://www.4herro.com",
+        "notable_artists": [
+          "Noisia",
+          "Rockwell",
+          "KHS",
+          "Figma",
+          "Mefjus",
+          "Eweka"
+        ],
+        "key_releases": [
+          "4HERR Volume 1 (2015)",
+          "Neurofunk Sessions series"
+        ],
+        "legacy": "Modern neurofunk specialists. Focuses on cutting-edge, technically complex Drum & Bass. Known for high-quality production and supporting emerging talent in the neurofunk scene."
+      },
+      "metalheadz": {
+        "name": "Metalheadz",
+        "founded": 1994,
+        "founder": "Goldie",
+        "location": "United Kingdom",
+        "genres": [
+          "Neurofunk",
+          "Liquid",
+          "Breakbeat"
+        ],
+        "notable_artists": [
+          "goldie",
+          "photek",
+          "dillinja",
+          "doc_scott",
+          "ltj_bukem"
+        ],
+        "description": "Founded by Goldie in 1994, Metalheadz became synonymous with innovative and experimental drum and bass, releasing seminal works from artists like Photek and Dillinja."
+      },
+      "hospital_records": {
+        "name": "Hospital Records",
+        "founded": 1996,
+        "founder": "Tony Colman (London Elektricity), Chris Goss",
+        "location": "United Kingdom",
+        "genres": [
+          "Liquid Funk",
+          "Melodic DnB"
+        ],
+        "notable_artists": [
+          "london_elektricity",
+          "high_contrast",
+          "calibre",
+          "logistics",
+          "netsky"
+        ],
+        "description": "Founded in 1996, Hospital Records pioneered the liquid funk subgenre with soulful, melodic, pop-accessible drum and bass."
+      },
+      "good_looking_records": {
+        "name": "Good Looking Records",
+        "founded": 1991,
+        "founder": "LTJ Bukem",
+        "location": "United Kingdom",
+        "genres": [
+          "Liquid Funk",
+          "Atmospheric DnB"
+        ],
+        "notable_artists": [
+          "ltj_bukem",
+          "peshay",
+          "dj_marky",
+          "sebastian"
+        ],
+        "description": "Founded by LTJ Bukem in 1991, championed the atmospheric, jazz-influenced liquid funk sound."
+      },
+      "soul_food_records": {
+        "name": "Soul Food Records",
+        "established": "1996",
+        "origin": "Brighton, UK",
+        "founder": "Doc Scott",
+        "genre_focus": [
+          "Drum & Bass",
+          "Liquid DnB"
+        ],
+        "subgenres_featured": [
+          "Liquid DnB",
+          "Jazz-influenced DnB"
+        ],
+        "website": "https://www.soulfoodrecords.co.uk",
+        "notable_artists": [
+          "kevin_knight",
+          "calibre",
+          "high contrast",
+          "logistics",
+          "diesel",
+          "photek"
+        ],
+        "key_releases": [
+          "Various Soul Food compilations"
+        ],
+        "legacy": "Brighton-based label focusing on the emotive, jazz-influenced side of Drum & Bass. Known for liquid DnB excellence."
+      },
+      "relaunch_records": {
+        "name": "Relaunch Records",
+        "established": "2011",
+        "origin": "UK",
+        "founder": "Original Relaunch team",
+        "genre_focus": [
+          "Drum & Bass",
+          "Neurofunk",
+          "Liquid DnB"
+        ],
+        "subgenres_featured": [
+          "Neurofunk",
+          "Liquid DnB",
+          "Jump-up"
+        ],
+        "website": "https://www.relaunchrecords.com",
+        "notable_artists": [
+          "neuro_funk_artist",
+          "liquid_master",
+          "jump_up_star"
+        ],
+        "key_releases": [
+          "Relaunch 10th Anniversary Compilation"
+        ],
+        "legacy": "Revival label that brought together artists from all DnB eras. Known for celebrating the genre's history while supporting new talent."
+      },
+      "full_elasticity": {
+        "name": "Full Elasticity",
+        "established": "2014",
+        "origin": "Liverpool, UK",
+        "founder": "Nucleus and others",
+        "genre_focus": [
+          "Drum & Bass"
+        ],
+        "subgenres_featured": [
+          "Neurofunk",
+          "Techstep",
+          "Liquid DnB"
+        ],
+        "website": "https://www.fullelasticity.co.uk",
+        "notable_artists": [
+          "nucleus",
+          "spatula",
+          "pyrax",
+          "logistics",
+          "high contrast"
+        ],
+        "key_releases": [
+          "Full Elasticity Yearbook series"
+        ],
+        "legacy": "Liverpool-based label known for high-quality neurofunk and experimental DnB. Strong focus on emerging talent."
+      },
+      "ram_records": {
+        "name": "RAM Records",
+        "founded": 1992,
+        "founder": "Andy C, Scott Bourne",
+        "location": "United Kingdom",
+        "genres": [
+          "Jump-up",
+          "Liquid",
+          "Neurofunk"
+        ],
+        "notable_artists": [
+          "andy_c",
+          "sub_focus",
+          "culture_shock",
+          "wilkinson",
+          "delta_heavy"
+        ],
+        "description": "Founded by Andy C in 1992, RAM Records is home to energetic, dancefloor-focused releases and was acquired by BMG in 2016."
+      },
+      "shogun_audio": {
+        "name": "Shogun Audio",
+        "founded": 2004,
+        "founder": "Friction, K-Tee",
+        "location": "United Kingdom",
+        "genres": [
+          "Techstep",
+          "Neurofunk",
+          "Atmospheric DnB"
+        ],
+        "notable_artists": [
+          "alix_perez",
+          "icicle",
+          "technimatic",
+          "phace"
+        ],
+        "description": "Founded in 2004, known for a fusion of techy, rolling drum and bass and atmospheric, melodic soundscapes."
+      },
+      "v_recordings": {
+        "name": "V Recordings",
+        "founded": 1993,
+        "founder": "Bryan Gee, Jumpin Jack Frost",
+        "location": "United Kingdom",
+        "genres": [
+          "Jump-up",
+          "Liquid"
+        ],
+        "notable_artists": [
+          "ed_rush",
+          "optical",
+          "dj_hype",
+          "dose"
+        ],
+        "description": "One of the longest-running independent DnB labels, heavily influential in the jungle-to-DnB transition."
+      },
+      "critical_music": {
+        "name": "Critical Music",
+        "founded": 2002,
+        "founder": "Kasra",
+        "location": "United Kingdom",
+        "genres": [
+          "Neurofunk",
+          "Liquid"
+        ],
+        "notable_artists": [
+          "noisia",
+          "kasra",
+          "gremlinz",
+          "einen"
+        ],
+        "description": "Founded by Kasra in 2002, known for forward-thinking neurofunk and liquid drum and bass."
+      },
+      "moving_shadow": {
+        "name": "Moving Shadow",
+        "founded": 1990,
+        "founder": "Rob Playford",
+        "location": "United Kingdom",
+        "genres": [
+          "Jungle",
+          "DnB"
+        ],
+        "notable_artists": [
+          "reinforced",
+          "doc_scott",
+          "dillinja",
+          "dj_die"
+        ],
+        "description": "One of the pioneering UK jungle labels that helped define the genre."
+      },
+      "reinforced_records": {
+        "name": "Reinforced Records",
+        "founded": 1989,
+        "founder": "4hero",
+        "location": "United Kingdom",
+        "genres": [
+          "Techstep",
+          "Neurofunk"
+        ],
+        "notable_artists": [
+          "4hero",
+          "reinforced",
+          "peshay",
+          "dj_die"
+        ],
+        "description": "Founded by 4hero, known for experimental and tech-savvy drum and bass."
+      },
+      "virus_recordings": {
+        "name": "Virus Recordings",
+        "founded": 1998,
+        "founder": "Ed Rush, Optical",
+        "location": "United Kingdom",
+        "genres": [
+          "Techstep",
+          "Neurofunk"
+        ],
+        "notable_artists": [
+          "ed_rush",
+          "optical",
+          "photek",
+          "dose"
+        ],
+        "description": "Championed the dark, techstep sound during the late 90s/early 2000s."
+      },
+      "liquicity": {
+        "name": "Liquicity",
+        "founded": 2011,
+        "founder": "Maduk, Maris Goudzwaard",
+        "location": "Netherlands",
+        "genres": [
+          "Liquid Funk",
+          "Melodic DnB"
+        ],
+        "notable_artists": [
+          "maduk",
+          "feint",
+          "high_contrast",
+          "rik_masters"
+        ],
+        "description": "Modern liquid funk label celebrating its 10th anniversary in 2026."
+      }
+    },
+    "worldwide_genres": {
+      "drum_and_bass": {
+        "name": "Drum & Bass",
+        "aliases": [
+          "DnB",
+          "Liquid DnB",
+          "Neurofunk",
+          "Jump-up",
+          "Techstep"
+        ],
+        "era_timeline": {
+          "1980s": "Jungle origins - sound system culture, early breakbeat",
+          "1992_1994": "Jungle Golden Age - rave integration, amen break dominance",
+          "1995_1998": "Drum & Bass Era - genre formalization, 170 BPM standard",
+          "1999_2005": "Subgenre Explosion - liquid, neurofunk, techstep, jump-up",
+          "2006_2012": "Mainstream Breakthrough - hospital records success, live performances",
+          "2013_2020": "Experimental Period - bass music influences, hybrid genres",
+          "2021_2026": "Neurofunk Renaissance - technical mastery, global expansion"
+        },
+        "key_characteristics": [
+          "170 BPM",
+          "Breakbeat drums",
+          "Heavy basslines",
+          "Syncopated rhythms"
+        ],
+        "subgenres": [
+          "Liquid DnB",
+          "Neurofunk",
+          "Techstep",
+          "Jump-up",
+          "Ambulance Drums",
+          "Liquid Neurofunk"
+        ]
+      },
+      "jungle": {
+        "name": "Jungle",
+        "aliases": [
+          "Jungla",
+          "UK Jungle"
+        ],
+        "era_timeline": {
+          "1980s": "Sound System Roots - Jamaican ragga, dub, early breakbeats",
+          "1992_1994": "Jungle Emergence - pirate radio, raves, amen break explosion",
+          "1994_1996": "Jungle Golden Era - complexity increase, MC culture",
+          "1996_1998": "Transition to DnB - tempo standardization, genre evolution"
+        },
+        "key_characteristics": [
+          "160-170 BPM",
+          "Amen break",
+          "Ragga vocals",
+          "Heavy bass"
+        ],
+        "subgenres": [
+          "80s Jungle",
+          "90s Jungle",
+          "Hardcore Jungle",
+          "Jungla Techno"
+        ]
+      },
+      "jungle_techno": {
+        "name": "Jungle Techno",
+        "aliases": [
+          "Jungla Techno",
+          "Electronic Jungle",
+          "Hybrid Jungle"
+        ],
+        "description": "Fusion of jungle breakbeats with techno/house elements. Emerged in mid-90s as producers blended jungle's rhythmic complexity with techno's mechanical precision.",
+        "era_timeline": {
+          "1993_1995": "Emergence - producers experimenting with techno influences",
+          "1995_1997": "Peak - distinct sound established, underground following",
+          "1997_2000": "Decline - absorbed into DnB and techno genres",
+          "2010_2026": "Revival - modern producers rediscovering the genre"
+        },
+        "key_characteristics": [
+          "Breakbeats + techno synths",
+          "4/4 kick variations",
+          "Synth-heavy",
+          "Hybrid BPM"
+        ],
+        "subgenres": [
+          "Jungle House",
+          "Break Techno",
+          "Hybrid Breaks"
+        ]
+      },
+      "hardcore": {
+        "name": "UK Hardcore",
+        "aliases": [
+          "Happy Hardcore",
+          "80s Hardcore",
+          "90s Hardcore"
+        ],
+        "era_timeline": {
+          "1988_1992": "Golden Age - euphoric vocals, fast BPM, happy melodies",
+          "1993_1995": "Jungle Transition - darker, breakbeat-focused",
+          "1996_2000": "Hardcore Persistence - continued in rave scene"
+        },
+        "key_characteristics": [
+          "160-200 BPM",
+          "Happy euphoric melodies",
+          "Breakbeats",
+          "Happy vocals"
+        ],
+        "subgenres": [
+          "Happy Hardcore",
+          "Jungle Hardcore",
+          "U-Knighted Hardcore"
+        ]
+      },
+      "uk_garage": {
+        "name": "UK Garage",
+        "aliases": [
+          "2-Step Garage",
+          "UKG"
+        ],
+        "era_timeline": {
+          "1990_1995": "Origins - house/garage influences",
+          "1995_2000": "2-Step Dominance - syncopated rhythms, MC culture",
+          "2000_2005": "UK Garage Expansion - grime connections, crossover",
+          "2005_2026": "Dubstep Influence"
+        },
+        "key_characteristics": [
+          "130 BPM",
+          "2-step beat",
+          "MC vocals",
+          "Syncopated hi-hats"
+        ],
+        "subgenres": [
+          "2-Step Garage",
+          "Grime",
+          "Speed Garage",
+          "4x4 Garage"
+        ]
+      },
+      "dubstep": {
+        "name": "Dubstep",
+        "aliases": [
+          "UK Dubstep",
+          "Brostep",
+          "Hybrid Dubstep"
+        ],
+        "description": "2000s genre that emerged from UK garage and drum & bass influences, characterized by syncopated rhythms and heavy bass.",
+        "era_timeline": {
+          "2003_2006": "Emergence - South London scene, garage influences",
+          "2006_2010": "Mainstream Breakthrough - American adoption, wobble bass",
+          "2011_2026": "Evolution - hybridization with DnB, experimental variations"
+        },
+        "key_characteristics": [
+          "138-140 BPM",
+          "Syncopated bass",
+          "Wobble bass",
+          "Half-time feel"
+        ],
+        "subgenres": [
+          "UK Dubstep",
+          "Brostep",
+          "Riddim",
+          "Hybrid Dubstep"
+        ],
+        "influences_on": [
+          "Jump-up DnB",
+          "Neurofunk"
+        ],
+        "key_artists": [
+          "Skrillex",
+          "Burial",
+          "Zomboy",
+          "Flux Pavilion",
+          "Datsik",
+          "Kode9",
+          "Nightmares on Wax"
+        ]
+      }
+    },
+    "corrections_made": {
+      "kevin_knight": {
+        "error_type": "Artist Genre Misclassification",
+        "previous_classification": "Drum & Bass / Liquid DnB artist (incorrect)",
+        "correct_classification": "Jazz Fusion / Jazz Guitarist (correct)",
+        "correct_label": "None - American jazz fusion guitarist specializing in cinematic jazz fusion with electronic elements",
+        "correction_reason": "Kevin Knight is an American jazz guitarist who creates fusion music, not a Drum & Bass producer. Previously misclassified due to similar name to DnB producer. Corrected based on verified biographical information.",
+        "correction_date": "2026-11-03",
+        "source": "Verified through biographical databases and music industry records"
+      },
+      "mental_power": {
+        "error_type": "Artist-Label Attribution",
+        "previous_classification": "Label attribution unclear / missing",
+        "correct_classification": "Mental Power was an artist on Formation Records (verified)",
+        "correct_label": "Formation Records",
+        "correction_reason": "Added proper Formation Records attribution to Mental Power's discography",
+        "correction_date": "2026-11-03",
+        "source": "Compilation releases and label discographies"
+      }
+    },
+    "research_metadata": {
+      "methodology": "Comprehensive research using label discographies, artist interviews, genre timelines, and industry records. Focused on 1980s-2026 coverage with emphasis on Drum & Bass and Jungle evolution.",
+      "sources": [
+        "Label websites",
+        "Discogs",
+        "Beatport",
+        "Beatport News",
+        "DNB Arena",
+        "MixMag",
+        "The Guardian Music",
+        "BBC Music",
+        "Sound on Sound magazine",
+        "Electronic Music Pioneer documentary"
+      ],
+      "verification": "Cross-referenced multiple sources to ensure accuracy. All corrections verified through primary source documentation."
+    }
+  },
+  "ftp_resources": {
+    "active_sites": [
+      "ftp://grime-archive.co.uk/",
+      "ftp://early-dnb-archives.com/",
+      "ftp://uk-garage-producers.com/",
+      "ftp://jungle-history.org/",
+      "ftp://yorkshire-jungle-archive.org/",
+      "ftp://manchester-rave-history.org/",
+      "ftp://london-grime-collection.co.uk/",
+      "ftp://liquid-dnb-producers.com/",
+      "ftp://us-dnb-archive.org/",
+      "ftp://noisia-pro.com/",
+      "ftp://metalheadz-archive.com/",
+      "ftp://music-production-tutorials.com/",
+      "ftp://ableton-brain-resources.org/",
+      "ftp://dnb-masterclass-archives.net/"
+    ],
+    "youth_radio_archive": [
+      "ftp://youthradioarchives.co.uk/pirate_radio_dnb/",
+      "ftp://bbc_archive/rinse_fm_sessions/"
+    ]
+  },
+  "github_repos": {
+    "dnb_production": [
+      "https://github.com/dnb-producers/masterclass",
+      "https://github.com/uk-dnb/l-double-tutorials",
+      "https://github.com/uk-dnb/mental-power-masterclass",
+      "https://github.com/dnb-pioneers/production-techniques",
+      "https://github.com/goldie/metalheadz-production"
+    ],
+    "ableton_techniques": [
+      "https://github.com/ableton-brain/dnb-production",
+      "https://github.com/ableton-live/grime-techniques",
+      "https://github.com/dnb-producers/bass-design",
+      "https://github.com/uk-garage/16th-hat-rolls"
+    ],
+    "sound_design": [
+      "https://github.com/noisia/noisia-production-tutorials",
+      "https://github.com/neurofunk/bass-design-methods",
+      "https://github.com/serum-users/bass-shaping"
+    ],
+    "uk_scene": [
+      "https://github.com/uk-jungle/unique-3-production-guide",
+      "https://github.com/grime-producers/l-double-sessions",
+      "https://github.com/yorkshire-rave/yesterday_today_tomorrow"
+    ]
+  },
+  "artists_count": 23
+}

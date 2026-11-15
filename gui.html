@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABLETON BRAIN - Music Production Intelligence Hub</title>
+    <style>
+        :root {
+            --primary: #ff6b35;
+            --primary-dark: #e55a2b;
+            --secondary: #1a1a2e;
+            --accent: #00ff88;
+            --background: #0f0f1a;
+            --card: #1e1e2e;
+            --text: #e0e0e0;
+            --text-light: #ffffff;
+            --border: #2d2d44;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: var(--background);
+            color: var(--text);
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, var(--text-light), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            color: var(--accent);
+            margin-top: 0.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .search-bar {
+            background: var(--card);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .search-bar input {
+            flex: 1;
+            padding: 1rem;
+            background: transparent;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+        
+        .search-bar input::placeholder {
+            color: #888;
+        }
+        
+        .search-bar button {
+            padding: 0 2rem;
+            background: var(--primary);
+            color: var(--text-light);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        
+        .search-bar button:hover {
+            background: var(--primary-dark);
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 2rem;
+            background: var(--card);
+            padding: 0.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 1rem;
+            text-align: center;
+            background: transparent;
+            border: none;
+            color: var(--text);
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        .tab.active {
+            background: var(--primary);
+            color: var(--text-light);
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+        
+        .card {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            border-left: 4px solid var(--primary);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--text-light);
+        }
+        
+        .badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .badge.genre {
+            background: rgba(255,107,53,0.2);
+            color: var(--primary);
+        }
+        
+        .badge.location {
+            background: rgba(0,255,136,0.2);
+            color: var(--accent);
+        }
+        
+        .section-title {
+            margin: 1.5rem 0 1rem;
+            color: var(--primary);
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .artist-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .artist-card {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border-left: 4px solid var(--accent);
+        }
+        
+        .artist-name {
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: var(--text-light);
+        }
+        
+        .artist-origin {
+            color: var(--accent);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .technique-list, .equipment-list {
+            list-style: none;
+            margin: 0.5rem 0;
+        }
+        
+        .technique-list li, .equipment-list li {
+            padding: 0.3rem 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.9rem;
+        }
+        
+        .quote-box {
+            background: var(--secondary);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .quote-text {
+            font-style: italic;
+            color: var(--text-light);
+            line-height: 1.5;
+        }
+        
+        .link-button {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            background: var(--primary);
+            color: var(--text-light);
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            transition: background 0.3s;
+        }
+        
+        .link-button:hover {
+            background: var(--primary-dark);
+        }
+        
+        .stats-row {
+            display: flex;
+            gap: 2rem;
+            margin: 1rem 0;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: var(--secondary);
+            border-radius: 8px;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .stat-label {
+            color: var(--accent);
+            font-size: 0.9rem;
+        }
+        
+        .resource-item {
+            padding: 0.8rem 1rem;
+            background: var(--card);
+            border-radius: 8px;
+            margin: 0.5rem 0;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .resource-item a {
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        
+        .resource-item a:hover {
+            text-decoration: underline;
+        }
+        
+        .resource-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>ABLETON BRAIN</h1>
+        <p class="subtitle">Music Production Intelligence Hub | 23 Artists | 13 Engineers | 4 Techniques | FTP & GitHub Archives Available</p>
+    </header>
+    
+    <div class="container">
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search artists, techniques, engineers...">
+            <button onclick="searchDatabase()">🔍 Search</button>
+        </div>
+        
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('artists')">🎵 Artists</button>
+            <button class="tab" onclick="showTab('engineers')">🔧 Engineers</button>
+            <button class="tab" onclick="showTab('techniques')">🎛️ Techniques</button>
+            <button class="tab" onclick="showTab('resources')">📚 Resources</button>
+            <button class="tab" onclick="showTab('stats')">📊 Stats</button>
+        </div>
+        
+        <div id="artists" class="tab-content">
+            <h2 class="section-title">🎯 Featured Pioneers: L Double, Mental Power, & Kevin Eubank</h2>
+            <div class="artist-grid" id="featuredArtists"></div>
+            
+            <h2 class="section-title">👥 All DnB & UK Artists</h2>
+            <div class="artist-grid" id="allArtists"></div>
+        </div>
+        
+        <div id="engineers" class="tab-content hidden">
+            <h2 class="section-title">👨‍🎤 Top EDM Engineers</h2>
+            <div class="grid" id="engineersGrid"></div>
+        </div>
+        
+        <div id="techniques" class="tab-content hidden">
+            <h2 class="section-title">🎛️ Production Techniques</h2>
+            <div class="grid" id="techniquesGrid"></div>
+        </div>
+        
+        <div id="resources" class="tab-content hidden">
+            <h2 class="section-title">📚 FTP Sites & GitHub Repositories</h2>
+            <h3>FTP Archive Sites</h3>
+            <div class="resource-grid" id="ftpSites"></div>
+            <h3>GitHub Repositories</h3>
+            <div class="resource-grid" id="githubRepos"></div>
+        </div>
+        
+        <div id="stats" class="tab-content hidden">
+            <h2 class="section-title">📊 Database Statistics</h2>
+            <div class="stats-row">
+                <div class="stat-item">
+                    <div class="stat-number">23</div>
+                    <div class="stat-label">Total Artists</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">13</div>
+                    <div class="stat-label">Recording Engineers</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">4</div>
+                    <div class="stat-label">Production Techniques</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">15</div>
+                    <div class="stat-label">Genres Covered</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">14</div>
+                    <div class="stat-label">FTP Archives</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">15</div>
+                    <div class="stat-label">GitHub Repos</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let database = null;
+        document.addEventListener('DOMContentLoaded', function() {
+            loadDatabase();
+        });
+        
+        async function loadDatabase() {
+            try {
+                const response = await fetch('database.json');
+                database = await response.json();
+                renderAll();
+            } catch (error) {
+                console.error('Database loading error:', error);
+                document.body.innerHTML = '<div style="text-align:center;padding:50px"><h1>Database loading error</h1><p>Please ensure database.json is in the same directory.</p></div>';
+            }
+        }
+        
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabName).classList.remove('hidden');
+            document.querySelector(`.tab[onclick="showTab('${tabName}')"]`).classList.add('active');
+        }
+        
+        function searchDatabase() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            if (!database || !query) return;
+            
+            const results = [];
+            Object.entries(database.artists).forEach(([id, artist]) => {
+                if (id.includes(query) || artist.genre.toLowerCase().includes(query) || artist.origin.toLowerCase().includes(query)) {
+                    results.push({type: 'artist', id, data: artist});
+                }
+            });
+            
+            if (results.length > 0) {
+                alert(`Found ${results.length} results for "${query}"`);
+                console.log(results);
+            } else {
+                alert(`No results found for "${query}"`);
+            }
+        }
+        
+        function renderAll() {
+            if (!database) return;
+            renderFeaturedArtists();
+            renderAllArtists();
+            renderEngineers();
+            renderTechniques();
+            renderResources();
+        }
+        
+        function renderFeaturedArtists() {
+            const featured = ['l_double', 'mental_power', 'kevin_eubank', 'unique_3', 'grooverider', 'horse_power_productions'];
+            const container = document.getElementById('featuredArtists');
+            container.innerHTML = '';
+            
+            featured.forEach(artistId => {
+                if (database.artists[artistId]) {
+                    const artist = database.artists[artistId];
+                    const card = document.createElement('div');
+                    card.className = 'artist-card';
+                    card.innerHTML = `
+                        <div class="card-header">
+                            <div class="artist-name">${formatName(artistId)}</div>
+                            <span class="badge genre">${artist.genre}</span>
+                        </div>
+                        <div class="artist-origin">📍 ${artist.origin}</div>
+                        <h4 style="margin-top:1rem;color:var(--primary)">Techniques</h4>
+                        <ul class="technique-list">
+                            ${artist.signature_techniques.slice(0, 3).map(t => `<li>• ${t}</li>`).join('')}
+                        </ul>
+                        <h4 style="margin-top:1rem;color:var(--primary)">Key Equipment</h4>
+                        <ul class="equipment-list">
+                            ${artist.key_equipment.slice(0, 3).map(e => `<li>• ${e}</li>`).join('')}
+                        </ul>
+                        ${artist.inspirational_quotes ? `<div class="quote-box"><div class="quote-text">"${artist.inspirational_quotes[0]}"</div></div>` : ''}
+                        <a href="${artist.learning_resources?.video_tutorials?.[0] || '#'}" target="_blank" class="link-button">🎥 Watch Tutorial</a>
+                    `;
+                    container.appendChild(card);
+                }
+            });
+        }
+        
+        function renderAllArtists() {
+            const container = document.getElementById('allArtists');
+            container.innerHTML = '';
+            
+            Object.entries(database.artists).forEach(([artistId, artist]) => {
+                const card = document.createElement('div');
+                card.className = 'artist-card';
+                card.innerHTML = `
+                    <div class="card-header">
+                        <div class="artist-name">${formatName(artistId)}</div>
+                        <span class="badge genre">${artist.genre}</span>
+                    </div>
+                    <div class="artist-origin">📍 ${artist.origin}</div>
+                    <p style="color: var(--text); margin-bottom: 1rem;">${artist.life_story?.substring(0, 150) || ''}...</p>
+                    <h4 style="margin-top:0.5rem;color:var(--primary)">Signature Techniques</h4>
+                    <ul class="technique-list">
+                        ${artist.signature_techniques?.slice(0, 2).map(t => `<li>• ${t}</li>`).join('') || ''}
+                    </ul>
+                    <div style="margin-top:1rem">
+                        <a href="${artist.interviews?.[0]?.url || '#'}" target="_blank" class="link-button">📄 Interview</a>
+                        <a href="${artist.learning_resources?.video_tutorials?.[0] || '#'}" target="_blank" class="link-button">🎥 Tutorial</a>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+        
+        function renderEngineers() {
+            const container = document.getElementById('engineersGrid');
+            container.innerHTML = '';
+            
+            Object.entries(database.engineers).forEach(([engId, eng]) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="card-header">
+                        <div class="card-title">${eng.name}</div>
+                        <span class="badge genre">${eng.specialization}</span>
+                    </div>
+                    <p><strong>📍 Location:</strong> ${eng.location}</p>
+                    <p><strong>⭐ Experience:</strong> ${eng.experience}</p>
+                    <p><strong>🏆 Client Credits:</strong> ${eng.client_credits?.join(', ')}</p>
+                    <p><strong>💡 Signature Approach:</strong></p>
+                    <ul style="margin-left:1rem">
+                        ${eng.signature_approach?.map(a => `<li>${a}</li>`).join('') || ''}
+                    </ul>
+                `;
+                container.appendChild(card);
+            });
+        }
+        
+        function renderTechniques() {
+            const container = document.getElementById('techniquesGrid');
+            container.innerHTML = '';
+            
+            Object.entries(database.techniques).forEach(([techId, tech]) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="card-header">
+                        <div class="card-title">${tech.title}</div>
+                    </div>
+                    <p>${tech.description}</p>
+                    <h4 style="margin-top:1rem;color:var(--primary)">Methods</h4>
+                    <ul style="margin-left:1rem">
+                        ${tech.methods?.map(m => `<li>${m}</li>`).join('') || ''}
+                    </ul>
+                    <p style="margin-top:1rem"><strong>Instruments:</strong> ${tech.instruments?.join(', ')}</p>
+                `;
+                container.appendChild(card);
+            });
+        }
+        
+        function renderResources() {
+            const ftpContainer = document.getElementById('ftpSites');
+            const ghContainer = document.getElementById('githubRepos');
+            
+            ftpContainer.innerHTML = '';
+            if (database.ftp_resources?.active_sites) {
+                database.ftp_resources.active_sites.forEach(site => {
+                    const item = document.createElement('div');
+                    item.className = 'resource-item';
+                    item.innerHTML = `<a href="${site}" target="_blank">${site}</a>`;
+                    ftpContainer.appendChild(item);
+                });
+            }
+            
+            ghContainer.innerHTML = '';
+            if (database.github_repos) {
+                Object.values(database.github_repos).flat().forEach(repo => {
+                    const item = document.createElement('div');
+                    item.className = 'resource-item';
+                    item.innerHTML = `<a href="${repo}" target="_blank">${repo}</a>`;
+                    ghContainer.appendChild(item);
+                });
+            }
+        }
+        
+        function formatName(id) {
+            return id.replace(/_/g, ' ').replace(/\w/g, l => l.toUpperCase());
+        }
+    </script>
+</body>
+</html>

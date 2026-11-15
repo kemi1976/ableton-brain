@@ -1,0 +1,27 @@
+{
+  "app.name": "Ableton Brain",
+  "app.tagline": "跨DAW音乐制作自动化",
+  "nav.dashboard": "仪表盘",
+  "nav.tracks": "轨道",
+  "nav.transport": "传输控制",
+  "nav.controllers": "控制器",
+  "dashboard.title": "仪表盘",
+  "dashboard.connected": "已连接",
+  "tracks.title": "轨道",
+  "tracks.create": "创建轨道",
+  "transport.title": "传输控制",
+  "transport.play": "播放",
+  "transport.stop": "停止",
+  "common.save": "保存",
+  "common.cancel": "取消",
+  "common.delete": "删除",
+  "common.loading": "加载中...",
+  "tracks.count": {
+    "key": "tracks.count",
+    "locale": "zh-CN",
+    "value": "{count} 条轨道",
+    "plural_forms": {
+      "other": "{count} 条轨道"
+    }
+  }
+}

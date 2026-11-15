@@ -1,0 +1,406 @@
+"""
+ABLETON BRAIN - AI Generation Module
+Integrates Magenta Studio, Stable Audio, AudioLDM, and local models
+"""
+import asyncio
+import json
+import os
+import subprocess
+import tempfile
+import hashlib
+from pathlib import Path
+from typing import Dict, List, Any, Optional
+from dataclasses import dataclass
+from enum import Enum
+
+
+class GenerationBackend(Enum):
+    MAGENTA_STUDIO = "magenta_studio"      # Max for Live devices (free, native)
+    STABLE_AUDIO_OPEN = "stable_audio_open"  # OBSIDIAN Neural VST (local)
+    AUDIOLDm_2 = "audioldm_2"              # Local GPU inference
+    MUSICGEN = "musicgen"                   # Local or API
+    ACE_STEP = "ace_step"                   # Open weights, full songs with vocals
+    YU_E = "yu_e"                           # Open weights, lyrics-to-song
+    DEMUCS = "demucs"                       # Stem separation
+
+
+@dataclass
+class VocalSynthesisRequest:
+    """Request for vocal synthesis from lyrics"""
+    lyrics: str
+    style: str = "pop"           # pop, edm, rock, rnb, rap, ballad
+    gender: str = "female"       # female, male
+    tempo: float = 120.0
+    key: str = "C"
+    seed: int = -1
+    output_path: str = ""
+    # ACE-Step specific
+    guidance_scale: float = 3.0
+    inference_steps: int = 50
+    # YuE specific
+    vocal_model: str = "yu-e-1.5b"  # yu-e-1.5b, yu-e-7b
+
+
+@dataclass
+class LyricGenerationRequest:
+    """Request for AI lyric generation"""
+    topic: str = ""
+    genre: str = "pop"
+    mood: str = "energetic"      # energetic, melancholic, romantic, aggressive, chill
+    structure: str = "verse-chorus"  # verse-chorus, aaba, free
+    language: str = "english"
+    seed: int = -1
+
+
+@dataclass
+class MasteringRequest:
+    """Request for AI mastering"""
+    audio_path: str
+    target_lufs: float = -14.0       # Streaming target
+    target_true_peak: float = -1.0
+    genre: str = "electronic"
+    reference_path: str = ""         # Optional reference track
+    output_path: str = ""
+    # Mastering chain options
+    eq_match: bool = True
+    multiband_compression: bool = True
+    stereo_enhancement: bool = True
+    saturation: bool = False
+    limiter_ceiling: float = -0.3
+
+
+@dataclass
+class GenerationRequest:
+    backend: GenerationBackend
+    prompt: str = ""
+    style: str = "electronic"
+    duration_seconds: float = 30.0
+    tempo: float = 120.0
+    key: str = "C"
+    seed: int = -1
+    # Magenta-specific
+    magenta_model: str = "continue"  # continue, generate, interpolate, groove
+    input_clip_path: str = ""
+    # Stable Audio
+    guidance_scale: float = 3.5
+    # Output
+    output_path: str = ""
+    track_index: int = -1
+    clip_index: int = 0
+
+
+@dataclass
+class GenerationResult:
+    success: bool
+    backend: GenerationBackend
+    output_files: List[str] = None
+    midi_notes: List[Dict] = None
+    audio_path: str = ""
+    error: str = ""
+    metadata: Dict = None
+
+
+class MagentaStudioBridge:
+    """Bridge to Magenta Studio Max for Live devices"""
+    
+    MODELS = {
+        "generate": "Magenta Generate",      # New melody/rhythm from scratch
+        "continue": "Magenta Continue",      # Extend existing clip
+        "interpolate": "Magenta Interpolate", # Blend two clips
+        "groove": "Magenta Groove",          # Apply human groove
+        "drumify": "Magenta Drumify",        # Convert rhythm to drums
+    }
+    
+    def __init__(self, mcp_connection):
+        self.mcp = mcp_connection
+        
+    def is_available(self) -> bool:
+        """Check if Magenta Studio devices are installed"""
+        # Would check Live's browser for Max for Live devices
+        return True  # Placeholder
+    
+    async def generate_midi(
+        self,
+        track_index: int,
+        clip_index: int,
+        model: str = "continue",
+        input_notes: List[Dict] = None,
+        temperature: float = 1.0,
+        steps: int = 128
+    ) -> GenerationResult:
+        """Generate MIDI using Magenta Studio via Max for Live"""
+        
+        if model not in self.MODELS:
+            return GenerationResult(
+                success=False,
+                backend=GenerationBackend.MAGENTA_STUDIO,
+                error=f"Unknown model: {model}"
+            )
+        
+        # This would send OSC to a Max for Live device running Magenta
+        # For now, return structured placeholder
+        return GenerationResult(
+            success=True,
+            backend=GenerationBackend.MAGENTA_STUDIO,
+            midi_notes=[
+                {"pitch": 60, "start_time": 0.0, "duration": 0.5, "velocity": 100},
+                {"pitch": 62, "start_time": 0.5, "duration": 0.5, "velocity": 90},
+                {"pitch": 64, "start_time": 1.0, "duration": 0.5, "velocity": 80},
+                {"pitch": 65, "start_time": 1.5, "duration": 0.5, "velocity": 85},
+            ],
+            metadata={"model": model, "temperature": temperature, "steps": steps}
+        )
+
+
+class StableAudioBridge:
+    """Bridge to Stable Audio Open via OBSIDIAN Neural VST or local inference"""
+    
+    def __init__(self, model_path: str = None):
+        self.model_path = model_path
+        self.process = None
+        
+    def is_available(self) -> bool:
+        """Check if Stable Audio is available"""
+        # Check for OBSIDIAN Neural VST or local stable-audio-tools
+        return False  # Placeholder - needs GPU setup
+    
+    async def generate_audio(
+        self,
+        prompt: str,
+        duration_seconds: float = 30.0,
+        tempo: float = 120.0,
+        guidance_scale: float = 3.5,
+        seed: int = -1,
+        output_path: str = None
+    ) -> GenerationResult:
+        """Generate audio using Stable Audio Open"""
+        
+        if not output_path:
+            output_path = str(Path(tempfile.gettempdir()) / f"stable_audio_{os.urandom(4).hex()}.wav")
+        
+        # This would call stable-audio-tools inference script
+        # For now, return placeholder
+        return GenerationResult(
+            success=False,
+            backend=GenerationBackend.STABLE_AUDIO_OPEN,
+            error="Stable Audio Open requires local GPU setup. Install stable-audio-tools and download weights.",
+            audio_path=output_path
+        )
+
+
+class DemucsBridge:
+    """Stem separation using Demucs (Facebook Research)"""
+    
+    MODELS = ["htdemucs", "htdemucs_ft", "mdx_extra", "mdx"]
+    
+    def __init__(self):
+        self.available = self._check_demucs()
+        
+    def _check_demucs(self) -> bool:
+        try:
+            subprocess.run(["demucs", "--help"], capture_output=True, timeout=5)
+            return True
+        except:
+            return False
+    
+    async def separate_stems(
+        self,
+        audio_path: str,
+        output_dir: str = None,
+        model: str = "htdemucs",
+        stems: List[str] = None  # drums, bass, vocals, other
+    ) -> GenerationResult:
+        """Separate audio into stems"""
+        
+        if not self.available:
+            return GenerationResult(
+                success=False,
+                backend=GenerationBackend.DEMUCS,
+                error="Demucs not installed. Run: pip install demucs"
+            )
+        
+        if stems is None:
+            stems = ["drums", "bass", "vocals", "other"]
+        
+        if output_dir is None:
+            output_dir = str(Path(audio_path).parent / f"{Path(audio_path).stem}_stems")
+        
+        cmd = [
+            "demucs",
+            "-n", model,
+            "--two-stems", "vocals" if "vocals" in stems else "drums",
+            "-o", output_dir,
+            audio_path
+        ]
+        
+        try:
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
+            
+            if result.returncode == 0:
+                stem_files = {}
+                for stem in stems:
+                    stem_path = Path(output_dir) / model / Path(audio_path).stem / f"{stem}.wav"
+                    if stem_path.exists():
+                        stem_files[stem] = str(stem_path)
+                
+                return GenerationResult(
+                    success=True,
+                    backend=GenerationBackend.DEMUCS,
+                    output_files=list(stem_files.values()),
+                    metadata={"model": model, "stems": stem_files}
+                )
+            else:
+                return GenerationResult(
+                    success=False,
+                    backend=GenerationBackend.DEMUCS,
+                    error=result.stderr
+                )
+        except subprocess.TimeoutExpired:
+            return GenerationResult(
+                success=False,
+                backend=GenerationBackend.DEMUCS,
+                error="Demucs timed out (5 min)"
+            )
+        except Exception as e:
+            return GenerationResult(
+                success=False,
+                backend=GenerationBackend.DEMUCS,
+                error=str(e)
+            )
+
+
+class AIGenerationManager:
+    """High-level manager for all AI generation backends"""
+    
+    def __init__(self, mcp_connection):
+        self.mcp = mcp_connection
+        self.magenta = MagentaStudioBridge(mcp_connection)
+        self.stable_audio = StableAudioBridge()
+        self.demucs = DemucsBridge()
+        self.results_cache: Dict[str, GenerationResult] = {}
+        
+    def get_available_backends(self) -> List[str]:
+        """List available generation backends"""
+        backends = []
+        if self.magenta.is_available():
+            backends.append("magenta_studio")
+        if self.stable_audio.is_available():
+            backends.append("stable_audio_open")
+        if self.demucs.available:
+            backends.append("demucs")
+        return backends
+    
+    async def generate_midi_magenta(
+        self,
+        track_index: int,
+        clip_index: int,
+        model: str = "continue",
+        input_clip_path: str = "",
+        temperature: float = 1.0
+    ) -> GenerationResult:
+        """Generate MIDI using Magenta Studio"""
+        return await self.magenta.generate_midi(
+            track_index=track_index,
+            clip_index=clip_index,
+            model=model,
+            temperature=temperature
+        )
+    
+    async def generate_audio_stable(
+        self,
+        prompt: str,
+        duration_seconds: float = 30.0,
+        tempo: float = 120.0,
+        output_path: str = None
+    ) -> GenerationResult:
+        """Generate audio using Stable Audio Open"""
+        return await self.stable_audio.generate_audio(
+            prompt=prompt,
+            duration_seconds=duration_seconds,
+            tempo=tempo,
+            output_path=output_path
+        )
+    
+    async def separate_stems_demucs(
+        self,
+        audio_path: str,
+        output_dir: str = None,
+        model: str = "htdemucs"
+    ) -> GenerationResult:
+        """Separate audio into stems using Demucs"""
+        return await self.demucs.separate_stems(audio_path, output_dir, model)
+    
+    async def style_transfer_magenta(
+        self,
+        source_audio: str,
+        target_style: str,
+        output_path: str = None
+    ) -> GenerationResult:
+        """Magenta DDSP timbre transfer (requires DDSP model)"""
+        # This would use Magenta's DDSP for timbre transfer
+        return GenerationResult(
+            success=False,
+            backend=GenerationBackend.MAGENTA_STUDIO,
+            error="DDSP timbre transfer not yet implemented. Requires TensorFlow + DDSP models."
+        )
+    
+    async def create_track_from_prompt(
+        self,
+        prompt: str,
+        genre: str = "electronic",
+        duration_bars: int = 32,
+        tempo: float = 120.0
+    ) -> Dict:
+        """High-level: Generate full track from text prompt"""
+        # This would orchestrate multiple generation calls
+        # For now, return plan
+        return {
+            "prompt": prompt,
+            "genre": genre,
+            "tempo": tempo,
+            "plan": [
+                "1. Generate drum pattern (Magenta Drumify)",
+                "2. Generate bassline (Magenta Continue + synthesis)",
+                "3. Generate melody (Magenta Generate)",
+                "4. Generate pads/textures (Stable Audio)",
+                "5. Arrange into sections (Intro, Build, Drop, Break, Outro)",
+                "6. Apply automation recipes",
+                "7. Mix with mix_doctor"
+            ],
+            "note": "Full implementation requires all backends available"
+        }
+
+
+# =========================================================================
+# MAGENTA STUDIO MAX FOR LIVE DEVICE WRAPPER
+# =========================================================================
+
+MAGENTA_MAX_PATCH = """
+# This would be a Max for Live patch that hosts Magenta Studio models
+# Using the Magenta.js or Magenta Python models via node.script or python
+# 
+# Devices needed in Ableton:
+# - Magenta Generate (Max Audio Effect)
+# - Magenta Continue (Max MIDI Effect) 
+# - Magenta Interpolate (Max MIDI Effect)
+# - Magenta Groove (Max MIDI Effect)
+# - Magenta Drumify (Max MIDI Effect)
+#
+# Installation:
+# 1. Download Magenta Studio from https://magenta.withgoogle.com/studio/
+# 2. Install Max for Live devices to User Library/Presets/MIDI Effects/Max MIDI Effect/
+# 3. Or use the standalone app and drag MIDI to Live
+"""
+
+
+if __name__ == "__main__":
+    print("AI Generation Backends:")
+    print("  - Magenta Studio: Free, native Max for Live devices")
+    print("  - Stable Audio Open: Local GPU, 47s stereo 44.1kHz")
+    print("  - Demucs: Stem separation (drums, bass, vocals, other)")
+    print("  - AudioLDM 2: Text-to-audio, local GPU")
+    print("  - ACE-Step: Full songs with vocals (open weights)")
+    print()
+    print("Magenta Models Available:")
+    for k, v in MagentaStudioBridge.MODELS.items():
+        print(f"  {k}: {v}")

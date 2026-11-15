@@ -1,0 +1,29 @@
+{
+  "database_stats": {
+    "artists": 23,
+    "engineers": 13,
+    "techniques": 4,
+    "genres": 25
+  },
+  "controllers": [],
+  "supported_daws": [
+    "ableton",
+    "reaper",
+    "logic",
+    "flstudio",
+    "cubase",
+    "protools"
+  ],
+  "supported_controllers": [
+    "push1",
+    "push2",
+    "push3",
+    "gamepad",
+    "keyboard",
+    "custom",
+    "bluetooth_midi",
+    "usb_otg",
+    "vomini",
+    "launchpad"
+  ]
+}

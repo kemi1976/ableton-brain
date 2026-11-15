@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ableton Brain Studio — AI Music Production Assistant</title>
+<style>
+:root {
+  --bg:#0d0e10; --bg-elev:#15171a; --bg-card:#1b1e22;
+  --fg:#e8eaed; --fg-muted:#9aa0a6; --fg-dim:#6b7280;
+  --accent:#00d4aa; --accent-dim:#00b894; --accent-glow:rgba(0,212,170,.35);
+  --warn:#ffb300; --err:#ff5252; --info:#42a5f5;
+  --border:#2a2e35; --border-bright:#3a3f47;
+  --radius:10px; --radius-sm:6px; --shadow:0 8px 32px rgba(0,0,0,.45);
+  --font-sans:"Inter","SF Pro Text",system-ui,-apple-system,sans-serif;
+  --font-mono:"JetBrains Mono","Fira Code",monospace;
+}
+@media (prefers-color-scheme: light) {
+  :root { --bg:#f5f6f8; --bg-elev:#fff; --bg-card:#fff; --fg:#1a1d21; --fg-muted:#5f6368; --fg-dim:#80868b; --border:#dadce0; --border-bright:#e8eaed; --shadow:0 8px 32px rgba(0,0,0,.08); }
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+html, body { height:100%; }
+body {
+  font-family:var(--font-sans); background:var(--bg); color:var(--fg);
+  font-size:14px; line-height:1.5; -webkit-font-smoothing:antialiased;
+}
+a { color:var(--accent); text-decoration:none; }
+a:hover { text-decoration:underline; }
+button { font-family:inherit; font-size:inherit; cursor:pointer; border:none; background:none; color:inherit; }
+input, select, textarea { font-family:inherit; font-size:inherit; background:var(--bg-card); color:var(--fg); border:1px solid var(--border); border-radius:var(--radius-sm); padding:8px 12px; outline:none; }
+input:focus, select:focus, textarea:focus { border-color:var(--accent); box-shadow:0 0 0 2px var(--accent-glow); }
+::placeholder { color:var(--fg-dim); }
+::-webkit-scrollbar { width:8px; height:8px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:var(--border-bright); border-radius:4px; }
+::-webkit-scrollbar-thumb:hover { background:var(--accent); }
+
+/* Layout */
+.app { display:grid; grid-template-rows:auto 1fr auto; height:100vh; overflow:hidden; }
+
+/* Top Bar */
+.topbar { display:flex; align-items:center; gap:16px; height:56px; padding:0 20px; background:var(--bg-elev); border-bottom:1px solid var(--border); position:relative; z-index:100; }
+.topbar-left { display:flex; align-items:center; gap:12px; flex:1; }
+.logo { display:flex; align-items:center; gap:8px; font-weight:700; font-size:15px; color:var(--fg); }
+.logo svg { width:28px; height:28px; color:var(--accent); }
+.logo .pro-badge { background:linear-gradient(135deg,var(--accent),#00f5d4); color:#051014; font-size:10px; font-weight:700; padding:2px 6px; border-radius:4px; letter-spacing:.5px; }
+.global-transport { display:flex; align-items:center; gap:8px; margin-left:8px; padding-left:12px; border-left:1px solid var(--border); }
+.transport-btn { width:36px; height:36px; border-radius:8px; display:flex; align-items:center; justify-content:center; background:var(--bg-card); border:1px solid var(--border); color:var(--fg-muted); transition:.15s; }
+.transport-btn:hover { background:var(--bg-elev); border-color:var(--border-bright); color:var(--fg); }
+.transport-btn.active { background:var(--accent); border-color:var(--accent); color:#051014; }
+.transport-btn svg { width:18px; height:18px; }
+.tempo-key { display:flex; align-items:center; gap:16px; margin-left:16px; padding-left:16px; border-left:1px solid var(--border); }
+.tempo-key > div { display:flex; align-items:center; gap:6px; font-size:13px; color:var(--fg-muted); }
+.tempo-key input { width:70px; text-align:center; font-weight:600; color:var(--fg); background:var(--bg); border-color:var(--border-bright); }
+.tempo-key select { min-width:90px; }
+
+.topbar-center { display:flex; align-items:center; gap:8px; flex:1; justify-content:center; }
+.search-bar { position:relative; width:100%; max-width:520px; }
+.search-bar svg { position:absolute; left:14px; top:50%; transform:translateY(-50%); width:18px; height:18px; color:var(--fg-dim); pointer-events:none; }
+.search-bar input { width:100%; padding:10px 14px 10px 44px; border-radius:24px; background:var(--bg); border-color:var(--border); font-size:14px; }
+.search-bar input:focus { border-color:var(--accent); box-shadow:0 0 0 2px var(--accent-glow); }
+.search-bar .hint { position:absolute; right:14px; top:50%; transform:translateY(-50%); font-size:11px; color:var(--fg-dim); font-family:var(--font-mono); opacity:0; transition:.2s; }
+.search-bar:focus-within .hint { opacity:1; }
+
+.topbar-right { display:flex; align-items:center; gap:8px; }
+.icon-btn { width:40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center; color:var(--fg-muted); background:var(--bg-card); border:1px solid var(--border); transition:.15s; }
+.icon-btn:hover { background:var(--bg-elev); border-color:var(--border-bright); color:var(--fg); }
+.icon-btn svg { width:20px; height:20px; }
+.icon-btn.primary { background:var(--accent); border-color:var(--accent); color:#051014; font-weight:600; padding:0 16px; gap:6px; }
+.icon-btn.primary svg { width:16px; height:16px; }
+.icon-btn.primary:hover { filter:brightness(1.1); }
+
+/* Main Area */
+.main { display:grid; grid-template-columns:260px 1fr 320px; overflow:hidden; }
+
+/* Sidebar */
+.sidebar { background:var(--bg-elev); border-right:1px solid var(--border); display:flex; flex-direction:column; overflow:hidden; }
+.sidebar-header { padding:16px 16px 8px; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.08em; color:var(--fg-dim); }
+.nav { flex:1; overflow-y:auto; padding:0 8px 16px; }
+.nav-section { margin-bottom:16px; }
+.nav-section-title { font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:.1em; color:var(--fg-dim); padding:0 12px 6px; }
+.nav-item { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:var(--radius-sm); color:var(--fg-muted); font-size:13px; font-weight:500; transition:.15s; margin-bottom:2px; }
+.nav-item:hover { background:var(--bg-card); color:var(--fg); }
+.nav-item.active { background:linear-gradient(90deg,var(--accent-glow),transparent); color:var(--accent); border-left:3px solid var(--accent); }
+.nav-item svg { width:18px; height:18px; flex-shrink:0; }
+.nav-item .badge { margin-left:auto; background:var(--accent); color:#051014; font-size:9px; font-weight:700; padding:1px 6px; border-radius:10px; }
+.nav-divider { height:1px; background:var(--border); margin:8px 0; }
+
+/* Canvas */
+.canvas { background:var(--bg); overflow:auto; position:relative; }
+.canvas-header { display:flex; align-items:center; justify-content:space-between; padding:16px 20px; border-bottom:1px solid var(--border); background:var(--bg-elev); position:sticky; top:0; z-index:10; }
+.canvas-title { font-size:15px; font-weight:600; }
+.canvas-actions { display:flex; gap:8px; }
+.canvas-content { padding:20px; }
+
+/* Visual Mix Map */
+.mix-map { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); height:320px; position:relative; overflow:hidden; margin-bottom:20px; }
+.mix-map-canvas { width:100%; height:100%; display:block; }
+.mix-map-legend { position:absolute; bottom:12px; right:12px; display:flex; flex-direction:column; gap:6px; font-size:11px; color:var(--fg-muted); background:rgba(21,23,26,.9); padding:8px 12px; border-radius:var(--radius-sm); backdrop-filter:blur(8px); border:1px solid var(--border); }
+.mix-map-legend span { display:flex; align-items:center; gap:6px; }
+.mix-map-legend .dot { width:10px; height:10px; border-radius:50%; }
+
+/* Collisions Panel */
+.collisions-panel { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); }
+.panel-header { display:flex; align-items:center; justify-content:space-between; padding:12px 16px; border-bottom:1px solid var(--border); }
+.panel-title { font-weight:600; font-size:13px; }
+.panel-count { font-size:11px; color:var(--fg-dim); background:var(--bg); padding:2px 8px; border-radius:10px; }
+.collision-list { max-height:200px; overflow-y:auto; }
+.collision-item { display:flex; align-items:flex-start; gap:12px; padding:12px 16px; border-bottom:1px solid var(--border); }
+.collision-item:last-child { border-bottom:none; }
+.collision-severity { width:8px; height:8px; border-radius:50%; margin-top:6px; flex-shrink:0; }
+.collision-severity.high { background:var(--err); box-shadow:0 0 8px var(--err); }
+.collision-severity.medium { background:var(--warn); box-shadow:0 0 8px var(--warn); }
+.collision-severity.low { background:var(--info); box-shadow:0 0 8px var(--info); }
+.collision-info { flex:1; min-width:0; }
+.collision-names { font-weight:500; font-size:13px; }
+.collision-detail { font-size:11px; color:var(--fg-muted); margin-top:2px; }
+.collision-action { font-size:11px; color:var(--accent); font-weight:500; white-space:nowrap; margin-top:4px; cursor:pointer; }
+.collision-action:hover { text-decoration:underline; }
+
+/* Right Panel */
+.right-panel { background:var(--bg-elev); border-left:1px solid var(--border); display:flex; flex-direction:column; overflow:hidden; }
+.panel-tabs { display:flex; border-bottom:1px solid var(--border); background:var(--bg); }
+.panel-tab { flex:1; padding:12px 8px; text-align:center; font-size:12px; font-weight:500; color:var(--fg-muted); border-bottom:2px solid transparent; transition:.15s; }
+.panel-tab:hover { color:var(--fg); background:var(--bg-elev); }
+.panel-tab.active { color:var(--accent); border-bottom-color:var(--accent); background:var(--bg-elev); }
+.panel-content { flex:1; overflow-y:auto; padding:16px; display:none; }
+.panel-content.active { display:block; }
+
+/* Preset Library */
+.preset-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
+.preset-filters { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px; }
+.preset-filter { padding:6px 12px; border-radius:20px; background:var(--bg-card); border:1px solid var(--border); font-size:11px; color:var(--fg-muted); cursor:pointer; transition:.15s; }
+.preset-filter:hover, .preset-filter.active { background:var(--accent-glow); border-color:var(--accent); color:var(--accent); }
+.preset-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:12px; }
+.preset-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:12px; transition:.15s; }
+.preset-card:hover { border-color:var(--border-bright); transform:translateY(-2px); box-shadow:var(--shadow); }
+.preset-card-name { font-weight:600; font-size:13px; margin-bottom:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.preset-card-meta { display:flex; gap:8px; font-size:11px; color:var(--fg-dim); margin-bottom:8px; }
+.preset-card-tag { background:var(--bg); padding:2px 6px; border-radius:4px; }
+.preset-card-rating { display:flex; gap:2px; color:var(--warn); font-size:12px; }
+.preset-card-actions { display:flex; gap:6px; margin-top:8px; }
+.preset-card-actions button { flex:1; font-size:11px; padding:6px; border-radius:var(--radius-sm); }
+.preset-card-actions .load { background:var(--accent-glow); border:1px solid var(--accent); color:var(--accent); }
+.preset-card-actions .load:hover { background:var(--accent); color:#051014; }
+.preset-card-actions .edit { background:var(--bg); border:1px solid var(--border); color:var(--fg-muted); }
+
+/* Tutorial Panel */
+.tutorial-step { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:16px; margin-bottom:16px; }
+.tutorial-step.current { border-color:var(--accent); box-shadow:0 0 0 1px var(--accent-glow); }
+.tutorial-step-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+.tutorial-step-number { font-size:11px; font-weight:600; color:var(--accent); background:var(--accent-glow); padding:2px 8px; border-radius:10px; }
+.tutorial-step-progress { font-size:11px; color:var(--fg-dim); }
+.tutorial-step-title { font-weight:600; font-size:14px; margin-bottom:6px; }
+.tutorial-step-instruction { font-size:13px; color:var(--fg-muted); line-height:1.6; margin-bottom:12px; }
+.tutorial-step-hint { font-size:11px; color:var(--info); background:rgba(66,165,245,.1); padding:8px 12px; border-radius:var(--radius-sm); border-left:3px solid var(--info); }
+.tutorial-step-actions { display:flex; gap:8px; margin-top:12px; }
+.tutorial-step-actions .btn { flex:1; text-align:center; }
+.tutorial-progress-bar { height:4px; background:var(--border); border-radius:2px; overflow:hidden; margin-top:16px; }
+.tutorial-progress-fill { height:100%; background:var(--accent); border-radius:2px; transition:width .3s; }
+
+/* Bottom Bar */
+.bottombar { height:72px; background:var(--bg-elev); border-top:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; padding:0 20px; position:relative; z-index:50; }
+.nl-input { flex:1; max-width:800px; position:relative; }
+.nl-input label { position:absolute; left:16px; top:50%; transform:translateY(-50%); font-size:12px; color:var(--fg-dim); pointer-events:none; transition:.15s; opacity:.6; }
+.nl-input input { width:100%; padding:12px 16px 12px 44px; border-radius:12px; background:var(--bg-card); border:1px solid var(--border); font-size:14px; }
+.nl-input input:focus { border-color:var(--accent); box-shadow:0 0 0 2px var(--accent-glow); }
+.nl-input input:focus + label,
+.nl-input input:not(:placeholder-shown) + label { top:4px; transform:none; font-size:10px; color:var(--accent); opacity:1; background:var(--bg-elev); padding:0 4px; border-radius:4px; }
+.nl-suggestions { display:flex; gap:8px; margin-left:16px; flex-wrap:wrap; }
+.nl-suggestion { padding:6px 12px; background:var(--bg-card); border:1px solid var(--border); border-radius:20px; font-size:11px; color:var(--fg-muted); cursor:pointer; transition:.15s; }
+.nl-suggestion:hover { background:var(--accent-glow); border-color:var(--accent); color:var(--accent); }
+.status-indicators { display:flex; align-items:center; gap:16px; font-size:11px; color:var(--fg-dim); }
+.status-dot { width:8px; height:8px; border-radius:50%; background:var(--fg-dim); }
+.status-dot.connected { background:var(--accent); box-shadow:0 0 8px var(--accent-glow); }
+.status-dot.syncing { background:var(--warn); animation:pulse 1.5s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+/* Responsive */
+@media (max-width:1400px) {
+  .main { grid-template-columns:240px 1fr 300px; }
+  .search-bar { max-width:400px; }
+}
+@media (max-width:1100px) {
+  .main { grid-template-columns:1fr; }
+  .sidebar { position:fixed; left:0; top:56px; bottom:72px; width:280px; transform:translateX(-100%); transition:transform .3s; z-index:200; }
+  .sidebar.open { transform:translateX(0); }
+  .right-panel { position:fixed; right:0; top:56px; bottom:72px; width:320px; transform:translateX(100%); transition:transform .3s; z-index:200; }
+  .right-panel.open { transform:translateX(0); }
+  .sidebar-overlay, .right-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.6); z-index:199; }
+  .sidebar-overlay.open, .right-overlay.open { display:block; }
+  .topbar .menu-btn { display:flex; }
+  .topbar .menu-btn.right { margin-left:auto; }
+}
+@media (min-width:1101px) {
+  .topbar .menu-btn { display:none; }
+}
+
+/* Mix Map Background Grid */
+.mix-map::before {
+  content:''; position:absolute; inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
+  background-size:50px 50px;
+  pointer-events:none; z-index:0;
+}
+
+/* Band Lines */
+.mix-map-band { position:absolute; left:0; right:0; height:1px; background:linear-gradient(90deg, transparent, rgba(255,255,255,.05), transparent); pointer-events:none; }
+.mix-map-band-label { position:absolute; left:8px; top:-8px; font-size:9px; color:var(--fg-dim); text-transform:uppercase; letter-spacing:.05em; }
+
+/* Utility */
+.btn { padding:8px 16px; border-radius:var(--radius-sm); font-weight:500; font-size:13px; transition:.15s; }
+.btn-primary { background:var(--accent); color:#051014; border:1px solid var(--accent); }
+.btn-primary:hover { filter:brightness(1.1); }
+.btn-secondary { background:var(--bg-card); color:var(--fg); border:1px solid var(--border); }
+.btn-secondary:hover { background:var(--bg-elev); border-color:var(--border-bright); }
+.btn-ghost { background:transparent; color:var(--fg-muted); border:1px solid transparent; }
+.btn-ghost:hover { background:var(--bg-card); color:var(--fg); }
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- Top Bar -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2v20M17 7H7M19 12H5M17 17H7M22 17H19M5 17H2"/>
+          <circle cx="12" cy="12" r="4"/>
+        </svg>
+        <span>Ableton Brain Studio</span>
+        <span class="pro-badge">PRO</span>
+      </div>
+      <div class="global-transport">
+        <button class="transport-btn" title="Rewind"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11 18V6l-8.5 6 8.5 6zM22 6v12h-3V6h3z"/></svg></button>
+        <button class="transport-btn" title="Play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7-11-7z"/></svg></button>
+        <button class="transport-btn" title="Stop"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h12v12H6z"/></svg></button>
+        <button class="transport-btn" title="Record"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="7"/></svg></button>
+        <button class="transport-btn" title="Loop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12a10 10 0 0110-10M22 12a10 10 0 01-10 10"/></svg></button>
+      </div>
+      <div class="tempo-key">
+        <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><input type="number" value="128" min="20" max="300" step="1" aria-label="Tempo"></div>
+        <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M12 3v6m0 6v6"/><path d="M9 9h6"/></svg>
+          <select aria-label="Key">
+            <option>C Major</option><option>C# Major</option><option>D Major</option><option>D# Major</option>
+            <option>E Major</option><option>F Major</option><option>F# Major</option><option>G Major</option>
+            <option>G# Major</option><option>A Major</option><option>A# Major</option><option>B Major</option>
+            <option selected>A Minor</option><option>B Minor</option><option>C Minor</option><option>C# Minor</option>
+            <option>D Minor</option><option>D# Minor</option><option>E Minor</option><option>F Minor</option>
+            <option>F# Minor</option><option>G Minor</option><option>G# Minor</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="topbar-center">
+      <div class="search-bar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="search" placeholder="Search samples, presets, tools, tutorials..." aria-label="Global search">
+        <span class="hint">⌘K</span>
+      </div>
+    </div>
+
+    <div class="topbar-right">
+      <button class="icon-btn menu-btn" aria-label="Toggle sidebar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+      <button class="icon-btn" title="Notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg></button>
+      <button class="icon-btn" title="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg></button>
+      <button class="icon-btn primary" title="Upgrade to Pro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Upgrade</button>
+      <button class="icon-btn menu-btn right" aria-label="Toggle right panel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/></svg></button>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="main">
+    <!-- Left Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">Workflows</div>
+      <nav class="nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Core</div>
+          <a class="nav-item active" href="#" data-panel="mix"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Visual Mix</a>
+          <a class="nav-item" href="#" data-panel="arrange"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Arrangement</a>
+          <a class="nav-item" href="#" data-panel="generate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5"/><line x1="12" y1="22" x2="12" y2="15.5"/><polyline points="22 8.5 12 15.5 2 8.5"/></svg>AI Generation</a>
+        </div>
+        <div class="nav-divider"></div>
+        <div class="nav-section">
+          <div class="nav-section-title">Samples & Presets</div>
+          <a class="nav-item" href="#" data-panel="samples"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Smart Search</a>
+          <a class="nav-item" href="#" data-panel="variations"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>Variations</a>
+          <a class="nav-item" href="#" data-panel="presets"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>Preset Library</a>
+        </div>
+        <div class="nav-divider"></div>
+        <div class="nav-section">
+          <div class="nav-section-title">Advanced</div>
+          <a class="nav-item" href="#" data-panel="patch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>Patch Generator</a>
+          <a class="nav-item" href="#" data-panel="collab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>Collaboration</a>
+          <a class="nav-item" href="#" data-panel="version"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Version Control</a>
+        </div>
+        <div class="nav-divider"></div>
+        <div class="nav-section">
+          <div class="nav-section-title">Learning</div>
+          <a class="nav-item" href="#" data-panel="tutorial"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Tutorials</a>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Canvas -->
+    <section class="canvas" id="canvas">
+      <div class="canvas-header">
+        <h2 class="canvas-title" id="canvasTitle">Visual Mix Map</h2>
+        <div class="canvas-actions">
+          <button class="btn btn-secondary" id="refreshMix">Refresh</button>
+          <button class="btn btn-primary" id="exportMix">Export PNG</button>
+        </div>
+      </div>
+      <div class="canvas-content">
+        <!-- Visual Mix Map -->
+        <div class="mix-map" id="mixMap">
+          <!-- Band labels rendered by JS -->
+        </div>
+        <!-- Collisions Panel -->
+        <div class="collisions-panel">
+          <div class="panel-header">
+            <span class="panel-title">Frequency Collisions</span>
+            <span class="panel-count" id="collisionCount">3 detected</span>
+          </div>
+          <div class="collision-list" id="collisionList">
+            <div class="collision-item">
+              <div class="collision-severity high"></div>
+              <div class="collision-info">
+                <div class="collision-names">Kick Drum ↔ Sub Bass</div>
+                <div class="collision-detail">Both centered at 55Hz — severe masking</div>
+                <div class="collision-action">→ Apply sidechain / EQ carve</div>
+              </div>
+            </div>
+            <div class="collision-item">
+              <div class="collision-severity medium"></div>
+              <div class="collision-info">
+                <div class="collision-names">Lead Synth ↔ Vocal</div>
+                <div class="collision-detail">Overlap at 2.8kHz — presence clash</div>
+                <div class="collision-action">→ Dynamic EQ on lead</div>
+              </div>
+            </div>
+            <div class="collision-item">
+              <div class="collision-severity low"></div>
+              <div class="collision-info">
+                <div class="collision-names">Hi-Hats ↔ Percussion</div>
+                <div class="collision-detail">Both bright at 8-12kHz — minor buildup</div>
+                <div class="collision-action">→ Pan apart slightly</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Right Panel -->
+    <aside class="right-panel" id="rightPanel">
+      <div class="panel-tabs">
+        <button class="panel-tab active" data-tab="presets">Presets</button>
+        <button class="panel-tab" data-tab="tutorial">Tutorial</button>
+        <button class="panel-tab" data-tab="inspector">Inspector</button>
+      </div>
+      <div class="panel-content active" id="tabPresets">
+        <div class="preset-header">
+          <h3 style="font-size:13px;font-weight:600;">Preset Library</h3>
+          <button class="btn btn-primary" style="font-size:11px;padding:6px 12px;">+ Save Current</button>
+        </div>
+        <div class="preset-filters" id="presetFilters">
+          <span class="preset-filter active" data-filter="all">All</span>
+          <span class="preset-filter" data-filter="bass">Bass</span>
+          <span class="preset-filter" data-filter="lead">Lead</span>
+          <span class="preset-filter" data-filter="pad">Pad</span>
+          <span class="preset-filter" data-filter="drums">Drums</span>
+          <span class="preset-filter" data-filter="fx">FX</span>
+        </div>
+        <div class="preset-grid" id="presetGrid">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+      <div class="panel-content" id="tabTutorial">
+        <div class="tutorial-step current" id="step1">
+          <div class="tutorial-step-header">
+            <span class="tutorial-step-number">Step 1 of 4</span>
+            <span class="tutorial-step-progress">25% complete</span>
+          </div>
+          <h4 class="tutorial-step-title">Create a MIDI Track</h4>
+          <p class="tutorial-step-instruction">Add a new MIDI track for your drum kit. This will be the foundation of your beat.</p>
+          <div class="tutorial-step-hint">💡 Shortcut: ⌘+Shift+T (Mac) / Ctrl+Shift+T (Win)</div>
+          <div class="tutorial-step-actions">
+            <button class="btn btn-primary" onclick="completeStep(1)">Done — Next</button>
+            <button class="btn btn-secondary">Skip</button>
+          </div>
+        </div>
+        <div class="tutorial-step" id="step2">
+          <div class="tutorial-step-header">
+            <span class="tutorial-step-number">Step 2 of 4</span>
+            <span class="tutorial-step-progress">50% complete</span>
+          </div>
+          <h4 class="tutorial-step-title">Load a Drum Rack</h4>
+          <p class="tutorial-step-instruction">Drag a Drum Rack onto the track from the browser, or use the AI to generate a kit from your samples.</p>
+          <div class="tutorial-step-actions">
+            <button class="btn btn-primary" onclick="completeStep(2)">Done — Next</button>
+            <button class="btn btn-secondary">Back</button>
+          </div>
+        </div>
+        <div class="tutorial-step" id="step3">
+          <div class="tutorial-step-header">
+            <span class="tutorial-step-number">Step 3 of 4</span>
+            <span class="tutorial-step-progress">75% complete</span>
+          </div>
+          <h4 class="tutorial-step-title">Program a Kick Pattern</h4>
+          <p class="tutorial-step-instruction">Draw kick hits on beats 1, 1.5, 2, 2.5, 3, 3.5, 4. Use the MIDI editor or type "program kick four on floor" in the command bar.</p>
+          <div class="tutorial-step-actions">
+            <button class="btn btn-primary" onclick="completeStep(3)">Done — Next</button>
+            <button class="btn btn-secondary">Back</button>
+          </div>
+        </div>
+        <div class="tutorial-step" id="step4">
+          <div class="tutorial-step-header">
+            <span class="tutorial-step-number">Step 4 of 4</span>
+            <span class="tutorial-step-progress">100% complete</span>
+          </div>
+          <h4 class="tutorial-step-title">Arrange into Scenes</h4>
+          <p class="tutorial-step-instruction">Turn your loop into scenes in the clip launcher: Intro, Build, Drop, Break, Outro. Fire them to record your arrangement.</p>
+          <div class="tutorial-step-actions">
+            <button class="btn btn-primary" onclick="completeStep(4)">Finish Tour</button>
+            <button class="btn btn-secondary">Back</button>
+          </div>
+        </div>
+        <div class="tutorial-progress-bar"><div class="tutorial-progress-fill" id="tutorialProgress" style="width:25%"></div></div>
+      </div>
+      <div class="panel-content" id="tabInspector">
+        <h3 style="font-size:13px;font-weight:600;margin-bottom:16px;">Track Inspector</h3>
+        <p style="font-size:12px;color:var(--fg-muted);">Select a track in the mix map to see parameters and AI suggestions.</p>
+        <div style="margin-top:20px;padding:16px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);">
+          <div style="font-weight:600;margin-bottom:8px;">No track selected</div>
+          <div style="font-size:12px;color:var(--fg-dim);">Click a track dot in the Visual Mix Map</div>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <!-- Bottom Bar -->
+  <footer class="bottombar">
+    <div class="nl-input">
+      <input type="text" id="nlInput" placeholder=" " aria-label="Natural language command">
+      <label for="nlInput">Type a command… e.g. "Add reverb to vocal track", "Save snapshot as verse"</label>
+    </div>
+    <div class="nl-suggestions" id="nlSuggestions">
+      <span class="nl-suggestion">"Sidechain kick to bass"</span>
+      <span class="nl-suggestion">"Create arrangement for house"</span>
+      <span class="nl-suggestion">"Find samples in key of C"</span>
+      <span class="nl-suggestion">"Humanize MIDI on track 2"</span>
+    </div>
+    <div class="status-indicators">
+      <span><span class="status-dot connected" id="mcpStatus"></span>MCP Connected</span>
+      <span><span class="status-dot" id="fleetStatus"></span>Fleet: 2 nodes</span>
+      <span><span class="status-dot" id="linkStatus"></span>Link: Off</span>
+    </div>
+  </footer>
+</div>
+
+<!-- Overlays for mobile -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+<div class="right-overlay" id="rightOverlay"></div>
+
+<script>
+// ============ DATA ============
+const PRESETS = [
+  {id:1,name:"Sub Bass 808",plugin:"Operator",category:"bass",tags:["sub","808","trap"],rating:5},
+  {id:2,name:"Reese Bass",plugin:"Wavetable",category:"bass",tags:["reese","dnb","detuned"],rating:4},
+  {id:3,name:"Plucky Lead",plugin:"Analog",category:"lead",tags:["pluck","arp","melodic"],rating:5},
+  {id:4,name:"Supersaw Pad",plugin:"Pigments",category:"pad",tags:["supersaw","ambient","wide"],rating:4},
+  {id:5,name:"Kick 909",plugin:"Drum Rack",category:"drums",tags:["kick","909","techno"],rating:5},
+  {id:6,name:"Snare Ghost",plugin:"Drum Rack",category:"drums",tags:["snare","ghost","hiphop"],rating:3},
+  {id:7,name:"Vocal Reverb",plugin:"Convolution Reverb",category:"fx",tags:["reverb","vocal","plate"],rating:4},
+  {id:8,name:"Master Bus Glue",plugin:"Glue Compressor",category:"fx",tags:["compressor","bus","glue"],rating:5},
+  {id:9,name:"FM Bell",plugin:"Operator",category:"lead",tags:["fm","bell","metallic"],rating:4},
+  {id:10,name:"Atmosphere",plugin:"Granulator II",category:"pad",tags:["granular","texture","drone"],rating:3},
+];
+
+const MIX_TRACKS = [
+  {name:"Kick",x:55,y:-4,size:12,band:"sub",color:"#00d4aa",pan:0},
+  {name:"Sub Bass",x:65,y:-6,size:8,band:"sub",color:"#00d4aa",pan:0},
+  {name:"Bass",x:180,y:-8,size:10,band:"bass",color:"#42a5f5",pan:-0.1},
+  {name:"Snare",x:220,y:-2,size:14,band:"low_mid",color:"#ffb300",pan:0.1},
+  {name:"Clap",x:250,y:-3,size:10,band:"low_mid",color:"#ffb300",pan:0.3},
+  {name:"Hi-Hats",x:8500,y:-12,size:6,band:"high",color:"#fff",pan:0.4},
+  {name:"Percussion",x:5000,y:-10,size:8,band:"high_mid",color:"#fff",pan:-0.4},
+  {name:"Lead Synth",x:3000,y:-5,size:12,band:"high_mid",color:"#ff5252",pan:0},
+  {name:"Vocal",x:2800,y:-6,size:14,band:"mid",color:"#fff",pan:0},
+  {name:"Pad",x:800,y:-14,size:20,band:"low_mid",color:"#42a5f5",pan:-0.2},
+  {name:"FX",x:12000,y:-18,size:5,band:"air",color:"#fff",pan:0.5},
+];
+
+const BANDS = [
+  {name:"Sub",min:20,max:60,color:"rgba(0,212,170,.15)"},
+  {name:"Bass",min:60,max:250,color:"rgba(66,165,245,.15)"},
+  {name:"Low-Mid",min:250,max:500,color:"rgba(255,179,0,.15)"},
+  {name:"Mid",min:500,max:2000,color:"rgba(255,255,255,.1)"},
+  {name:"High-Mid",min:2000,max:4000,color:"rgba(255,82,82,.15)"},
+  {name:"High",min:4000,max:8000,color:"rgba(255,255,255,.1)"},
+  {name:"Air",min:8000,max:16000,color:"rgba(255,255,255,.05)"},
+];
+
+// ============ STATE ============
+let currentTab = 'presets';
+let currentFilter = 'all';
+let currentTutorialStep = 1;
+
+// ============ INIT ============
+document.addEventListener('DOMContentLoaded', () => {
+  renderMixMap();
+  renderPresets();
+  setupEventListeners();
+  animateStatusDots();
+});
+
+// ============ MIX MAP ============
+function renderMixMap() {
+  const container = document.getElementById('mixMap');
+  const width = container.clientWidth || 800;
+  const height = 320;
+
+  // Band backgrounds
+  let bandHTML = '';
+  BANDS.forEach(b => {
+    const left = Math.log10(b.min/20) / Math.log10(16000/20) * 100;
+    const right = Math.log10(b.max/20) / Math.log10(16000/20) * 100;
+    bandHTML += `<div class="mix-map-band" style="top:${100 - (Math.log10((b.min+b.max)/2/20)/Math.log10(16000/20)*80)}%"></div>`;
+    bandHTML += `<div class="mix-map-band-label" style="left:${left}%;top:${100 - (Math.log10((b.min+b.max)/2/20)/Math.log10(16000/20)*80)}%">${b.name}</div>`;
+  });
+
+  // Track dots
+  let trackHTML = '';
+  MIX_TRACKS.forEach(t => {
+    const x = Math.log10(t.x/20) / Math.log10(16000/20) * 100;
+    const y = 100 - ((t.y + 24) / 24 * 80); // -24 to 0 dB
+    const r = Math.max(8, Math.min(24, t.size));
+    trackHTML += `<div class="track-dot" style="left:${x}%;top:${y}%;width:${r}px;height:${r}px;background:${t.color};transform:translate(-50%,-50%);border-radius:50%;position:absolute;box-shadow:0 0 ${r*2}px ${t.color};border:2px solid var(--bg);cursor:pointer;z-index:10" data-name="${t.name}" title="${t.name}: ${t.x}Hz, ${t.y}dB"></div>`;
+  });
+
+  container.innerHTML = bandHTML + trackHTML;
+
+  // Legend
+  const legend = container.querySelector('.mix-map-legend');
+  if (legend) {
+    legend.innerHTML = BANDS.map(b => `<span><span class="dot" style="background:${b.color}"></span>${b.name}</span>`).join('');
+  }
+
+  // Click handlers
+  container.querySelectorAll('.track-dot').forEach(dot => {
+    dot.addEventListener('click', () => selectTrack(dot.dataset.name));
+  });
+}
+
+function selectTrack(name) {
+  const track = MIX_TRACKS.find(t => t.name === name);
+  if (!track) return;
+  document.getElementById('tabInspector').innerHTML = `
+    <h3 style="font-size:13px;font-weight:600;margin-bottom:16px;">Track Inspector: ${track.name}</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+      <div><span style="color:var(--fg-dim);font-size:11px;">Frequency</span><br><strong>${track.x} Hz</strong></div>
+      <div><span style="color:var(--fg-dim);font-size:11px;">Level</span><br><strong>${track.y} dB</strong></div>
+      <div><span style="color:var(--fg-dim);font-size:11px;">Dynamic Range</span><br><strong>${track.size} dB</strong></div>
+      <div><span style="color:var(--fg-dim);font-size:11px;">Pan</span><br><strong>${track.pan > 0 ? 'R' : track.pan < 0 ? 'L' : 'C'}${Math.abs(track.pan)*100}%</strong></div>
+      <div><span style="color:var(--fg-dim);font-size:11px;">Band</span><br><strong>${track.band}</strong></div>
+      <div><span style="color:var(--fg-dim);font-size:11px;">Color</span><br><span style="display:inline-block;width:20px;height:20px;border-radius:4px;background:${track.color};border:1px solid var(--border)"></span></div>
+    </div>
+    <div style="padding:12px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:12px;color:var(--fg-muted);">
+      AI Suggestion: ${getAISuggestion(track)}
+    </div>
+    <div style="display:flex;gap:8px;margin-top:16px;">
+      <button class="btn btn-primary" style="flex:1">Open EQ</button>
+      <button class="btn btn-secondary" style="flex:1">Solo</button>
+    </div>
+  `;
+}
+
+function getAISuggestion(t) {
+  if (t.band === 'sub' && t.name !== 'Kick') return 'High-pass this track at 60Hz to clear sub for the kick.';
+  if (t.band === 'low_mid' && t.y > -8) return 'Consider cutting 200-400Hz to reduce muddiness.';
+  if (t.band === 'high_mid' && t.y > -6) return 'Dynamic EQ around 3kHz can tame harshness.';
+  return 'Levels look good in this band.';
+}
+
+// ============ PRESETS ============
+function renderPresets() {
+  const grid = document.getElementById('presetGrid');
+  const filtered = currentFilter === 'all' ? PRESETS : PRESETS.filter(p => p.category === currentFilter);
+  grid.innerHTML = filtered.map(p => `
+    <div class="preset-card" data-id="${p.id}">
+      <div class="preset-card-name">${p.name}</div>
+      <div class="preset-card-meta">
+        <span class="preset-card-tag">${p.plugin}</span>
+        <span class="preset-card-tag">${p.category}</span>
+      </div>
+      <div class="preset-card-rating">${'★'.repeat(p.rating)}${'☆'.repeat(5-p.rating)}</div>
+      <div class="preset-card-actions">
+        <button class="load" onclick="loadPreset(${p.id})">Load</button>
+        <button class="edit" onclick="editPreset(${p.id})">Edit</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function loadPreset(id) { console.log('Load preset', id); }
+function editPreset(id) { console.log('Edit preset', id); }
+
+// ============ TUTORIAL ============
+function completeStep(step) {
+  const current = document.getElementById(`step${step}`);
+  current.classList.remove('current');
+  if (step < 4) {
+    const next = document.getElementById(`step${step+1}`);
+    next.classList.add('current');
+    document.getElementById('tutorialProgress').style.width = `${(step+1)*25}%`;
+  } else {
+    alert('Tour complete! 🎉');
+  }
+}
+
+// ============ EVENT LISTENERS ============
+function setupEventListeners() {
+  // Sidebar nav
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('click', e => {
+      e.preventDefault();
+      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+      item.classList.add('active');
+      // In real app: switch canvas view
+    });
+  });
+
+  // Panel tabs
+  document.querySelectorAll('.panel-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.panel-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.panel-content').forEach(c => c.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById(`tab${tab.dataset.tab.charAt(0).toUpperCase()+tab.dataset.tab.slice(1)}`).classList.add('active');
+    });
+  });
+
+  // Preset filters
+  document.querySelectorAll('.preset-filter').forEach(f => {
+    f.addEventListener('click', () => {
+      document.querySelectorAll('.preset-filter').forEach(x => x.classList.remove('active'));
+      f.classList.add('active');
+      currentFilter = f.dataset.filter;
+      renderPresets();
+    });
+  });
+
+  // Mobile sidebar toggle
+  document.querySelector('.menu-btn').addEventListener('click', () => {
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('sidebarOverlay').classList.toggle('open');
+  });
+  document.querySelector('.menu-btn.right').addEventListener('click', () => {
+    document.getElementById('rightPanel').classList.toggle('open');
+    document.getElementById('rightOverlay').classList.toggle('open');
+  });
+  document.getElementById('sidebarOverlay').addEventListener('click', () => {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebarOverlay').classList.remove('open');
+  });
+  document.getElementById('rightOverlay').addEventListener('click', () => {
+    document.getElementById('rightPanel').classList.remove('open');
+    document.getElementById('rightOverlay').classList.remove('open');
+  });
+
+  // NL input suggestions
+  document.querySelectorAll('.nl-suggestion').forEach(s => {
+    s.addEventListener('click', () => {
+      document.getElementById('nlInput').value = s.textContent;
+      document.getElementById('nlInput').focus();
+    });
+  });
+
+  // Window resize
+  window.addEventListener('resize', () => renderMixMap());
+}
+
+// ============ STATUS ANIMATION ============
+function animateStatusDots() {
+  setInterval(() => {
+    document.getElementById('fleetStatus').classList.toggle('syncing');
+    document.getElementById('linkStatus').classList.toggle('connected');
+  }, 3000);
+}
+</script>
+</body>
+</html>

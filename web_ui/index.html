@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ableton Brain - Web Control</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #1a1a2e; color: #eee;
+            min-height: 100vh; padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid #333; }
+        h1 { font-size: 1.8rem; background: linear-gradient(90deg, #00d4ff, #ff6b6b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .status { display: flex; gap: 15px; align-items: center; }
+        .status-indicator { width: 12px; height: 12px; border-radius: 50%; background: #444; }
+        .status-indicator.connected { background: #00ff88; box-shadow: 0 0 10px #00ff88; }
+        .status-indicator.disconnected { background: #ff4444; box-shadow: 0 0 10px #ff4444; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .card { background: #16213e; border-radius: 12px; padding: 20px; border: 1px solid #2a2a4a; }
+        .card h2 { font-size: 1.1rem; margin-bottom: 15px; color: #00d4ff; display: flex; align-items: center; gap: 8px; }
+        .btn { 
+            background: linear-gradient(135deg, #00d4ff, #0099cc); border: none; color: #000; 
+            padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600;
+            transition: transform 0.1s, box-shadow 0.2s;
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,212,255,0.4); }
+        .btn:active { transform: translateY(0); }
+        .btn.danger { background: linear-gradient(135deg, #ff6b6b, #cc0000); color: #fff; }
+        .btn.secondary { background: linear-gradient(135deg, #444, #666); color: #fff; }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .input-group { display: flex; gap: 10px; margin-bottom: 12px; }
+        .input-group input, .input-group select { 
+            flex: 1; padding: 10px; border-radius: 6px; border: 1px solid #333; 
+            background: #0f0f23; color: #eee; font-size: 14px;
+        }
+        .input-group input:focus, .input-group select:focus { outline: none; border-color: #00d4ff; }
+        .track-list { max-height: 300px; overflow-y: auto; }
+        .track-item { 
+            display: flex; align-items: center; gap: 10px; 
+            padding: 10px; background: #0f0f23; border-radius: 6px; margin-bottom: 8px;
+        }
+        .track-item .track-color { width: 4px; height: 100%; border-radius: 2px; }
+        .track-controls { display: flex; gap: 5px; margin-left: auto; }
+        .track-controls button { padding: 5px 10px; font-size: 12px; border-radius: 4px; }
+        .transport { display: flex; gap: 10px; justify-content: center; margin: 20px 0; }
+        .transport .btn { width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+        .tempo-control { display: flex; align-items: center; gap: 10px; justify-content: center; margin-top: 15px; }
+        .tempo-control input { width: 80px; text-align: center; }
+        .controller-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+        .controller-item { 
+            padding: 15px; background: #0f0f23; border-radius: 8px; text-align: center;
+            border: 2px solid transparent; transition: border-color 0.2s;
+        }
+        .controller-item.connected { border-color: #00ff88; }
+        .controller-item .icon { font-size: 2rem; margin-bottom: 5px; }
+        .log { 
+            background: #0f0f23; border-radius: 6px; padding: 15px; 
+            font-family: 'Monaco', 'Consolas', monospace; font-size: 12px;
+            max-height: 200px; overflow-y: auto; color: #88ff88;
+        }
+        .log-entry { margin: 2px 0; }
+        .log-entry.error { color: #ff6b6b; }
+        .log-entry.warn { color: #ffd93d; }
+        .log-entry.info { color: #00d4ff; }
+        .hidden { display: none !important; }
+        .tabs { display: flex; gap: 5px; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 5px; }
+        .tab { padding: 10px 20px; cursor: pointer; border-radius: 8px 8px 0 0; background: transparent; color: #888; border: none; font-size: 14px; }
+        .tab.active { background: #16213e; color: #00d4ff; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎵 Ableton Brain</h1>
+            <div class="status">
+                <span>API:</span>
+                <div class="status-indicator" id="apiStatus"></div>
+                <span id="apiStatusText">Connecting...</span>
+                <span>| DAW:</span>
+                <div class="status-indicator" id="dawStatus"></div>
+                <span id="dawStatusText">None</span>
+            </div>
+        </header>
+        
+        <div class="tabs" id="tabs">
+            <button class="tab active" data-tab="dashboard">Dashboard</button>
+            <button class="tab" data-tab="tracks">Tracks</button>
+            <button class="tab" data-tab="transport">Transport</button>
+            <button class="tab" data-tab="controllers">Controllers</button>
+            <button class="tab" data-tab="daws">DAWs</button>
+            <button class="tab" data-tab="quick">Quick Actions</button>
+        </div>
+        
+        <!-- Dashboard Tab -->
+        <div class="tab-content active" id="tab-dashboard">
+            <div class="grid">
+                <div class="card">
+                    <h2>📊 System Status</h2>
+                    <div class="log" id="systemLog"></div>
+                </div>
+                <div class="card">
+                    <h2>🎯 Quick Actions</h2>
+                    <div class="input-group">
+                        <button class="btn" onclick="quickAction('save')">💾 Save Project</button>
+                        <button class="btn" onclick="quickAction('play')">▶️ Play</button>
+                    </div>
+                    <div class="input-group">
+                        <button class="btn" onclick="quickAction('stop')">⏹️ Stop</button>
+                        <button class="btn" onclick="quickAction('undo')">↶ Undo</button>
+                    </div>
+                    <div class="input-group">
+                        <button class="btn secondary" onclick="quickAction('new_midi_track')">➕ MIDI Track</button>
+                        <button class="btn secondary" onclick="quickAction('new_audio_track')">🎤 Audio Track</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tracks Tab -->
+        <div class="tab-content" id="tab-tracks">
+            <div class="card">
+                <h2>🎵 Tracks</h2>
+                <div class="input-group">
+                    <input type="text" id="newTrackName" placeholder="Track name" value="New Track">
+                    <select id="newTrackType">
+                        <option value="midi">MIDI</option>
+                        <option value="audio">Audio</option>
+                    </select>
+                    <button class="btn" onclick="createTrack()">Create</button>
+                </div>
+                <div class="track-list" id="trackList">Loading...</div>
+            </div>
+        </div>
+        
+        <!-- Transport Tab -->
+        <div class="tab-content" id="tab-transport">
+            <div class="card">
+                <h2>🎮 Transport</h2>
+                <div class="transport">
+                    <button class="btn secondary" onclick="transportAction('stop')" title="Stop">⏹</button>
+                    <button class="btn" onclick="transportAction('play')" title="Play" style="background: linear-gradient(135deg, #00ff88, #00cc66);">▶</button>
+                    <button class="btn secondary" onclick="transportAction('record')" title="Record" style="background: linear-gradient(135deg, #ff6b6b, #cc0000);">⏺</button>
+                </div>
+                <div class="tempo-control">
+                    <label>Tempo:</label>
+                    <input type="number" id="tempoInput" value="120" min="60" max="200" step="1">
+                    <button class="btn secondary" onclick="setTempo()">Set</button>
+                    <label>Time Sig:</label>
+                    <select id="timeSigNum"><option>4</option><option>3</option><option>6</option><option>7</option></select>
+                    <span>/</span>
+                    <select id="timeSigDen"><option>4</option><option>8</option><option>16</option></select>
+                    <button class="btn secondary" onclick="setTimeSignature()">Set</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Controllers Tab -->
+        <div class="tab-content" id="tab-controllers">
+            <div class="card">
+                <h2>🎮 MIDI Controllers</h2>
+                <button class="btn secondary" onclick="detectControllers()" style="margin-bottom: 15px;">🔍 Detect Controllers</button>
+                <div class="controller-list" id="controllerList">Loading...</div>
+            </div>
+        </div>
+        
+        <!-- DAWs Tab -->
+        <div class="tab-content" id="tab-daws">
+            <div class="grid">
+                <div class="card">
+                    <h2>💻 Available DAWs</h2>
+                    <div id="dawList">Loading...</div>
+                </div>
+                <div class="card">
+                    <h2>🔌 Connect DAW</h2>
+                    <div class="input-group">
+                        <select id="dawSelect"></select>
+                        <button class="btn" onclick="connectDaw()">Connect</button>
+                    </div>
+                    <div class="input-group">
+                        <button class="btn danger" onclick="disconnectDaw()">Disconnect</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quick Actions Tab -->
+        <div class="tab-content" id="tab-quick">
+            <div class="grid">
+                <div class="card">
+                    <h2>⚡ One-Click Operations</h2>
+                    <div class="input-group">
+                        <button class="btn" onclick="quickAction('save')">💾 Save Project</button>
+                        <button class="btn" onclick="quickAction('export_wav', {path: 'export.wav'})">📤 Export WAV</button>
+                    </div>
+                    <div class="input-group">
+                        <button class="btn secondary" onclick="quickAction('new_midi_track')">➕ New MIDI Track</button>
+                        <button class="btn secondary" onclick="quickAction('new_audio_track')">🎤 New Audio Track</button>
+                    </div>
+                    <div class="input-group">
+                        <button class="btn secondary" onclick="quickAction('arm_first')">🔴 Arm First Track</button>
+                        <button class="btn" onclick="quickAction('play')">▶️ Play</button>
+                    </div>
+                    <div class="input-group">
+                        <button class="btn secondary" onclick="quickAction('stop')">⏹️ Stop</button>
+                        <button class="btn secondary" onclick="quickAction('undo')">↶ Undo</button>
+                    </div>
+                    <div class="input-group">
+                        <button class="btn secondary" onclick="quickAction('redo')">↷ Redo</button>
+                        <button class="btn secondary" onclick="promptTempo()">🎵 Set Tempo</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <h2>📚 Knowledge Base</h2>
+                    <button class="btn secondary" onclick="loadDatabaseStats()" style="width: 100%; margin-bottom: 10px;">Load Stats</button>
+                    <div class="log" id="dbLog">Click Load Stats</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = '';
+        const WS_URL = 'ws://' + window.location.host + '/ws';
+        let ws = null;
+        let daws = [];
+        let activeDaw = null;
+        
+        // Tab switching
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                tab.classList.add('active');
+                document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+            });
+        });
+        
+        // WebSocket connection
+        function connectWS() {
+            ws = new WebSocket(WS_URL);
+            ws.onopen = () => {
+                updateStatus('apiStatus', true);
+                updateStatusText('apiStatusText', 'Connected');
+                log('systemLog', 'WebSocket connected', 'info');
+            };
+            ws.onclose = () => {
+                updateStatus('apiStatus', false);
+                updateStatusText('apiStatusText', 'Disconnected');
+                log('systemLog', 'WebSocket disconnected - reconnecting...', 'warn');
+                setTimeout(connectWS, 3000);
+            };
+            ws.onmessage = (event) => {
+                const msg = JSON.parse(event.data);
+                handleWSMessage(msg);
+            };
+            ws.onerror = (err) => {
+                log('systemLog', 'WebSocket error', 'error');
+            };
+        }
+        
+        function handleWSMessage(msg) {
+            log('systemLog', `Event: ${msg.event} - ${JSON.stringify(msg.data)}`, 'info');
+            
+            if (msg.event === 'daw_connected') {
+                loadDAWs();
+            } else if (msg.event === 'daw_disconnected') {
+                loadDAWs();
+            } else if (msg.event === 'track_created' || msg.event === 'track_updated' || msg.event === 'track_deleted') {
+                loadTracks();
+            } else if (msg.event === 'transport') {
+                // Update transport UI
+            } else if (msg.event === 'tempo_changed') {
+                document.getElementById('tempoInput').value = msg.data.tempo;
+            }
+        }
+        
+        // API helpers
+        async function api(method, path, data = null) {
+            const options = { method, headers: { 'Content-Type': 'application/json' } };
+            if (data) options.body = JSON.stringify(data);
+            const response = await fetch(API_BASE + path, options);
+            return response.json();
+        }
+        
+        function updateStatus(id, connected) {
+            const el = document.getElementById(id);
+            el.classList.toggle('connected', connected);
+            el.classList.toggle('disconnected', !connected);
+        }
+        
+        function updateStatusText(id, text) {
+            document.getElementById(id).textContent = text;
+        }
+        
+        function log(containerId, message, type = 'info') {
+            const container = document.getElementById(containerId);
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            container.insertBefore(entry, container.firstChild);
+            while (container.children.length > 50) container.removeChild(container.lastChild);
+        }
+        
+        // Load functions
+        async function loadStatus() {
+            try {
+                const res = await api('GET', '/api/status');
+                if (res.success) {
+                    activeDaw = res.data.active_daw;
+                    updateStatus('dawStatus', res.data.connected);
+                    updateStatusText('dawStatusText', activeDaw || 'None');
+                    log('systemLog', `Active DAW: ${activeDaw || 'None'}`, 'info');
+                }
+            } catch (e) {
+                log('systemLog', 'Failed to load status: ' + e, 'error');
+            }
+        }
+        
+        async function loadDAWs() {
+            try {
+                const res = await api('GET', '/api/daws');
+                if (res.success) {
+                    daws = res.data.available;
+                    activeDaw = res.data.active;
+                    
+                    const select = document.getElementById('dawSelect');
+                    select.innerHTML = '';
+                    daws.forEach(daw => {
+                        const opt = document.createElement('option');
+                        opt.value = daw;
+                        opt.textContent = daw.charAt(0).toUpperCase() + daw.slice(1);
+                        if (daw === activeDaw) opt.selected = true;
+                        select.appendChild(opt);
+                    });
+                    
+                    const list = document.getElementById('dawList');
+                    list.innerHTML = daws.map(daw => `
+                        <div class="track-item" style="background: ${daw === activeDaw ? '#003322' : '#0f0f23'}">
+                            <span style="flex: 1;">${daw.charAt(0).toUpperCase() + daw.slice(1)}</span>
+                            <span class="${daw === activeDaw ? 'connected' : ''}" style="padding: 2px 8px; border-radius: 4px; font-size: 12px; background: ${daw === activeDaw ? '#00ff8822' : '#333'}; color: ${daw === activeDaw ? '#00ff88' : '#888'};">
+                                ${daw === activeDaw ? 'ACTIVE' : 'Available'}
+                            </span>
+                        </div>
+                    `).join('');
+                }
+            } catch (e) {
+                log('systemLog', 'Failed to load DAWs: ' + e, 'error');
+            }
+        }
+        
+        async function loadTracks() {
+            try {
+                const res = await api('GET', '/api/tracks');
+                if (res.success) {
+                    const tracks = res.data;
+                    const list = document.getElementById('trackList');
+                    if (tracks.length === 0) {
+                        list.innerHTML = '<div style="text-align:center;color:#666;padding:20px;">No tracks - create one or connect a DAW</div>';
+                        return;
+                    }
+                    list.innerHTML = tracks.map(track => `
+                        <div class="track-item">
+                            <div class="track-color" style="background: hsl(${Math.random()*360},70%,50%);"></div>
+                            <span style="flex: 1;">${track.name} (${track.type})</span>
+                            <div class="track-controls">
+                                <button class="btn ${track.armed ? 'danger' : 'secondary'}" onclick="toggleArm('${track.id}', ${!track.armed})" style="padding:4px 8px;font-size:11px;">${track.armed ? '●' : '○'}</button>
+                                <button class="btn ${track.solo ? '' : 'secondary'}" onclick="toggleSolo('${track.id}', ${!track.solo})" style="padding:4px 8px;font-size:11px;">S</button>
+                                <button class="btn ${track.mute ? 'danger' : 'secondary'}" onclick="toggleMute('${track.id}', ${!track.mute})" style="padding:4px 8px;font-size:11px;">M</button>
+                                <input type="range" min="0" max="1" step="0.01" value="${track.volume}" onchange="setVolume('${track.id}', this.value)" style="width: 80px;">
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            } catch (e) {
+                log('systemLog', 'Failed to load tracks: ' + e, 'error');
+            }
+        }
+        
+        async function loadControllers() {
+            try {
+                const res = await api('GET', '/api/controllers');
+                if (res.success) {
+                    const list = document.getElementById('controllerList');
+                    const supported = res.data.supported;
+                    const connected = res.data.connected || [];
+                    
+                    list.innerHTML = supported.map(ctrl => `
+                        <div class="controller-item ${connected.includes(ctrl) ? 'connected' : ''}" onclick="connectController('${ctrl}')">
+                            <div class="icon">${getControllerIcon(ctrl)}</div>
+                            <div>${ctrl.replace('_', ' ').toUpperCase()}</div>
+                            <div style="font-size: 11px; color: ${connected.includes(ctrl) ? '#00ff88' : '#666'}; margin-top: 5px;">
+                                ${connected.includes(ctrl) ? 'CONNECTED' : 'Click to connect'}
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            } catch (e) {
+                log('systemLog', 'Failed to load controllers: ' + e, 'error');
+            }
+        }
+        
+        function getControllerIcon(ctrl) {
+            const icons = {
+                'push1': '🎹', 'push2': '🎹', 'push3': '🎹',
+                'launchpad_mini': '🎛️', 'launchpad_mk2': '🎛️', 'launchpad_pro': '🎛️', 'launchpad_x': '🎛️',
+                'akai_mpc': '🥁', 'novation_circuit': '🎛️',
+                'gamepad_xbox': '🎮', 'gamepad_ps5': '🎮', 'gamepad_switch': '🎮', 'gamepad_generic': '🎮',
+                'bluetooth_midi': '📱', 'usb_otg': '🔌', 'custom': '⚙️'
+            };
+            return icons[ctrl] || '🎮';
+        }
+        
+        async function loadDatabaseStats() {
+            try {
+                const res = await api('GET', '/api/database/stats');
+                if (res.success) {
+                    const d = res.data;
+                    document.getElementById('dbLog').innerHTML = `
+                        <div class="log-entry info">Artists: ${d.artists}</div>
+                        <div class="log-entry info">Genres: ${d.genres}</div>
+                        <div class="log-entry info">Engineers: ${d.engineers}</div>
+                        <div class="log-entry info">Techniques: ${d.techniques}</div>
+                    `;
+                }
+            } catch (e) {
+                log('dbLog', 'Failed to load database: ' + e, 'error');
+            }
+        }
+        
+        // Action functions
+        async function connectDaw() {
+            const daw = document.getElementById('dawSelect').value;
+            const res = await api('POST', `/api/daws/${daw}/connect`);
+            if (res.success) {
+                log('systemLog', `Connected to ${daw}`, 'info');
+                await loadDAWs();
+                await loadStatus();
+                await loadTracks();
+            } else {
+                log('systemLog', `Failed to connect to ${daw}: ${res.error}`, 'error');
+            }
+        }
+        
+        async function disconnectDaw() {
+            if (!activeDaw) return;
+            const res = await api('POST', `/api/daws/${activeDaw}/disconnect`);
+            if (res.success) {
+                log('systemLog', `Disconnected from ${activeDaw}`, 'info');
+                await loadDAWs();
+                await loadStatus();
+            }
+        }
+        
+        async function createTrack() {
+            const name = document.getElementById('newTrackName').value || 'New Track';
+            const type = document.getElementById('newTrackType').value;
+            const res = await api('POST', '/api/tracks', { name, type });
+            if (res.success) {
+                log('systemLog', `Created track: ${name}`, 'info');
+                await loadTracks();
+            } else {
+                log('systemLog', 'Failed to create track: ' + (res.error || 'unknown'), 'error');
+            }
+        }
+        
+        async function toggleArm(trackId, arm) {
+            await api('POST', `/api/tracks/${trackId}/arm`, { arm });
+            await loadTracks();
+        }
+        
+        async function toggleSolo(trackId, solo) {
+            await api('POST', `/api/tracks/${trackId}/solo`, { solo });
+            await loadTracks();
+        }
+        
+        async function toggleMute(trackId, mute) {
+            await api('POST', `/api/tracks/${trackId}/mute`, { mute });
+            await loadTracks();
+        }
+        
+        async function setVolume(trackId, volume) {
+            await api('PATCH', `/api/tracks/${trackId}`, { volume: parseFloat(volume) });
+        }
+        
+        async function transportAction(action) {
+            const endpoint = action === 'play' ? 'play' : action === 'stop' ? 'stop' : 'record';
+            await api('POST', `/api/transport/${endpoint}`);
+            log('systemLog', `Transport: ${action}`, 'info');
+        }
+        
+        async function setTempo() {
+            const tempo = parseFloat(document.getElementById('tempoInput').value);
+            await api('POST', '/api/transport/tempo', { tempo });
+            log('systemLog', `Tempo set to ${tempo}`, 'info');
+        }
+        
+        async function setTimeSignature() {
+            const num = parseInt(document.getElementById('timeSigNum').value);
+            const den = parseInt(document.getElementById('timeSigDen').value);
+            await api('POST', '/api/transport/time-signature', { numerator: num, denominator: den });
+            log('systemLog', `Time signature: ${num}/${den}`, 'info');
+        }
+        
+        async function detectControllers() {
+            log('systemLog', 'Detecting controllers...', 'info');
+            const res = await api('POST', '/api/controllers/detect');
+            if (res.success) {
+                log('systemLog', `Detected: ${JSON.stringify(res.data)}`, 'info');
+                await loadControllers();
+            }
+        }
+        
+        async function connectController(type) {
+            const res = await api('POST', `/api/controllers/${type}/connect`);
+            if (res.success) {
+                log('systemLog', `Connected ${type}`, 'info');
+                await loadControllers();
+            } else {
+                log('systemLog', `Failed to connect ${type}: ${res.error}`, 'error');
+            }
+        }
+        
+        async function quickAction(action, params = {}) {
+            const res = await api('POST', `/api/quick/${action}`, params);
+            if (res.success) {
+                log('systemLog', `Quick action: ${action}`, 'info');
+                if (action === 'new_midi_track' || action === 'new_audio_track') await loadTracks();
+            } else {
+                log('systemLog', `Quick action failed: ${action} - ${res.error}`, 'error');
+            }
+        }
+        
+        function promptTempo() {
+            const tempo = prompt('Enter tempo (BPM):', '120');
+            if (tempo) {
+                document.getElementById('tempoInput').value = tempo;
+                setTempo();
+            }
+        }
+        
+        // Initialize
+        async function init() {
+            connectWS();
+            await loadStatus();
+            await loadDAWs();
+            await loadTracks();
+            await loadControllers();
+            await loadDatabaseStats();
+        }
+        
+        init();
+    </script>
+</body>
+</html>

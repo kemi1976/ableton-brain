@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Live System Status Panel</title>
+<style>
+:root {
+    --foreground: #e6edf3;
+    --muted-foreground: #8b949e;
+    --accent: #58a6ff;
+    --border: #30363d;
+    --card: #161b22;
+    --success: #3fb950;
+    --warning: #d29922;
+    --danger: #f85149;
+}
+* { box-sizing: border-box; }
+body { margin:0; font-family:system-ui,sans-serif; background:transparent; color:var(--foreground); }
+#panel { font-size:0.8rem; }
+.row { display:flex; justify-content:space-between; align-items:center; padding:6px 8px; border-bottom:1px solid var(--border); }
+.row:last-child { border-bottom:none; }
+.label { color:var(--muted-foreground); }
+.value { font-weight:500; }
+.status { display:inline-block; padding:2px 8px; border-radius:4px; font-size:0.7rem; }
+.status.online { background:var(--success); color:#000; }
+.status.offline { background:var(--danger); color:#fff; }
+.status.pending { background:var(--warning); color:#000; }
+.status.idle { background:var(--border); color:var(--muted-foreground); }
+</style>
+</head>
+<body>
+<div id="panel">
+  <div class="row"><span class="label">📡 TAILSCALE</span><span class="status online">3/4 ONLINE</span></div>
+  <div class="row"><span class="label">🖥️ DEVICES</span><span id="devices">ThinkPad✅ Dell✅ Nubia✅ S9❌</span></div>
+  <div class="row"><span class="label">💾 VAULT SYNC</span><span id="sync">64,800/64,802 ⏺ 5.58 GB</span></div>
+  <div class="row"><span class="label">🧠 ABLETON BRAIN</span><span id="brain" class="status running">RUNNING</span></div>
+  <div class="row"><span class="label">⚡ ACTIVE TASKS</span><span id="tasks">3 running ⏳ 2 pending</span></div>
+  <div class="row"><span class="label">📁 ELIZA NET</span><span id="eliza" class="status idle">EMPTY</span></div>
+</div>
+<script>
+async function refresh() {
+  try {
+    const r = await fetch('http://127.0.0.1:8050/api/status');
+    const d = await r.json();
+    document.getElementById('devices').textContent = 
+      d.devices.map(dev => dev.name.replace(' ','.').split('.')[0] + (dev.online?'✅':'❌')).join(' ');
+    document.getElementById('brain').textContent = d.brain.running ? 'RUNNING' : 'STOPPED';
+    document.getElementById('brain').className = 'status ' + (d.brain.running?'online':'offline');
+    const done = d.tasks.filter(t=>t.status==='done').length;
+    const pend = d.tasks.filter(t=>t.status!=='done').length;
+    document.getElementById('tasks').textContent = done + ' done ⏳ ' + pend + ' pending';
+    document.getElementById('eliza').textContent = d.vault.files > 0 ? 'SYNCING' : 'EMPTY';
+    document.getElementById('eliza').className = 'status ' + (d.vault.files > 0?'online':'idle');
+  } catch(e) {}
+}
+setInterval(refresh, 10000);
+refresh();
+</script>
+</body>
+</html>

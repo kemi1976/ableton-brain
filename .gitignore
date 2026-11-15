@@ -1,0 +1,57 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Build outputs
+dist/
+build/
+*.exe
+*.dmg
+*.zip
+*.app
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+python/dist/
+python/build/
+*.spec
+
+# Electron
+*.exe
+*.dmg
+*.app
+*.AppImage
+*.snap
+
+# Large artifacts
+installer/Ableton-Brain-Installer.exe
+installer/dist/Ableton-Brain-Win-Portable.zip
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+
+# Logs
+*.log
+logs/
+
+# Testing
+coverage/
+.nyc_output/
+
+# Misc
+*.abp
+data/marketplace/
+*.sync-conflict-*

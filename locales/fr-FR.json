@@ -1,0 +1,28 @@
+{
+  "app.name": "Ableton Brain",
+  "app.tagline": "Automatisation de Production Musicale Multi-DAW",
+  "nav.dashboard": "Tableau de bord",
+  "nav.tracks": "Pistes",
+  "nav.transport": "Transport",
+  "nav.controllers": "Contrôleurs",
+  "dashboard.title": "Tableau de bord",
+  "dashboard.connected": "Connecté",
+  "tracks.title": "Pistes",
+  "tracks.create": "Créer une piste",
+  "transport.title": "Transport",
+  "transport.play": "Lecture",
+  "transport.stop": "Arrêt",
+  "common.save": "Enregistrer",
+  "common.cancel": "Annuler",
+  "common.delete": "Supprimer",
+  "common.loading": "Chargement...",
+  "tracks.count": {
+    "key": "tracks.count",
+    "locale": "fr-FR",
+    "value": "{count} pistes",
+    "plural_forms": {
+      "one": "1 piste",
+      "other": "{count} pistes"
+    }
+  }
+}

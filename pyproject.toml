@@ -1,0 +1,78 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ableton-brain"
+version = "3.0.0"
+description = "Cross-DAW AI music production ecosystem with universal controller support"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+    {name = "ELIZA", email = "eliza@nousresearch.com"}
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Musicians",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Multimedia :: Sound/Audio :: MIDI",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+keywords = ["music", "midi", "audio", "daw", "controller", "ableton"]
+dependencies = [
+    "pydantic>=2.0",
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23",
+    "anyio>=4.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest-cov", "black", "mypy", "ruff"]
+midi = ["python-rtmidi>=1.3", "mido>=1.3"]
+full = ["ableton-brain[midi,dev]"]
+
+[project.scripts]
+abrain = "abrain:main"
+abrain-demo = "demo_quick:main"
+abrain-discover = "abrain.discovery:main"
+
+[project.urls]
+Homepage = "https://github.com/kemi1976/ableton-brain"
+Documentation = "https://github.com/kemi1976/ableton-brain#readme"
+Repository = "https://github.com/kemi1976/ableton-brain.git"
+Issues = "https://github.com/kemi1976/ableton-brain/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+abrain = ["py.typed", "*.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
+
+[tool.black]
+line-length = 100
+target-version = ["py310", "py311", "py312", "py314"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true

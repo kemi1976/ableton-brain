@@ -1,0 +1,22 @@
+{
+  "name": "Demo Synth Setup",
+  "description": "Demo synth controller mapping",
+  "mappings": [
+    {
+      "physical_control": "knob_1",
+      "daw_parameter": "filter_cutoff",
+      "curve_profile": "log",
+      "range_min": 0,
+      "range_max": 127
+    },
+    {
+      "physical_control": "knob_2",
+      "daw_parameter": "resonance",
+      "curve_profile": "linear",
+      "range_min": 0,
+      "range_max": 127
+    }
+  ],
+  "created_at": "1793844853.502758",
+  "version": "1.0"
+}

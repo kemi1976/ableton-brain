@@ -1,0 +1,4 @@
+[console_scripts]
+abrain = abrain:main
+abrain-demo = demo_quick:main
+abrain-discover = abrain.discovery:main

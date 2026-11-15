@@ -1,0 +1,46 @@
+{
+  "version": "1.0",
+  "device": {
+    "name": "Lenovo Desktop",
+    "hostname": "desktop-h3gcmqr",
+    "ip": "100.90.0.100",
+    "os": "Windows 10 Pro",
+    "role": "secondary-eliza",
+    "status": "ready-to-deploy"
+  },
+  "hardware": {
+    "cpu": "Intel i7-9700K (8 cores, 3.6GHz)",
+    "ram": "32GB DDR4",
+    "gpu": "RTX 2070 Super",
+    "storage": "NVMe SSD",
+    "purpose": "Heavy ML processing for AI tasks"
+  },
+  "eliza_config": {
+    "mode": "assistant",
+    "port": 8000,
+    "role": "ml-processing",
+    "memory": "shared-secondary",
+    "database_sync": true,
+    "services": ["audio-analysis", "style-transfer", "predictive-models", "backup"]
+  },
+  "api_endpoints": {
+    "primary": "http://100.82.15.79:5000",
+    "secondary": "http://100.90.0.100:8000",
+    "health": "/health",
+    "coordination": "/coordination",
+    "processing": "/process"
+  },
+  "deployment": {
+    "status": "ready",
+    "script": "start-secondary.sh",
+    "python_path": "C:/Users/pc/AppData/Local/Programs/Python/Python314/python.exe",
+    "working_dir": "~/eliza-secondary"
+  },
+  "capabilities": {
+    "ML_ACCELERATION": "GPU (CUDA)",
+    "AUDIO_PROCESSING": "Full support",
+    "DATABASE_SYNC": "Real-time",
+    "BACKUP": "Automatic daily",
+    "FAILover": "Automatic"
+  }
+}
